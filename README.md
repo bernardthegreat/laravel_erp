@@ -1,2 +1,3 @@
-<p><center><b>Pathologist Covid Tracker with Laravel and AdminLTE</b></center></p>
-Project for a hospital's laboratory and pathology department.
+<p><center><b>Enterprise Resource Planning for Huat-Hok Rice Trading, Inc.</b></center></p>
+
+-- Fully Laravel Application with AdminLTE as Web Template
