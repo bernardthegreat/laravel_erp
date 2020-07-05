@@ -36,6 +36,28 @@ class UtilityTypesController extends Controller
     public function store(Request $request)
     {
         //
+        $utility_type_exists = UtilityType::where([
+            ['name_short', '=', $request->name_short],
+            ['name_long', '=', $request->name_long],
+        ])->first();
+        
+        if ($utility_type_exists === null) {
+            $validatedData = $request->validate([
+                'name_short' => 'required|max:255',
+                'name_long' => 'required|max:255',
+            ]);
+            
+            $user = auth()->user();
+
+            $show = Supplier::create($validatedData + [
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+            ]);
+
+            return redirect('/utility_types')->with('success', 'Utility Types successfully saved');
+        } else {
+            return redirect('/utility_types')->with('error', 'Utility Types already exists');
+        }
     }
 
     /**
