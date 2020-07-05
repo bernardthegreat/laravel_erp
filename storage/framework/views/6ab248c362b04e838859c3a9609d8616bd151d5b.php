@@ -1,6 +1,6 @@
-@extends('layouts.login_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <style>
   .uper {
     margin-top: 40px;
@@ -11,17 +11,17 @@
     Register User
   </div>
   <div class="card-body">
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
       <div class="alert alert-danger">
         <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
+            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li><?php echo e($error); ?></li>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </ul>
       </div><br />
-    @endif
-      <form method="post" action="{{ route('users.external_store') }}">
-        @csrf
+    <?php endif; ?>
+      <form method="post" action="<?php echo e(route('users.external_store')); ?>">
+        <?php echo csrf_field(); ?>
         <div class="form-group">
         
             <input type="text" name="username" placeholder="Username">   
@@ -42,4 +42,5 @@
       </form>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.login_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/users/create.blade.php ENDPATH**/ ?>

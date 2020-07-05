@@ -15,14 +15,10 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         //
+        $this->middleware('auth');
         $users = User::all()->where('role', '!=', 'dev')->where('remarks', '!=', 'active');
 
         
@@ -36,10 +32,43 @@ class UsersController extends Controller
         return view('users/create');
     }
 
-    public function store(Request $request)
+    public function external_store(Request $request)
     {
         //
 
+        $user_exist = User::where([
+            ['last_name', '=', $request->last_name],
+            ['first_name', '=', $request->first_name],
+        ])->first();
+        
+        if ($user_exist === null) {
+            $validatedData = $request->validate([
+                'username' => 'required|max:15',
+                'first_name' => 'required|max:20',
+                'middle_name' => 'max:20',
+                'last_name' => 'required|max:20',
+                'name_suffix' => 'max:10',
+            ]);
+            
+            $user = auth()->user();
+
+            $show = User::create($validatedData + [
+                'role'=> 1,
+                'password' => Hash::make($request->password),
+                'created_by' => 1,
+                'updated_by' => 1,
+            ]);
+
+            return redirect('login')->with('success', 'User successfully saved');
+        } else {
+            return redirect()->back()->with('error', 'User already exists');
+        }  
+    }
+
+    public function store(Request $request)
+    {
+        //
+        $this->middleware('auth');
         $user_exist = User::where([
             ['last_name', '=', $request->last_name],
             ['first_name', '=', $request->first_name],
@@ -78,6 +107,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         //
+        $this->middleware('auth');
         $users = User::findOrFail($id);
 
         $roles = ['admin', 'standard'];
@@ -96,6 +126,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->middleware('auth');
         $validatedData = $request->validate([
             'username' => 'required|max:15',
             'first_name' => 'required|max:20',
@@ -124,6 +155,8 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+        $this->middleware('auth');
+
         $user = User::findOrFail($id);
         $user->delete();
 
@@ -133,6 +166,7 @@ class UsersController extends Controller
 
     public function soft_delete(Request $request, $id)
     {
+        $this->middleware('auth');
 
         User::where('id', $id)->update(array(
             'remarks' => 'inactive'

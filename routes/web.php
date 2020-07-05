@@ -21,6 +21,7 @@ Route::get('/', 'DashboardController@index')->name('dashboard');
 /* Users */
 Route::resource('users', 'UsersController');
 Route::get('/users/soft_delete/{id}', 'UsersController@soft_delete')->name('users.soft_delete');
+Route::post('/users/external_store', 'UsersController@external_store')->name('users.external_store');
 Route::get('/logout', 'UsersController@logout')->name('logout');
 /* Users */
 
