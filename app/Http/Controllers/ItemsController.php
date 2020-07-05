@@ -119,6 +119,8 @@ class ItemsController extends Controller
             'supplier_id' => 'required|max:255',
             'name_short' => 'max:255',
             'name_long' => 'required|max:255',
+            'stock_qty' => 'max:20',
+            'unit' => 'max:20',
         ]);
 
         $user = auth()->user();
