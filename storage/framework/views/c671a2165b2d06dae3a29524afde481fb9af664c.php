@@ -346,7 +346,7 @@
                                         <td>
                                             <div class="btn-group">
 
-                                                <?php if(is_null($purchase->dr_no)): ?>
+                                                <?php if(is_null($purchase->received_at)): ?>
                                                 <a class="btn btn-danger btn-sm receive_purchase_btn" href="#"
                                                     data-toggle="modal" data-purchase-id="<?php echo e($purchase->id ?? ''); ?>"
                                                     data-url="<?php echo e(route('receive_purchase', $purchase->id)); ?> "
