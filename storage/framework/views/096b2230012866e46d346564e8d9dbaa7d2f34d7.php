@@ -1,6 +1,6 @@
-@extends('layouts.main_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 
 <!-- Content Header (Page header) -->
@@ -15,7 +15,7 @@
             </div>
             <div class="col-sm-9">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('purchases.index')}}">Orders</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo e(route('purchases.index')); ?>">Orders</a></li>
                     <li class="breadcrumb-item active">Update Order</li>
                 </ol>
             </div>
@@ -42,25 +42,26 @@
         </div>
         <div class="card-body">
 
-            <form role="form" method="post" action="{{ route('purchases.update', $purchases->id) }}">
+            <form role="form" method="post" action="<?php echo e(route('purchases.update', $purchases->id)); ?>">
 
                 <div class="card-body">
-                @csrf
-                        @method('PATCH')
+                <?php echo csrf_field(); ?>
+                        <?php echo method_field('PATCH'); ?>
                     <div class="form-group">
                         <label for="code">P.O. #</label>
                         <input type="text" class="form-control" name="code" id="code"
-                            value="{{$purchases->code}}" autocomplete="off" readonly>
+                            value="<?php echo e($purchases->code); ?>" autocomplete="off" readonly>
                     </div>
 
                     <div class="form-group">
                         <label for="name_long">Item</label>
                         <select name="supplier_id" class="custom-select" id="supplier_id">
-                            @foreach($items as $item)
-                            <option value="{{$item->id}}" {{ ( $item->id == $purchases->item_id) ? 'selected' : '' }}>
-                                {{$item->name_long}}
+                            <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($item->id); ?>" <?php echo e(( $item->id == $purchases->item_id) ? 'selected' : ''); ?>>
+                                <?php echo e($item->name_long); ?>
+
                             </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -68,26 +69,26 @@
                         
                         <label for="dr_no">DR #</label>
                         <input type="text" class="form-control" name="dr_no" id="dr_no"
-                            value="{{$purchases->dr_no}}" autocomplete="off">
+                            value="<?php echo e($purchases->dr_no); ?>" autocomplete="off">
                     </div>
 
                     
                     <div class="form-group">
                         <label for="cost">Cost</label>
                         <input type="text" class="form-control" name="cost" id="cost"
-                            value="{{$purchases->cost}}" autocomplete="off">
+                            value="<?php echo e($purchases->cost); ?>" autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label for="qty">Quantity</label>
                         <input type="text" class="form-control" name="qty" id="cost"
-                            value="{{$purchases->qty}}" autocomplete="off">
+                            value="<?php echo e($purchases->qty); ?>" autocomplete="off">
                     </div>
 
                     <div class="form-group">
                         <label for="order_datetime">Ordered On</label>
                         <input type="text" class="form-control" id="order_datetime"
-                            value="{{ date('m/d/Y h:i:s A', strtotime($purchases->created_at)) }}" autocomplete="off" readonly>
+                            value="<?php echo e(date('m/d/Y h:i:s A', strtotime($purchases->created_at))); ?>" autocomplete="off" readonly>
                     </div>
 
 
@@ -122,4 +123,6 @@
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/purchases/edit.blade.php ENDPATH**/ ?>

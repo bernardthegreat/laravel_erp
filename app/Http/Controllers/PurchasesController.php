@@ -121,15 +121,19 @@ class PurchasesController extends Controller
         //
 
         $validatedData = $request->validate([
-            'name_short' => 'required|max:255',
-            'name_long' => 'required|max:255',
-            'address' => 'max:255',
-            'contact_no' => 'max:255',
-            'payment_term' => 'max:255'
+            'cost' => 'required|max:255',
+            'dr_no' => 'required|max:255',
+            'qty' => 'required|max:255',
         ]);
-        User::whereId($id)->update($validatedData);
 
-        return redirect('/clients')->with('success', 'Client successfully updated');
+        $user = auth()->user();
+
+        Purchase::whereId($id)->update($validatedData +[
+            'updated_by' => $user->id,
+        ]);
+
+
+        return redirect('/purchases')->with('success', 'Purchase successfully updated');
     }
 
     /**

@@ -174,7 +174,7 @@
                                         <td>
                                             <div class="btn-group">
 
-                                                @if(is_null($purchase->dr_no))
+                                                @if(is_null($purchase->received_at))
                                                 <a class="btn btn-danger btn-sm receive_purchase_btn" href="#"
                                                     data-toggle="modal" data-purchase-id="{{$purchase->id ?? ''}}"
                                                     data-url="{{ route('receive_purchase', $purchase->id)}} "
@@ -260,7 +260,7 @@
                                         <td>
                                             <div class="btn-group">
 
-                                                @if(is_null($purchase->dr_no))
+                                                @if(is_null($purchase->received_at))
                                                 <a class="btn btn-danger btn-sm receive_purchase_btn" href="#"
                                                     data-toggle="modal" data-purchase-id="{{$purchase->id ?? ''}}"
                                                     data-url="{{ route('receive_purchase', $purchase->id)}} "

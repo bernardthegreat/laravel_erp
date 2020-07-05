@@ -295,6 +295,22 @@ class EmployeesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'first_name' => 'required|max:20',
+            'last_name' => 'required|max:20',
+            'middle_name' => 'max:20',
+            'name_suffix' => 'max:10',
+            'address' => 'max:50',
+            'contact_no' => 'max:20',
+        ]);
+
+        $user = auth()->user();
+
+        Employee::whereId($id)->update($validatedData +[
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect()->back()->with('success', 'Employee successfully updated');
     }
 
     /**
