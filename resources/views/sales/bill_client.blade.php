@@ -3,20 +3,20 @@
 @section('content')
 
 <section class="content-header">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Invoice</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item active">Invoice</li>
-            </ol>
-          </div>
+            <div class="col-sm-6">
+                <h1>Billing Statement</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/clients">Clients</a></li>
+                    <li class="breadcrumb-item active">Billing Statement</li>
+                </ol>
+            </div>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+    </div><!-- /.container-fluid -->
+</section>
 
 <section class="content">
     <div class="container-fluid">
@@ -29,7 +29,7 @@
                         <div class="col-12">
                             <h4>
                                 <img src="{{asset('img/company.jpeg')}}" width="180px" height="80px">
-                                <small class="float-right">Date: <?php echo date('m-d-y'); ?></small>
+                                <small class="float-right">Date: <?php echo date('m/d/Y'); ?></small>
                             </h4>
                         </div>
                         <!-- /.col -->
@@ -42,7 +42,7 @@
                                 <strong>Huat-Hok Rice Trading, Inc.</strong><br>
                                 Address: 1082 Del Monte Avenue, Quezon City <br>
                                 Phone #: (02) 750-37473 <br>
-                                Cellphone #:  09228808104 / 0178958156 
+                                Cellphone #: 09228808104 / 0178958156
                             </address>
                         </div>
                         <!-- /.col -->
@@ -56,7 +56,7 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4 invoice-col">
-                            <b>Invoice #007612</b><br>
+                            <!-- <b>Invoice #007612</b><br> -->
                             <!-- <br>
                             <b>Order ID:</b> 4F3S8J<br>
                             <b>Payment Due:</b> 2/22/2014<br>
@@ -69,45 +69,40 @@
                     <!-- Table row -->
                     <div class="row">
                         <div class="col-12 table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped text-center">
                                 <thead>
                                     <tr>
+                                        <th>DR #</th>
                                         <th>Qty</th>
-                                        <th>Product</th>
-                                        <th>Serial #</th>
-                                        <th>Description</th>
+                                        <th>Item</th>
+                                        <th>Additional Fee</th>
+                                        <th>Discount</th>
+                                        <th>Date Sold</th>
                                         <th>Subtotal</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                    $total = 0;
+                                    @endphp
+                                    @foreach($break_downs as $break_down)
                                     <tr>
-                                        <td>1</td>
-                                        <td>Call of Duty</td>
-                                        <td>455-981-221</td>
-                                        <td>El snort testosterone trophy driving gloves handsome</td>
-                                        <td>$64.50</td>
+                                        <td>{{$break_down->dr_no}}</td>
+                                        <td>{{$break_down->qty}}</td>
+                                        <td>{{$break_down->name_long}}</td>
+                                        <td>{{$break_down->addl_fee}}</td>
+                                        <td>{{$break_down->discount}}</td>
+                                        <td>{{ date('m/d/Y h:i:s A', strtotime($break_down->created_at)) }}</td>
+                                        <td>
+                                            {{$break_down->cost}}
+                                            @php ($total += $break_down->cost); @endphp
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Need for Speed IV</td>
-                                        <td>247-925-726</td>
-                                        <td>Wes Anderson umami biodiesel</td>
-                                        <td>$50.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Monsters DVD</td>
-                                        <td>735-845-642</td>
-                                        <td>Terry Richardson helvetica tousled street art master</td>
-                                        <td>$10.70</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Grown Ups Blue Ray</td>
-                                        <td>422-568-642</td>
-                                        <td>Tousled lomo letterpress</td>
-                                        <td>$25.99</td>
-                                    </tr>
+
+                                    @endforeach
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -137,21 +132,10 @@
 
                             <div class="table-responsive">
                                 <table class="table">
-                                    <tr>
-                                        <th style="width:50%">Subtotal:</th>
-                                        <td>$250.30</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tax (9.3%)</th>
-                                        <td>$10.34</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shipping:</th>
-                                        <td>$5.80</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <th>Total:</th>
-                                        <td>$265.24</td>
+                                        <td><?php echo number_format($total, 2); ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -163,16 +147,20 @@
                     <!-- this row will not appear when printing -->
                     <div class="row no-print">
                         <div class="col-12">
-                            <a href="invoice-print.html" target="_blank" class="btn btn-default"><i
-                                    class="fas fa-print"></i> Print</a>
-                            <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                                Submit
-                                Payment
-                            </button>
-                            <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                            <!-- <a href="invoice-print.html" target="_blank" class="btn btn-default"><i
+                                    class="fas fa-print"></i> Print</a> -->
+                            <a href="/sales/print_bill/{{$clients->id}}" target="_blank"class="btn btn-success float-right" 
+                                 data-placement="top" rel="tooltip" title="Bill"><i
+                                    class="far fa-credit-card"></i>
+                                Print Billing Statement
+                            </a>
+                            <!-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
                                 <i class="fas fa-download"></i> Generate PDF
-                            </button>
+                            </button> -->
                         </div>
+
+                    
+
                     </div>
                 </div>
                 <!-- /.invoice -->
@@ -181,5 +169,16 @@
     </div><!-- /.container-fluid -->
 </section>
 <!-- /.content -->
+
+<script>
+    $(document).ready(function () {
+
+        $('#modal-default').on('shown.bs.modal', function () {
+            $('#invoice_no').focus();
+        });
+
+    });
+
+</script>
 
 @endsection

@@ -62,7 +62,7 @@
                 <div class="input-group mb-3">
                     <select name="item_id" class="custom-select" id="item_id">
                         @foreach($items as $item) 
-                            <option value="{{$item->id}}">{{$item->name_long}}</option>
+                            <option value="{{$item->item_id}}">{{$item->item_name}} -- {{$item->qty}}  {{$item->unit}}/s in stock </em></option>
                         @endforeach
                     </select>
                 </div>
@@ -80,9 +80,9 @@
                     </div>
                 </div>
 
-                <label class="col-form-label" for="discount"><i class="fas fa-check"></i> Discount <span style="color:red">*</span></label>
+                <label class="col-form-label" for="discount"><i class="fas fa-check"></i> Discount</label>
                 <div class="input-group mb-3">
-                    <input type="number" name="discount"  id="discount" class="form-control" autocomplete="off" required>
+                    <input type="number" name="discount"  id="discount" class="form-control" autocomplete="off" >
                     <div class="input-group-append">
                         <div class="input-group-text">
                         <span class="fa fa-box"></span>
@@ -100,9 +100,19 @@
                     </div>
                 </div>
 
-                <label class="col-form-label" for="invoice_number"><i class="fas fa-check"></i> Invoice # </label>
+                <label class="col-form-label" for="dr_no"><i class="fas fa-check"></i> DR # </label>
                 <div class="input-group mb-3">
-                    <input type="number" name="invoice_number"  id="invoice_number" class="form-control" autocomplete="off">
+                    <input type="number" name="dr_no"  id="dr_no" class="form-control" autocomplete="off">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fa fa-box"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="col-form-label" for="invoice_no"><i class="fas fa-check"></i> Invoice # </label>
+                <div class="input-group mb-3">
+                    <input type="number" name="invoice_no"  id="invoice_no" class="form-control" autocomplete="off">
                     <div class="input-group-append">
                         <div class="input-group-text">
                         <span class="fa fa-box"></span>
@@ -112,7 +122,7 @@
 
                 <label class="col-form-label" for="remarks"><i class="fas fa-check"></i> Remarks </label>
                 <div class="input-group mb-3">
-                    <textarea class="form-control" rows="3" name="remarks" id="remarks" placeholder="" required></textarea>
+                    <textarea class="form-control" rows="3" name="remarks" id="remarks" placeholder="" ></textarea>
 
                 </div>
 

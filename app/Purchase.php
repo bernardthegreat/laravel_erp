@@ -8,8 +8,10 @@ class Purchase extends Model
 {
     //
     protected $fillable = [
+        'code',
         'item_id',
         'dr_no',
+        'received_at',
         'cost',
         'qty',
         'created_by',

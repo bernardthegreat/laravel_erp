@@ -75,6 +75,12 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" id=""
+                                    value="{{$users->username}}" placeholder="Username">
+                            </div>
+
+                            <div class="form-group">
                                 <label for="password">New Password</label>
                                 <input type="password" class="form-control" name="password" id="" value=""
                                     placeholder="New Password">
@@ -85,6 +91,25 @@
                                 <input type="text" class="form-control" name="prefix" id="prefix" value="{{$users->prefix}}"
                                     placeholder="Prefix" autocomplete="off">
                             </div>
+
+                            @php
+                                $user = auth()->user();
+                            @endphp
+                            @if($user->role == 'admin')
+
+                            <label for="roles">Role</label>
+                            <div class="input-group mb-3">
+                                
+                                <select id="roles" name="role" class="form-control" style="width: 100px;">
+                                    @foreach($roles as $role)
+                                    <option value="{{$role}}">
+                                        {{$role}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @endif
                         </div>
                         <!-- /.card-body -->
 

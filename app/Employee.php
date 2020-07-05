@@ -18,4 +18,14 @@ class Employee extends Model
         'updated_by',
         'remarks'
     ];
+
+    public function payrolls()
+    {
+        return $this->hasMany('App\Payroll', 'employee_id');
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany('App\Attendance', 'employee_id');
+    }
 }

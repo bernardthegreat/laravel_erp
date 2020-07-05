@@ -44,7 +44,7 @@
 
                                     <div class="input-group mb-3">
                                         <input type="text" name="dr_no" class="form-control dr_no" placeholder="DR No."
-                                            autocomplete="off" required>
+                                            autocomplete="off" >
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-user"></span>
@@ -136,7 +136,7 @@
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill"
                                 href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages"
-                                aria-selected="false">Pending</a>
+                                aria-selected="false">Undelivered</a>
                         </li>
                     </ul>
                 </div>
@@ -149,9 +149,10 @@
                                 <thead>
                                     <tr>
                                         <th>Purchase Date</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
+                                        <th>Received Date</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
@@ -160,10 +161,15 @@
                                     @foreach($purchases as $purchase)
                                     <tr>
                                         <td> {{ date('m/d/Y h:i:s A', strtotime($purchase->created_at)) }} </td>
+                                        <td> {{$purchase->code}} </td>
                                         <td> {{$purchase->items->name_long}} </td>
                                         <td> {{$purchase->dr_no}} </td>
-                                        <td> {{$purchase->cost}} </td>
-                                        <td> {{$purchase->qty}} </td>
+                                        <td> 
+                                            @if(isset($purchase->received_at))
+                                                {{ date('m/d/Y h:i:s A', strtotime($purchase->received_at)) }}
+                                            @endif
+                                        </td>
+                                        <td data-placement="bottom" rel="tooltip" title="Cost: {{$purchase->cost}}"> {{$purchase->qty}} </td>
 
                                         <td>
                                             <div class="btn-group">
@@ -210,9 +216,10 @@
                                 <tfoot>
                                     <tr>
                                         <th>Purchase Date</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
+                                        <th>Received Date</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
@@ -226,23 +233,29 @@
                             <table id="example2" class="table table-bordered table-striped text-center">
                                 <thead>
                                     <tr>
-                                        <th>Purchase Date</th>
+                                        <th>Purchase D/T</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
+                                        <th>Received D/T</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($purchases as $purchase)
-                                    @if(!is_null($purchase->dr_no))
+                                    @if(!is_null($purchase->received_at))
                                     <tr>
                                         <td> {{ date('m/d/Y h:i:s A', strtotime($purchase->created_at)) }} </td>
+                                        <td> {{$purchase->code}} </td>
                                         <td> {{$purchase->items->name_long}} </td>
                                         <td> {{$purchase->dr_no}} </td>
-                                        <td> {{$purchase->cost}} </td>
-                                        <td> {{$purchase->qty}} </td>
+                                        <td> 
+                                            @if(isset($purchase->received_at))
+                                                {{ date('m/d/Y h:i:s A', strtotime($purchase->received_at)) }}
+                                            @endif
+                                        </td>
+                                        <td data-placement="bottom" rel="tooltip" title="Cost: {{$purchase->cost}}"> {{$purchase->qty}} </td>
 
                                         <td>
                                             <div class="btn-group">
@@ -290,9 +303,10 @@
                                 <tfoot>
                                     <tr>
                                         <th>Purchase Date</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
+                                        <th>Received Date</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
@@ -308,22 +322,23 @@
                                 <thead>
                                     <tr>
                                         <th>Purchase Date</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($purchases as $purchase)
-                                    @if(is_null($purchase->dr_no))
+                                    
+                                    @if(is_null($purchase->received_at) || $purchase->received_at == '')
                                     <tr>
                                         <td> {{ date('m/d/Y h:i:s A', strtotime($purchase->created_at)) }} </td>
+                                        <td> {{$purchase->code}} </td>
                                         <td> {{$purchase->items->name_long}} </td>
                                         <td> {{$purchase->dr_no}} </td>
-                                        <td> {{$purchase->cost}} </td>
-                                        <td> {{$purchase->qty}} </td>
+                                        <td data-placement="bottom" rel="tooltip" title="Cost: {{$purchase->cost}}"> {{$purchase->qty}} </td>
 
                                         <td>
                                             <div class="btn-group">
@@ -371,9 +386,9 @@
                                 <tfoot>
                                     <tr>
                                         <th>Purchase Date</th>
+                                        <th>Purchase Order No.</th>
                                         <th>Item</th>
                                         <th>DR #</th>
-                                        <th>Cost</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>

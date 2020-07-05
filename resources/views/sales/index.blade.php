@@ -51,7 +51,7 @@
                             data-placement="right" rel="tooltip" title="Items"
                         >
                             @foreach($items as $item) 
-                                <option value="{{$item->id}}">{{$item->name_long}}</option>
+                                <option value="{{$item->item_id}}">{{$item->item_name}} -- {{$item->qty}}  {{$item->unit}}/s in stock </em></option>
                             @endforeach
                         </select>
                     </div>
@@ -62,7 +62,7 @@
                             autocomplete="off" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-money-bill-alt"></span>
                             </div>
                         </div>
                     </div>
@@ -70,30 +70,40 @@
                    
                     <div class="input-group mb-3">
                         <input type="text" name="discount" class="form-control" placeholder="Discount"
-                            autocomplete="off" required>
+                            autocomplete="off" >
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-money-bill-alt"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="input-group mb-3">
                         <input type="text" name="additional_fee" class="form-control" placeholder="Additional Fee"
-                            autocomplete="off" required>
+                            autocomplete="off" >
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-money-bill-alt"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="text" name="invoice_number" class="form-control" placeholder="Invoice #"
-                            autocomplete="off" required>
+                        <input type="text" name="dr_no" class="form-control" placeholder="DR #"
+                            autocomplete="off" >
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <span class="fas fa-user"></span>
+                                <span class="fas fa-money-bill-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" name="invoice_no" class="form-control" placeholder="Invoice #"
+                            autocomplete="off" >
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-money-bill-alt"></span>
                             </div>
                         </div>
                     </div>
@@ -128,10 +138,17 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <button type="button" class="btn btn-block btn-danger btn-flat" data-toggle="modal"
-                    data-target="#modal-default" data-placement="top" rel="tooltip" title="Sell">
-                    <i class="fa fa-plus"> </i>
-                </button>
+                <div class="card-tools btn-group">
+                    <button type="button" class="btn btn-danger btn-flat" data-toggle="modal"
+                        data-target="#modal-default" data-placement="top" rel="tooltip" title="Sell">
+                        <i class="fa fa-plus"> </i>
+                    </button>
+                    <a href="{{ route('payments') }}" class="btn btn-danger btn-flat" 
+                    data-placement="top" rel="tooltip" title="Process Payment">
+                        <i class="fa fa-money-bill-alt"> </i>
+                    </a>
+
+                </div>
             </h3>
 
             <div class="card-tools">
@@ -142,6 +159,7 @@
                     title="Remove">
                     <i class="fas fa-times"></i></button>
             </div>
+
         </div>
         <div class="card-body">
 
@@ -151,10 +169,10 @@
                         <th>Sold Date</th>
                         <th>Client</th>
                         <th>Item</th>
-                        <th>Invoice #</th>
+                        <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <th> </th>
+                        <!-- <th> </th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -163,10 +181,10 @@
                         <td> {{ date('m/d/Y h:i:s A', strtotime($sale->created_at)) }} </td>
                         <td> {{$sale->client_name}} </td>
                         <td> {{$sale->item_name}} </td>
-                        <td> {{$sale->invoice_no}} </td>
+                        <td> {{$sale->dr_no}} </td>
                         <td> {{$sale->cost}} </td>
                         <td> {{$sale->qty}} </td>
-                        <td> 
+                        <!-- <td> 
 
                             <div class="btn-group">
                                 <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->id)}}"
@@ -177,7 +195,7 @@
                                 </a>
 
                             </div>
-                        </td>
+                        </td> -->
                     </tr>
                 @endforeach
                 </tbody>
@@ -186,10 +204,10 @@
                         <th>Sold Date</th>
                         <th>Client</th>
                         <th>Item</th>
-                        <th>Invoice #</th>
+                        <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <th> </th>
+                        <!-- <th> </th> -->
                     </tr>
                 </tfoot>
             </table>
@@ -211,8 +229,6 @@
         $(".delete").on("click", function () {
             return confirm("Do you want to delete this?");
         });
-
-
     });
 
 </script>

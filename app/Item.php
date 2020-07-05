@@ -14,6 +14,7 @@ class Item extends Model
         'name_short', 
         'created_by',
         'updated_by',
+        'remarks',
     ];
 
     public function purchases()
@@ -24,5 +25,10 @@ class Item extends Model
     public function suppliers()
     {
         return $this->belongsTo('App\Supplier', 'supplier_id');
+    }
+
+    public function interests()
+    {
+        return $this->hasMany('App\Interest', 'item_id');
     }
 }

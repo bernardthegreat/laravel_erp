@@ -20,7 +20,7 @@ class SuppliersController extends Controller
     public function index()
     {
         //
-        $suppliers = Supplier::all()->where('remarks', 'active');
+        $suppliers = Supplier::all()->where('remarks', '!=', 'inactive');
 
         return view('suppliers/index', compact('suppliers'));
 
@@ -54,7 +54,6 @@ class SuppliersController extends Controller
             $show = Supplier::create($validatedData + [
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
-                'remarks' => 'active'
             ]);
 
             return redirect('/suppliers')->with('success', 'Supplier successfully saved');
@@ -83,6 +82,9 @@ class SuppliersController extends Controller
     public function edit($id)
     {
         //
+        $suppliers = Supplier::findOrFail($id);
+
+        return view('suppliers/edit', compact('suppliers'));
     }
 
     /**
@@ -95,6 +97,17 @@ class SuppliersController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $validatedData = $request->validate([
+            'name_short' => 'required|max:255',
+            'name_long' => 'required|max:255',
+            'address' => 'max:255',
+            'contact_no' => 'max:255',
+        ]);
+        
+        Supplier::whereId($id)->update($validatedData);
+
+        return redirect('/suppliers')->with('success', 'Supplier successfully updated');
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Client;
 use App\User;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -25,24 +26,53 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        
-        //
-        /*
-        $patient_requests = PatientRequest::take(100)->with([
-            'patients', 
-            'departments', 
-            'users', 
-            'patient_request_dispositions'
-        ])->get();
+        $stock_counts = DB::select(DB::raw(
+            "select * from stock_qty_fast_view"
+        ));
 
-        $patients = Patient::where('active','=','1')->count();
-        $requests = PatientRequest::count();
-        $inpatients = PatientRequest::where('disposition_id','=','1')->count();
-        $discharged = PatientRequest::where('disposition_id','=','2')->count();   
-        $expired = PatientRequest::where('disposition_id','=','3')->count();        
-        */
+        $gross_income_today = DB::select(DB::raw(
+            "select * from gross_income_today_view"
+        ));
+
+        $client_dues = DB::select(DB::raw(
+            "select * from due_clients_view"
+        ));
+
+        $gross_expense_today = DB::select(DB::raw(
+            "select * from gross_expenses_today_view"
+        ));
+
+        $pending_delivery_supplies = DB::select(DB::raw(
+            "select 
+            i.name_long as item_name, 
+            s.name_long as supplier,
+            p.cost,
+            p.qty as quantity,
+            p.created_at as purchased_date
+            from purchases p
+            join items i on i.id = p.item_id
+            join suppliers s on s.id = i.supplier_id
+            where p.received_at is null"
+        ));
         
-        return view('main_dashboard', compact('user'));
+        
+
+        $count_client_dues = count($client_dues);
+
+        $count_pending_delivery_supplies = count($pending_delivery_supplies);
+        
+         
+        return view('main_dashboard', compact(
+                    'user', 
+                    'stock_counts', 
+                    'gross_income_today', 
+                    'gross_expense_today',
+                    'count_client_dues',
+                    'client_dues',
+                    'pending_delivery_supplies',
+                    'count_pending_delivery_supplies'
+            )
+        );
     }
 
     /**
@@ -116,11 +146,9 @@ class DashboardController extends Controller
 
     public function search_client(Request $request){
 
-
-
         if(isset($request->client_info)) {
-            $clients = Client::where('name_short', 'LIKE', $request->client_info.'%')
-                    ->orWhere('name_long', 'LIKE', $request->client_info.'%')
+            $clients = Client::where('name_short', 'LIKE', '%'.$request->client_info.'%')
+                    ->orWhere('name_long', 'LIKE', '%'.$request->client_info.'%')
                     ->get();
                     
             if (count($clients)>0) {

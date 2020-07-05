@@ -23,7 +23,9 @@ class UsersController extends Controller
     public function index()
     {
         //
-        $users = User::all()->where('role', '!=', 'dev')->where('remarks', 'active');
+        $users = User::all()->where('role', '!=', 'dev')->where('remarks', '!=', 'active');
+
+        
 
         return view('users/index', compact('users'));
     }
@@ -45,21 +47,20 @@ class UsersController extends Controller
         
         if ($user_exist === null) {
             $validatedData = $request->validate([
-                'username' => 'required|max:255',
-                'first_name' => 'required|max:255',
-                'middle_name' => 'max:255',
-                'last_name' => 'required|max:255',
-                'name_suffix' => 'max:255',
-                'role' => 'max:255'
+                'username' => 'required|max:15',
+                'first_name' => 'required|max:20',
+                'middle_name' => 'max:20',
+                'last_name' => 'required|max:20',
+                'name_suffix' => 'max:10',
             ]);
             
             $user = auth()->user();
 
             $show = User::create($validatedData + [
+                'role'=> $request->role,
                 'password' => Hash::make($request->password),
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
-                'remarks' => 'active'
             ]);
 
             return redirect('/users')->with('success', 'User successfully saved');
@@ -79,7 +80,9 @@ class UsersController extends Controller
         //
         $users = User::findOrFail($id);
 
-        return view('users/edit', compact('users'));
+        $roles = ['admin', 'standard'];
+
+        return view('users/edit', compact('users', 'roles'));
 
     }
 
@@ -94,14 +97,22 @@ class UsersController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'middle_name' => 'max:255',
-            'name_suffix' => 'required|max:255'
+            'username' => 'required|max:15',
+            'first_name' => 'required|max:20',
+            'last_name' => 'required|max:20',
+            'middle_name' => 'max:20',
+            'name_suffix' => 'max:10'
         ]);
-        User::whereId($id)->update($validatedData);
 
-        return redirect('/users')->with('success', 'User successfully updated');
+        $user = auth()->user();
+
+        User::whereId($id)->update($validatedData +[
+            'role'=> $request->role,
+            'password' => Hash::make($request->password),
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect()->back()->with('success', 'User successfully updated');
     }
 
     /**

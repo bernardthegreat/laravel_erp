@@ -65,6 +65,11 @@
                         <label for="contact_no">Contact #</label>
                         <input type="text" class="form-control" name="contact_no" id="contact_no" placeholder="Contact #">
                     </div>
+
+                    <div class="form-group">
+                        <label for="payment_term">Terms</label>
+                        <input type="text" class="form-control" name="payment_term" id="payment_term" placeholder="Terms">
+                    </div>
                 </div>
                 <!-- /.card-body -->
 

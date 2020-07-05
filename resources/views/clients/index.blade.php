@@ -166,14 +166,14 @@
                                         <td>
                                             <div class="btn-group">
 
-                                                @if($client->has_debt == 1)
+                                                
                                                 <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('bill_client', $client->id)}}" data-placement="top"
-                                                    rel="tooltip" title="Bill {{$client->name_short}}">
-                                                    <i class="fa fa-money-bill">
+                                                    href="{{ route('generate_billing_statement', $client->id)}}" data-placement="top"
+                                                    rel="tooltip" title="Billing Statement for {{$client->name_short}}">
+                                                    <i class="far fa-credit-card">
                                                     </i>
                                                 </a>
-                                                @endif
+                                                
 
                                                 <a class="btn btn-danger btn-sm"
                                                     href="{{ route('clients.edit', $client->id)}}" data-placement="top"
@@ -237,7 +237,7 @@
                                             <div class="btn-group">
 
                                                 <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('bill_client', $client->id)}}" data-placement="top"
+                                                    href="{{ route('generate_billing_statement', $client->id)}}" data-placement="top"
                                                     rel="tooltip" title="Bill {{$client->name_short}}">
                                                     <i class="fa fa-money-bill">
                                                     </i>

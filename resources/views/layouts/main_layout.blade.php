@@ -108,6 +108,28 @@
       "order": [0, "asc"],
     });
 
+    $("#desc_second_column2").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "order": [1, "desc"],
+    });
+
+    $("#table_without_search1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "order": [0, "asc"],
+      "searching": false,
+    });
+
+    $("#table_without_search2").DataTable({
+      "paging": false,
+      "responsive": true,
+      "autoWidth": false,
+      "order": [0, "asc"],
+      "searching": false,
+    });
+    
+
 
     $('#analytics1').DataTable({
       "paging": true,
@@ -120,9 +142,8 @@
       "order": [1, "desc"],
     });
 
-    $('#swab_datetime').datetimepicker();
-    $('#result_availability_datetime').datetimepicker();
-    $('#request_datetime').datetimepicker();
+
+    $('#payment_date').datetimepicker();
 
     $('#completed_datetime').datetimepicker();
     $('#rejected_datetime').datetimepicker();

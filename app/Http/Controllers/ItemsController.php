@@ -24,7 +24,7 @@ class ItemsController extends Controller
         //
         $items = Item::with('suppliers')->get();
 
-        $suppliers = Supplier::all()->where('remarks', 'active');
+        $suppliers = Supplier::all()->where('remarks', '!=', 'inactive');
 
         return view('items/index', compact('items', 'suppliers'));
     }

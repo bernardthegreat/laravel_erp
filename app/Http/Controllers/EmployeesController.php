@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Employee;
+use App\Payroll;
+use App\Attendance;
+use DB;
+use PDF;
 
 class EmployeesController extends Controller
 {
@@ -19,9 +23,51 @@ class EmployeesController extends Controller
     public function index()
     {
         //
-        $employees = Employee::all()->where('remarks', 'active');
+        $employees = DB::select(DB::raw(
+            "SELECT 
+            id,
+            code,
+            fullname,
+            address,
+            contact_no,
+            e.created_at,
+            (SELECT 
+                    from_date
+                FROM
+                    payroll
+                WHERE
+                    payroll.employee_id = e.id
+                ORDER BY ID DESC
+                LIMIT 1) AS from_date,
+            (SELECT 
+                    to_date
+                FROM
+                    payroll
+                WHERE
+                    payroll.employee_id = e.id
+                ORDER BY ID DESC
+                LIMIT 1) AS to_date
+        FROM
+            employees e;"
+        ));
 
-        return view('employees/index', compact('employees'));
+        $attendance = DB::select(DB::raw(
+            "SELECT 
+                code,
+                fullname,
+                from_time,
+                to_time
+            FROM
+                attendance a
+                    JOIN
+                employees e ON e.id = a.employee_id
+            WHERE
+                a.created_at rlike CURDATE()"
+        ));
+
+        
+
+        return view('employees/index', compact('employees', 'attendance'));
     }
 
     /**
@@ -42,7 +88,172 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
+
+        $first_name = $request->first_name;
+        $middle_name = $request->middle_name;
+        $last_name = $request->last_name;
+        $name_suffix = $request->name_suffix;
+        $address = $request->address;
+        $contact_no = $request->contact_no;
+        $user_id = $user->id;
+        $remarks = $request->remarks;
+
+
+        $insert_employee = DB::select('call insert_employee(?,?,?,?,?,?,?,?, @employee)',
+            array(
+                $first_name, 
+                $middle_name,
+                $last_name,
+                $name_suffix,
+                $address,
+                $contact_no,
+                $user_id,
+                $remarks
+            )
+        );
+        $select_error_code = DB::select('select @employee as error_code');
+        
+        switch ($select_error_code[0]->error_code) {
+            case 1:
+                return redirect()->back()->with('error', 'Unable to create new employee: Invalid Firstname');
+                break;
+            case 2:
+                return redirect()->back()->with('error', 'Unable to create new employee: Invalid Lastname');
+                break;
+            case 3:
+                return redirect()->back()->with('error', 'Unable to create new employee: Invalid Address');
+                break;
+            case 4:
+                return redirect()->back()->with('error', 'Unable to create new employee: Invalid Order Contact #');
+                break;
+            case 5:
+                return redirect()->back()->with('error', 'Unable to create new employee: Invalid User');
+                break;
+            case 6:
+                return redirect()->back()->with('error', 'Unable to create new employee: Database Error');
+                break;
+            default:
+                return redirect('/employees')->with('success', 'Successfully created employee');
+                break;
+        }
+    }
+
+    public function time_in_and_out(Request $request)
+    {
+        $user = auth()->user();
+        $employee_code = $request->employee_code;
+        $user_id = $user->id;
+        $remarks = $request->remarks;
+
+        
+        $time_in_and_out = DB::select('call insert_update_attendance(?,?,?, @time_in_and_out)',
+            array(
+                $employee_code, 
+                $user_id,
+                $remarks
+            )
+        );
+        $select_error_code = DB::select('select @time_in_and_out as error_code');
+
+        switch ($select_error_code[0]->error_code) {
+            case 1:
+                return redirect()->back()->with('error', 'Unable to create attendance: Invalid Employee');
+                break;
+            case 2:
+                return redirect()->back()->with('error', 'Unable to create attendance: Invalid User');
+                break;
+            case 3:
+                return redirect()->back()->with('error', 'Unable to create attendance: Database Error');
+                break;
+            default:
+                return redirect()->back()->with('success', 'Success');
+                break;
+        }
+    }
+
+    public function process_payroll(Request $request)
+    {
+        $user = auth()->user();
+
+        $coverage_payroll_date = $request->coverage_payroll_date;
+        $splitted_date = explode(' - ', $coverage_payroll_date);
+
+        
+
+        $employee_id = $request->employee_id;
+        $from_date = date('Y-m-d', strtotime($splitted_date[0]));
+        $to_date = date('Y-m-d', strtotime($splitted_date[1]));
+        $user_id = $user->id;
+        $remarks = $request->remarks;
+        
+        
+        $payroll = DB::select('call insert_payroll(?,?,?,?,?, @payroll)',
+            array(
+                $employee_id, 
+                $from_date,
+                $to_date,
+                $user_id,
+                $remarks
+            )
+        );
+        $select_error_code = DB::select('select @payroll as error_code');
+
+        switch ($select_error_code[0]->error_code) {
+            case 1:
+                return redirect()->back()->with('error', 'Unable to process payroll: Invalid Employee');
+                break;
+            case 2:
+                return redirect()->back()->with('error', 'Unable to process payroll: Invalid User');
+                break;
+            case 3:
+                return redirect()->back()->with('error', 'Unable to process payroll: No hourly fee found');
+                break;
+            case 4:
+                return redirect()->back()->with('error', 'Unable to process payroll: Database Error');
+                break;
+            default:
+                return redirect()->back()->with('success', 'Success');
+                break;
+        }
+    }
+
+    public function generate_latest_payslip($id)
+    {
+        $payslip = DB::select(DB::raw(
+            "SELECT 
+                e.code,
+                e.id,
+                e.fullname,
+                e.address,
+                e.contact_no,
+                p.hours_worked,
+                p.cost,
+                p.from_date,
+                p.to_date,
+                p.created_at
+            FROM
+                payroll p
+                    JOIN
+                employees e ON e.id = p.employee_id
+            WHERE
+                employee_id = $id
+            ORDER BY id DESC
+            LIMIT 1"));
+        
+        $pdf = PDF::loadView('employees/payslip_print', compact('payslip') );  
+        $pdf->setPaper('LETTER', 'landscape'); 
+        return $pdf->stream('Payslip.pdf');
+    }
+
+    public function get_payslip($id)
+    {
+        $payslip = DB::select(DB::raw(
+            "SELECT * FROM payroll where id = $id order by id desc limit 1"));
+        dd($payslip);
+        $pdf = PDF::loadView('employees/payslip_print', compact('payslip') );  
+        $pdf->setPaper('LETTER', 'landscape'); 
+        return $pdf->stream('Payslip.pdf');
     }
 
     /**
@@ -56,6 +267,8 @@ class EmployeesController extends Controller
         //
     }
 
+    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -65,6 +278,11 @@ class EmployeesController extends Controller
     public function edit($id)
     {
         //
+        $employees = Employee::findOrFail($id);
+
+        $payrolls = Payroll::all()->where('employee_id', $id);
+
+        return view('employees/edit', compact('employees', 'payrolls'));
     }
 
     /**

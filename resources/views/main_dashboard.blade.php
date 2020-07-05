@@ -16,87 +16,94 @@
     </div><!-- /.container-fluid -->
 </div>
 
-<section class="content" id="app">
-    <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box">
-                    <span class="info-box-icon bg-orange elevation-1">
-                        <i class="fa fa-user-plus"></i>
-                    </span>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Yesterday's Sales</span>
-                        <span id="yesterday_sales" class="info-box-number count"></span>
-                    </div>
-                    <!-- /.info-box-content -->
+<section class="content">
+
+    <div class="row">
+
+        <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>
+                        @if(isset($gross_income_today[0]->cost))
+                            {{$gross_income_today[0]->cost}}
+                        @else
+                            0
+                        @endif
+
+                    </h3>
+
+                    <p>Gross Income Today</p>
                 </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-warning elevation-1">
-                        <i class="fa fa-viruses"></i>
-                    </span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Today's Sales</span>
-                        <span id="today_sales" class="info-box-number count"></span>
-                    </div>
-                    <!-- /.info-box-content -->
+                <div class="icon">
+                    <i class="fa fa-money-check-alt"></i>
                 </div>
-                <!-- /.info-box -->
             </div>
-            <!-- /.col -->
-
-            <!-- fix for small devices only -->
-            <div class="clearfix hidden-md-up"></div>
-
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1">
-                        <i class="fa fa-hand-holding-heart "></i>
-                    </span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Client Dues</span>
-                        <span id="client_dues" class="info-box-number count">
-
-                        </span>
-
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-gray-dark elevation-1">
-                        <i class="fa fa-hand-holding-medical"></i>
-                    </span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Client Lapses</span>
-                        <span id="deaths" class="info-box-number count">
-
-                        </span>
-                    </div>
-                    <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-            </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
 
+        <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>
+                        @if(isset($gross_expense_today[0]->cost))
+                            {{$gross_expense_today[0]->cost}}
+                        @else
+                            0
+                        @endif
+                    </h3>
 
+                    <p>Gross Expense Today</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-money-bill-alt"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>
+                        @if(isset($count_pending_delivery_supplies))
+                            {{$count_pending_delivery_supplies}}
+                        @endif
+                    </h3>
+
+                    <p>Purchased Delivery Pendings</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small card -->
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>
+                        @if(isset($count_client_dues))
+                            {{$count_client_dues}}
+                        @endif
+                    </h3>
+
+                    <p>Client Dues</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
     </div>
-</section>
+    <!-- /.row -->
 
-<!-- Main content -->
+</section>
 
 
 
@@ -104,7 +111,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Sales</h3>
+            <h3 class="card-title">Daily Reporting</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
@@ -117,101 +124,144 @@
         </div>
         <div class="card-body">
 
-            <table id="example1" class="table table-bordered table-striped text-center">
-                <thead>
-                    <tr>
-                        <th>Sales</th>
-                        <th>Sales</th>
-                        <th>Sales</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                    <tr>
-                        <td> test data </td>
-                        <td> test data </td>
-                        <td> test data </td>
-                    </tr>
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Sales</th>
-                        <th>Sales</th>
-                        <th>Sales</th>
-                    </tr>
-                </tfoot>
-            </table>
+        <div class="card card-danger card-tabs">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill"
+                                href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home"
+                                aria-selected="true">Stock Counts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
+                                href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile"
+                                aria-selected="false">Due Clients</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-four-pending-delivery-tab" data-toggle="pill"
+                                href="#custom-tabs-four-pending-delivery" role="tab" aria-controls="custom-tabs-four-pending-delivery"
+                                aria-selected="false">Purchased Delivery Pendings</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                        <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel"
+                            aria-labelledby="custom-tabs-four-home-tab">
+
+                            <table id="desc_second_column2" class="table table-bordered table-striped text-center">
+                                <thead>
+                                    
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach($stock_counts as $stock_count)
+                                        <tr>
+                                            <td> {{$stock_count->item_name}} </td>
+                                            <td> {{$stock_count->qty}} </td>
+                                        </tr>
+                                    @endforeach
+                                
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
+                            aria-labelledby="custom-tabs-four-profile-tab">
+
+                            <table id="example1" class="table table-bordered table-striped text-center">
+                                <thead>
+                                    
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Debt Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach($client_dues as $client_due)
+                                        <tr>
+                                            <td> {{$client_due->name_long}} </td>
+                                            <td> {{$client_due->debt_cost}} </td>
+                                        </tr>
+                                    @endforeach
+                                
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Debt Cost</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                          
+                        </div>
+                    
+                        <div class="tab-pane fade" id="custom-tabs-four-pending-delivery" role="tabpanel"
+                            aria-labelledby="custom-tabs-four-pending-delivery-tab">
+
+                            <table id="example3" class="table table-bordered table-striped text-center">
+                                <thead>
+                                
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Cost</th>
+                                        <th>Quantity</th>
+                                        <th>Purchased Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach($pending_delivery_supplies as $pending_delivery_supply)
+                                        <tr>
+                                            <td> {{$pending_delivery_supply->item_name}} </td>
+                                            <td> {{$pending_delivery_supply->cost}} </td>
+                                            <td> {{$pending_delivery_supply->quantity}} </td>
+                                            <td> {{ date('m/d/Y h:i:s A', strtotime($pending_delivery_supply->purchased_date)) }} </td>
+                                        </tr>
+                                    @endforeach
+                                
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Cost</th>
+                                        <th>Quantity</th>
+                                        <th>Purchased Date</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                          
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+
+
+
+
+            
         </div>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
-
-</section>
-
-
-
-<section class="content">
-
-    <div class="row">
-        <div class="col-lg-3 col-6">
-            <!-- small card -->
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>150</h3>
-
-                    <p>Sales</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small card -->
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                    <p>Sales</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small card -->
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>44</h3>
-
-                    <p>Sales</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small card -->
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>65</h3>
-
-                    <p>Sales</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-chart-pie"></i>
-                </div>
-            </div>
-        </div>
-        <!-- ./col -->
-    </div>
-    <!-- /.row -->
 
 </section>
 

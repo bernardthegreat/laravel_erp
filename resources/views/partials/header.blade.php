@@ -58,9 +58,14 @@
                         data-placement="bottom" rel="tooltip" title="Receive Orders">
                         <i class="fa fa-truck"></i>
                     </a>
-                    <a href="{{ route('clients.index') }}" class="btn btn-warning btn-flat float-left"
-                        data-placement="bottom" rel="tooltip" title="Process Billing">
+                    <a href="{{ route('payments') }}" class="btn btn-warning btn-flat float-left"
+                        data-placement="bottom" rel="tooltip" title="Process Payment">
                         <i class="fa fa-file-invoice-dollar"></i>
+                    </a>
+                    <a href="{{ route('employees.index') }}" 
+                        class="btn btn-warning btn-flat float-left"
+                        data-placement="bottom" rel="tooltip" title="Daily Time Record">
+                        <i class="fa fa-clock"></i>
                     </a>
 
                     
@@ -80,7 +85,7 @@
         </li>
     </ul>
 
-
+    
 </nav>
 
 

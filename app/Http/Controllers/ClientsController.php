@@ -20,7 +20,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        //
+        
         $clients = DB::select(DB::raw(
             "SELECT 
                 c.id,
@@ -28,13 +28,13 @@ class ClientsController extends Controller
                 c.name_long,
                 c.contact_no,
                 c.created_at,
+                c.payment_term,
                 if(sum(ifnull(((s.cost * s.qty) + s.addl_fee) - s.discount, 0))>0, 1, 0) as has_debt
             FROM
                 clients c
                 left join (select * from sales _s where _s.paid_on is null) as s on s.client_id = c.id
-                where c.remarks = 'active'
             GROUP BY c.id"));
-        //dd($clients);
+        
         
         return view('clients/index', compact('clients'));
     }
@@ -107,8 +107,55 @@ class ClientsController extends Controller
     {
         //
         $clients = Client::findOrFail($id);
+        
+        $payments = DB::table('sales')
+                ->select(
+                    'sales.created_at',
+                    'sales.invoice_no', 
+                    'sales.paid_on',
+                    'sales.dr_no',
+                    'items.name_long',
+                )
+                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+                ->join('items', 'items.id', '=', 'purchases.item_id')
+                ->groupByRaw('sales.invoice_no')
+                ->whereRaw('paid_on is not null')
+                ->where('client_id', $id)
+                ->get();
 
-        return view('clients/edit', compact('clients'));
+        $debts = DB::table('sales')
+                ->select(
+                    'sales.created_at',
+                    'sales.invoice_no', 
+                    'sales.dr_no', 
+                    'sales.cost',
+                    'sales.qty',
+                    'items.name_long'
+                )
+                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+                ->join('items', 'items.id', '=', 'purchases.item_id')
+                // ->groupByRaw('sales.invoice_no')
+                ->whereRaw('paid_on is null')
+                ->where('client_id', $id)
+                ->get();
+
+        $soa = DB::table('sales')
+                ->select(
+                    'sales.created_at',
+                    'sales.invoice_no', 
+                    'sales.dr_no', 
+                    'sales.cost',
+                    'sales.qty',
+                    'items.name_long'
+                )
+                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+                ->join('items', 'items.id', '=', 'purchases.item_id')
+                // ->groupByRaw('sales.invoice_no')
+                //->whereRaw()
+                ->where('client_id', $id)
+                ->get();
+
+        return view('clients/edit', compact('clients', 'payments', 'debts', 'soa'));
     }
 
     /**
@@ -127,9 +174,9 @@ class ClientsController extends Controller
             'name_long' => 'required|max:255',
             'address' => 'max:255',
             'contact_no' => 'max:255',
-            'contact_no' => 'max:255'
+            'payment_term' => 'max:255'
         ]);
-        User::whereId($id)->update($validatedData);
+        Client::whereId($id)->update($validatedData);
 
         return redirect('/clients')->with('success', 'Client successfully updated');
     }
@@ -150,5 +197,4 @@ class ClientsController extends Controller
         return redirect()->back()->with('error', 'Client successfully deleted');
     }
 
-   
 }

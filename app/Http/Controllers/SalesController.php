@@ -35,14 +35,18 @@ class SalesController extends Controller
                                 'clients.name_long as client_name', 
                                 'items.name_long as item_name',
                                 'sales.invoice_no as invoice_no',
+                                'sales.dr_no as dr_no',
+                                'sales.client_id as client_id', 
                                 'sales.cost as cost',
                                 'sales.qty as qty',
                                 'sales.created_at as created_at'
                         )->get();
 
-        $items = Item::all()->where('remarks', 'active');
+        $items = DB::select(DB::raw(
+            "select * from stock_qty_fast_view"
+        ));
 
-        $clients = Client::all()->where('remarks', 'active');
+        $clients = Client::all()->where('remarks', '!=', 'active');
                 
         
         return view('sales/index', compact('sales', 'items', 'clients'));
@@ -56,9 +60,13 @@ class SalesController extends Controller
     public function create($id)
     {
         //
-        $items = Item::all()->where('remarks', 'active');
+        //$items = Item::all()->where('remarks', '!=', 'active');
+
+        $items = DB::select(DB::raw(
+            "select * from stock_qty_fast_view"
+        ));
         
-        $client = Client::all()->where('id', $id)->where('remarks', 'active');
+        $client = Client::all()->where('id', $id);
 
 
 
@@ -80,18 +88,20 @@ class SalesController extends Controller
         $order_qty = $request->order_qty;
         $discount = $request->discount;
         $additional_fee = $request->additional_fee;
-        $invoice_number = $request->invoice_number;
+        $dr_no = $request->dr_no;
+        $invoice_no = $request->invoice_no;
         $user_id = $request->user_id;
         $remarks = $request->remarks;
 
-        $insert_sale = DB::select('call insert_sale(?,?,?,?,?,?,?,?, @sale)',
+        $insert_sale = DB::select('call insert_sale(?,?,?,?,?,?,?,?,?, @sale)',
             array(
                 $client_id, 
                 $item_id,
+                $dr_no,
+                $invoice_no,
                 $order_qty,
                 $discount,
                 $additional_fee,
-                $invoice_number,
                 $user_id,
                 $remarks
             )
@@ -112,12 +122,9 @@ class SalesController extends Controller
                 return redirect()->back()->with('error', 'Unable to sold the item: Invalid Order Quantity');
                 break;
             case 5:
-                return redirect()->back()->with('error', 'Unable to sold the item: Invalid Client');
-                break;
-            case 6:
                 return redirect()->back()->with('error', 'Unable to sold the item: Invalid User');
                 break;
-            case 7:
+            case 6:
                 return redirect()->back()->with('error', 'Unable to sold the item: Database Error');
                 break;
             default:
@@ -126,23 +133,110 @@ class SalesController extends Controller
         }
     }
 
-    public function bill_client($id)
+    public function generate_billing_statement($id)
     {
         //
         $clients = Client::findOrFail($id);
 
-        return view('sales/bill_client', compact('clients'));
+        $break_downs = DB::select(DB::raw(
+            "SELECT 
+                _s.cost,
+                _s.qty,
+                _i.name_long,
+                _s.addl_fee,
+                _s.discount,
+                _s.created_at,
+                _s.invoice_no,
+                _s.dr_no
+            FROM
+                sales _s
+                    JOIN
+                purchases _p ON _p.id = _s.purchase_id
+                    JOIN
+                items _i ON _i.id = _p.item_id
+            WHERE
+                _s.client_id = $id"));
+        //dd($break_down);
+        return view('sales/bill_client', compact('clients', 'break_downs'));
     }
 
+    public function print_billing_statement($id)
+    {
+        //
+        $clients = Client::findOrFail($id);
+
+        $break_downs = DB::select(DB::raw(
+            "SELECT 
+                _s.cost,
+                _s.qty,
+                _i.name_long,
+                _s.addl_fee,
+                _s.discount,
+                _s.created_at,
+                _s.invoice_no,
+                _s.dr_no
+            FROM
+                sales _s
+                    JOIN
+                purchases _p ON _p.id = _s.purchase_id
+                    JOIN
+                items _i ON _i.id = _p.item_id
+            WHERE
+                _s.client_id = $id"));
+        //dd($break_down);
+        $pdf = PDF::loadView('sales/billing_statement_print', compact('clients', 'break_downs') );  
+        $pdf->setPaper('LETTER', 'landscape'); 
+        return $pdf->stream('Billing Statement.pdf');
+    }
+
+
+    public function show($id)
+    {
+        //
+
+    }
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function get_payments()
     {
         //
+        $sales = DB::table('sales')
+                ->join('clients', 'clients.id', '=', 'sales.client_id')
+                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+                ->join('items', 'items.id', '=', 'purchases.item_id')
+                ->groupByRaw('sales.dr_no')
+                ->select(
+                        'sales.id as id',
+                        'clients.name_long as client_name', 
+                        'items.name_long as item_name',
+                        'sales.invoice_no as invoice_no',
+                        'sales.dr_no as dr_no',
+                        'sales.client_id as client_id', 
+                        'sales.cost as cost',
+                        'sales.qty as qty',
+                        'sales.created_at as created_at',
+                        'sales.paid_on'
+                )->get();
+
+        
+        return view('sales/payments', compact('sales'));
+    }
+
+    public function process_payment(Request $request)
+    {
+
+        $paid_on = date('Y-m-d H:i:s', strtotime($request->paid_on));
+        Sale::where(
+            'dr_no', $request->dr_no,
+        )->update(array(
+            'paid_on' => $paid_on
+        ));
+
+        return redirect()->back()->with('success', 'Payment successfully processed');
     }
 
     /**

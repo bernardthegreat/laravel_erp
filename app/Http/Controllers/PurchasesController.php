@@ -24,7 +24,7 @@ class PurchasesController extends Controller
         //
         $purchases = Purchase::with('items')->get();
         
-        $items = Item::all()->where('remarks', 'active');
+        $items = Item::all()->where('remarks', '!=','inactive');
 
         return view('purchases/index', compact('purchases','items'));
     }
@@ -66,11 +66,13 @@ class PurchasesController extends Controller
             'cost' => 'max:255',
             'qty' => 'max:255',
         ]);
-       
+
+        $code = date('m-d-y');
 
         $user = auth()->user();
 
         $show = Purchase::create($validatedData + [
+            'code' => $code,
             'created_by' => $user->id,
             'updated_by' => $user->id,
             'remarks' => 'active'
@@ -117,6 +119,17 @@ class PurchasesController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $validatedData = $request->validate([
+            'name_short' => 'required|max:255',
+            'name_long' => 'required|max:255',
+            'address' => 'max:255',
+            'contact_no' => 'max:255',
+            'payment_term' => 'max:255'
+        ]);
+        User::whereId($id)->update($validatedData);
+
+        return redirect('/clients')->with('success', 'Client successfully updated');
     }
 
     /**

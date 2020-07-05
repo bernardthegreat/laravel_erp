@@ -17,7 +17,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="/" class="nav-link">
+                    <a href="/" class="nav-link bg-warning">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -53,8 +53,6 @@
                                 <p>Suppliers</p>
                             </a>
                         </li>
-
-                        
                     </ul>
                 </li>
 
@@ -84,15 +82,15 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('sales_report') }}" class="nav-link">
-                                <i class="nav-icon  fa fa-chart-line"></i>
-                                <p>Sales Reports</p>
+                            <a href="{{ route('interests.index') }}" class="nav-link">
+                                <i class="nav-icon fa fa-dollar-sign"></i>
+                                <p>Interest</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                
+
 
                 <li class="nav-item has-treeview menu-open">
                     <a href="#" class="nav-link active">
@@ -106,28 +104,58 @@
 
                         <li class="nav-item">
                             <a href="{{ route('employees.index') }}" class="nav-link">
+                                <i class="nav-icon fa fa-user-tag"></i>
+                                <p>Payroll</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('utilities.index') }}" class="nav-link">
+                                <i class="nav-icon fa fa-bolt"></i>
+                                <p>Utilities</p>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link active">
+                        <i class="nav-icon fa fa-user"></i>
+                        <p>
+                            Human Resource
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('employees.index') }}" class="nav-link">
                                 <i class="nav-icon fa fa-users"></i>
                                 <p>Employees</p>
                             </a>
                         </li>
 
-                        <!-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-money-bill"></i>
-                                <p>Billing</p>
-                            </a>
-                        </li> -->
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-chart-line"></i>
-                                <p>Accounting Reports</p>
+                                <i class="nav-icon fa fa-user-clock"></i>
+                                <p>Attendance</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('analytics.index') }}" class="nav-link bg-warning">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            Analytics
+                        </p>
+                    </a>
+                </li>
+
+                <!-- <li class="nav-item">
                     <a href="{{ route('inventory_dashboard') }}" class="nav-link active">
                         <i class="nav-icon fa fa-boxes"></i>
                         <p>
@@ -135,32 +163,23 @@
 
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 @php
-                    $user = auth()->user();
+                $user = auth()->user();
                 @endphp
                 @if($user->role != 'standard')
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link active ">
-                            <i class="nav-icon fa fa-cog"></i>
-                            <p>
-                                Settings
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">
-                                    <i class="nav-icon fa fa-users"></i>
-                                    <p>
-                                        Users
 
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link bg-warning">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Settings
+
+                        </p>
+                    </a>
+                </li>
+
                 @endif
             </ul>
         </nav>
