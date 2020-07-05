@@ -1,6 +1,6 @@
-@extends('layouts.main_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 
 <!-- Content Header (Page header) -->
@@ -27,17 +27,17 @@
                             <div class="modal-body">
 
 
-                                <form method="post" action="{{ route('items.store') }}">
-                                    @csrf
+                                <form method="post" action="<?php echo e(route('items.store')); ?>">
+                                    <?php echo csrf_field(); ?>
 
                                     <div class="input-group mb-3">
 
                                         <select name="supplier_id" class="custom-select" id="supplier_id" 
                                             data-placement="right" rel="tooltip" title="Suppliers"
                                         >
-                                        @foreach($suppliers as $suppliers)
-                                                <option value="{{$suppliers->id}}">{{$suppliers->name_long}}</option>
-                                            @endforeach
+                                        <?php $__currentLoopData = $suppliers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $suppliers): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($suppliers->id); ?>"><?php echo e($suppliers->name_long); ?></option>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
 
@@ -141,24 +141,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($items as $item)
+                    <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td> {{$item->suppliers->name_long}} </td>
-                        <td> {{$item->name_short}} </td>
-                        <td> {{$item->name_long}} </td>
-                        <td> {{ date('m/d/Y h:i:s A', strtotime($item->created_at)) }} </td>
+                        <td> <?php echo e($item->suppliers->name_long); ?> </td>
+                        <td> <?php echo e($item->name_short); ?> </td>
+                        <td> <?php echo e($item->name_long); ?> </td>
+                        <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($item->created_at))); ?> </td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-danger btn-sm" href="{{ route('items.edit', $item->id)}}"
-                                    data-placement="top" rel="tooltip" title="Edit {{$item->name_long}}"
+                                <a class="btn btn-danger btn-sm" href="<?php echo e(route('items.edit', $item->id)); ?>"
+                                    data-placement="top" rel="tooltip" title="Edit <?php echo e($item->name_long); ?>"
                                     data-original-title="Edit">
                                     <i class="fa fa-edit">
                                     </i>
                                 </a>
 
                                 <a class="btn btn-danger btn-sm delete"
-                                    href="{{ route('items.soft_delete', $item->id)}} " data-placement="top"
-                                    rel="tooltip" title="Delete {{$item->name_long}}" data-original-title="soft ">
+                                    href="<?php echo e(route('items.soft_delete', $item->id)); ?> " data-placement="top"
+                                    rel="tooltip" title="Delete <?php echo e($item->name_long); ?>" data-original-title="soft ">
                                     <i class="fa fa-trash">
                                     </i>
                                 </a>
@@ -168,7 +168,7 @@
 
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </tbody>
                 <tfoot>
@@ -207,4 +207,6 @@
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/items/index.blade.php ENDPATH**/ ?>

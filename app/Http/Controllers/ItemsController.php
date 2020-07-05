@@ -50,40 +50,32 @@ class ItemsController extends Controller
         //
         $user = auth()->user();
 
-        $validatedData = $request->validate([
-            'name_short' => 'max:255',
-            'name_long' => 'max:255',
-        ]);
 
-        $supplier_exist = Supplier::where('name_long', '=', $request->supplier_id)->first();
+        $item_exist = Item::where('name_long', '=', $request->name_long)->first();
 
-        if ($supplier_exist === null) {
-           
-            $supplier_id = DB::table('suppliers')->insertGetId(
-                [ 
-                    'name_long' => $request->supplier_id,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'created_by' => $user->id,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'updated_by' => $user->id,
-                ]
-            );
 
-        } else {
-            $supplier_id = Supplier::where('name_long', '=', $request->supplier_id)->first();//$department_id = Department::find($request->department_remarks, ['name']);
+        if ($item_exist === null) {
             
-            if(isset($supplier_id['id'])) {
-                $supplier_id = $supplier_id['id'];
-            }
+            $validatedData = $request->validate([
+                'name_short' => 'required|max:15',
+                'name_long' => 'required|max:20',
+                'supplier_id' => 'required|max:20',
+                'stock_qty' => 'max:20',
+                'unit' => 'max:20',
+            ]);
+            
+            $user = auth()->user();
+
+            $show = Item::create($validatedData + [
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+            ]);
+
+            return redirect('/purchases/items')->with('success', 'Item successfully saved');
+        } else {
+            return redirect('/purchases/items')->with('error', 'Item already exists');
         }
 
-        $show = Item::create($validatedData + [
-            'supplier_id' => $supplier_id,
-            'created_by' => $user->id,
-            'updated_by' => $user->id,
-        ]);
-
-        return redirect('/purchases/items')->with('success', 'Item successfully saved');
     }
 
     /**
