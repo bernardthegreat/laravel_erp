@@ -25,6 +25,8 @@
     @page  {
         margin-top: 2%;
         margin-bottom: 5%;
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
     #footer {
@@ -50,6 +52,18 @@
         
     }
 
+    .taleft {
+        text-align: left;
+    }
+
+    .taright {
+        text-align: right;
+    }
+
+    .bbot {
+        border-bottom: 1px solid black;
+    }
+
 </style>
 
 <?php 
@@ -60,13 +74,44 @@
 
     <table id="body" style="width: 100%;border-collapse: collapse; text-align: center;">
             <thead>
-                
                 <?php echo $__env->make('partials.pdf.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </thead>
     </table>
 
 
-    <table width="100%" style="border-collapses: collapse">
+    <table width="100%" style="border-collapses: collapse" border="<?php echo $border; ?>">
+        <tr>
+            <td class="text-center"><h2>Payslip</h2></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+
+    <table style="width:100%;border-collapse: collapse;text-align:center;"
+        border="<?php echo $border; ?>">
+        
+        <tr>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td width="15%" class="taleft"> Name: </td>
+            <td class="bbot"> <?php echo e($payslip[0]->fullname); ?> </td>
+            <td width="10%"> &nbsp; </td>
+            <td width="15%"class="taright"> Address: </td> 
+            <td class="bbot"> <?php echo e($payslip[0]->address); ?> </td>
+        </tr>
+
+        <tr>
+            <td class="taleft"> Contact #: </td>
+            <td class="bbot"> <?php echo e($payslip[0]->contact_no); ?> </td>
+            <td> &nbsp; </td>
+            <td class="taright"> Pay Date: </td> 
+            <td class="bbot"> <?php echo e(date('m/d/Y', strtotime($payslip[0]->from_date))); ?> - <?php echo e(date('m/d/Y', strtotime($payslip[0]->to_date))); ?> </td>
+        </tr>
+    </table>
+
+    <table width="100%" style="border-collapses: collapse" border="<?php echo $border; ?>">
         <tr>
             <td>&nbsp;</td>
         </tr>
@@ -76,21 +121,25 @@
     </table>
 
     <table style="width:100%;border-collapse: collapse;text-align:center;"
-        border="<?php echo $border; ?>">
-
+        border="1">
+       
         <tr>
-            <td colspan="3"></td>
-        </tr>
-        <tr>
-            <td width="69%"> &nbsp; </td>
-            <th width="15%">Total:</th>
-            
+            <td width="50%">Earnings</td>
+            <td width="50%">Deductions</td>
         </tr>
 
+        <tr>
+            <td> Hours Worked: <?php echo gmdate('H:i:s', floor($payslip[0]->hours_worked * 3600)); ?> </td>
+            <td> <?php echo e($payslip[0]->deduction); ?> </td>
+        </td>
+
+        <tr>
+            <td> Pay: <?php echo e($payslip[0]->cost); ?> </td>
+            <td> <?php echo e($payslip[0]->deduction); ?> </td>
+        </td>
+        
+        
     </table>
-    </div>
-    <!-- /.col -->
-    </div>
     <!-- /.row -->
 
     <div class="row">

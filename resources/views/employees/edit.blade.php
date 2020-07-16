@@ -81,6 +81,11 @@
                                             href="#custom-tabs-four-profile" role="tab"
                                             aria-controls="custom-tabs-four-profile" aria-selected="false">Payroll</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-four-salary-rate-tab" data-toggle="pill"
+                                            href="#custom-tabs-four-salary-rate" role="tab"
+                                            aria-controls="custom-tabs-four-salary-rate" aria-selected="false">Salary Rate</a>
+                                    </li>                                    
                                 </ul>
                             </div>
                             <div class="card-body">
@@ -146,12 +151,12 @@
                                     <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
                                         aria-labelledby="custom-tabs-four-profile-tab">
 
-
                                         <table id="example1" class="table table-bordered table-striped text-center">
                                             <thead>
                                                 <tr>
                                                     <th>Hours Worked</th>
                                                     <th>Cost</th>
+                                                    <th>Coverage</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -160,24 +165,16 @@
                                                 <tr>
                                                     <td> {{$payroll->hours_worked}}</td>
                                                     <td> {{$payroll->cost}}</td>
-                                                    
+                                                    <td> {{ date('m/d/Y', strtotime($payroll->from_date)) }} - {{ date('m/d/Y', strtotime($payroll->to_date)) }} </td>
                                                     <td>
                                                         <div class="btn-group">
                                                             <a class="btn btn-danger btn-sm"
-                                                                href="{{ route('employees.edit', $employees->id)}}"
+                                                                href="{{ route('get_payslip', $payroll->id)}}"
+                                                                target="_blank"
                                                                 data-placement="top" rel="tooltip"
                                                                 title="Print Payslip of {{$employees->first_name}} "
-                                                                data-original-title="Edit">
+                                                                data-original-title="">
                                                                 <i class="fa fa-print">
-                                                                </i>
-                                                            </a>
-
-                                                            <a class="btn btn-danger btn-sm delete"
-                                                                href="{{ route('employees.soft_delete', $employees->id)}} "
-                                                                data-placement="top" rel="tooltip"
-                                                                title="Delete "
-                                                                data-original-title="soft ">
-                                                                <i class="fa fa-trash">
                                                                 </i>
                                                             </a>
                                                         </div>
@@ -192,23 +189,51 @@
                                                 <tr>
                                                     <th>Hours Worked</th>
                                                     <th>Cost</th>
+                                                    <th>Coverage</th>
                                                     <th></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
 
+                                    </div>
+
+                                    <div class="tab-pane fade" id="custom-tabs-four-salary-rate" role="tabpanel"
+                                        aria-labelledby="custom-tabs-four-salary-rate-tab">
+
+                                        <table id="desc_second_column2" class="table table-bordered table-striped text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Hourly Fee</th>
+                                                    <th>Creation Date</th>
+                                                    <th>Update Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                @foreach($salary_rates as $salary_rate)
+                                                    <tr>
+                                                        <td> {{$salary_rate->hourly_fee}}</td>
+                                                        <td> {{ date('m/d/Y h:i:s A', strtotime($salary_rate->created_at)) }} </td>
+                                                        <td> {{ date('m/d/Y h:i:s A', strtotime($salary_rate->updated_at)) }} </td>
+                                                        
+                                                    </tr>
+                                                @endforeach
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Hourly Fee</th>
+                                                    <th>Creation Date</th>
+                                                    <th>Update Date</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
 
                                     </div>
                                 </div>
                             </div>
                             <!-- /.card -->
                         </div>
-
-
-
-
-
-
 
                     </div>
                     <!-- /.card-body -->

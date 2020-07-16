@@ -24,7 +24,7 @@ class ItemsController extends Controller
         //
         $items = Item::with('suppliers')->get();
 
-        $suppliers = Supplier::all()->where('remarks', '!=', 'inactive');
+        $suppliers = Supplier::all();
 
         return view('items/index', compact('items', 'suppliers'));
     }
@@ -57,10 +57,11 @@ class ItemsController extends Controller
         if ($item_exist === null) {
             
             $validatedData = $request->validate([
-                'name_short' => 'required|max:15',
-                'name_long' => 'required|max:20',
-                'supplier_id' => 'required|max:20',
+                'name_short' => 'max:100',
+                'name_long' => 'required|max:100',
+                'supplier_id' => 'required|max:10',
                 'stock_qty' => 'max:20',
+                'remarks' => 'max:30',
                 'unit' => 'max:20',
             ]);
             
@@ -121,6 +122,7 @@ class ItemsController extends Controller
             'name_long' => 'required|max:255',
             'stock_qty' => 'max:20',
             'unit' => 'max:20',
+            'remarks' => 'max:25',
         ]);
 
         $user = auth()->user();

@@ -1,6 +1,6 @@
-@extends('layouts.main_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 
 <!-- Content Header (Page header) -->
@@ -30,9 +30,10 @@
             <h3 class="card-title">
                 Sell to
                 <em class="text-bold">
-                    @foreach($client as $client_name) 
-                        {{$client_name->name_long}}
-                    @endforeach
+                    <?php $__currentLoopData = $client; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client_name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                        <?php echo e($client_name->name_long); ?>
+
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </em>
             </h3>
 
@@ -48,22 +49,22 @@
         <div class="card-body">
 
 
-            <form method="post" action="{{ route('insert_sale') }}">
-                @csrf
-                @foreach($client as $client_name) 
-                    <input type="hidden" name="client_id"  id="client_id" value="{{$client_name->id}}" class="form-control" autocomplete="off">
-                @endforeach
+            <form method="post" action="<?php echo e(route('insert_sale')); ?>">
+                <?php echo csrf_field(); ?>
+                <?php $__currentLoopData = $client; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client_name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                    <input type="hidden" name="client_id"  id="client_id" value="<?php echo e($client_name->id); ?>" class="form-control" autocomplete="off">
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                @php
+                <?php
                     $user = auth()->user();
-                @endphp
-                <input type="hidden" name="user_id"  id="user_id" value="{{$user->id}}" class="form-control" autocomplete="off">
+                ?>
+                <input type="hidden" name="user_id"  id="user_id" value="<?php echo e($user->id); ?>" class="form-control" autocomplete="off">
                 <label class="col-form-label" for="item_id"><i class="fas fa-check"></i> Item <span style="color:red">*</span></label>
                 <div class="input-group mb-3">
                     <select name="item_id" class="custom-select" id="item_id">
-                        @foreach($items as $item) 
-                            <option value="{{$item->item_id}}">{{$item->item_name}} -- {{$item->qty}}  {{$item->unit}}/s in stock </em></option>
-                        @endforeach
+                        <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
+                            <option value="<?php echo e($item->item_id); ?>"><?php echo e($item->item_name); ?> -- <?php echo e($item->qty); ?>  <?php echo e($item->unit); ?>/s in stock </em></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
                 
@@ -157,4 +158,6 @@
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/sales/create.blade.php ENDPATH**/ ?>

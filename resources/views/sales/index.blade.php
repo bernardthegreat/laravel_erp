@@ -172,7 +172,7 @@
                         <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <!-- <th> </th> -->
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,7 +184,7 @@
                         <td> {{$sale->dr_no}} </td>
                         <td> {{$sale->cost}} </td>
                         <td> {{$sale->qty}} </td>
-                        <!-- <td> 
+                        <td> 
 
                             <div class="btn-group">
                                 <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->id)}}"
@@ -195,7 +195,7 @@
                                 </a>
 
                             </div>
-                        </td> -->
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -207,7 +207,7 @@
                         <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <!-- <th> </th> -->
+                        <th> </th>
                     </tr>
                 </tfoot>
             </table>

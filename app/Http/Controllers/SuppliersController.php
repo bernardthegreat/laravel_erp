@@ -34,8 +34,6 @@ class SuppliersController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         $supplier_exist = Supplier::where([
             ['name_short', '=', $request->name_short],
             ['name_long', '=', $request->name_long],
@@ -43,19 +41,16 @@ class SuppliersController extends Controller
         
         if ($supplier_exist === null) {
             $validatedData = $request->validate([
-                'name_short' => 'required|max:255',
+                'name_short' => 'max:40',
                 'name_long' => 'required|max:255',
                 'address' => 'max:255',
                 'contact_no' => 'max:255',
             ]);
-            
             $user = auth()->user();
-
             $show = Supplier::create($validatedData + [
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
             ]);
-
             return redirect('/suppliers')->with('success', 'Supplier successfully saved');
         } else {
             return redirect('/suppliers')->with('error', 'Supplier already exists');

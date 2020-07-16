@@ -29,6 +29,7 @@ Route::get('/logout', 'UsersController@logout')->name('logout');
 Route::resource('clients', 'ClientsController');
 Route::get('/clients/soft_delete/{id}', 'ClientsController@soft_delete')->name('clients.soft_delete');
 Route::post('/clients/search', 'DashboardController@search_client')->name('search_client');
+Route::post('/clients/create', 'ClientsController@create')->name('clients.create');
 /* Clients */
 
 /* Sales */
@@ -68,6 +69,7 @@ Route::get('/interests/soft_delete/{id}', 'InterestsController@soft_delete')->na
 Route::resource('purchases', 'PurchasesController');
 Route::get('/purchases/soft_delete/{id}', 'PurchasesController@soft_delete')->name('purchases.soft_delete');
 Route::post('/purchases/receive_purchase/{id}', 'PurchasesController@receive_purchase')->name('receive_purchase');
+Route::get('pending_deliveries', 'PurchasesController@pending_deliveries')->name('pending_deliveries');
 /* Purchases */
 
 /* Employees */
@@ -76,8 +78,8 @@ Route::get('/employees/soft_delete/{id}', 'EmployeesController@soft_delete')->na
 Route::post('/employees/time_in_and_out', 'EmployeesController@time_in_and_out')->name('time_in_and_out');
 Route::post('/employees/process_payroll', 'EmployeesController@process_payroll')->name('process_payroll');
 Route::get('/employees/payslip/{id}', 'EmployeesController@generate_latest_payslip')->name('generate_latest_payslip');
+Route::get('/employees/get_payslip/{id}', 'EmployeesController@get_payslip')->name('get_payslip');
 /* Employees */
-
 
 /* Utilities */
 Route::resource('utilities', 'UtilitiesController');

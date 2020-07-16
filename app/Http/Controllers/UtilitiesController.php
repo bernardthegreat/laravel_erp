@@ -39,6 +39,20 @@ class UtilitiesController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'utility_type_id'=>'max:15',
+            'cost' => 'required|max:255',
+        ]);
+        
+        $user = auth()->user();
+
+        $show = Utility::create($validatedData + [
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect('/utilities')->with('success', 'Utility successfully saved');
+    
     }
 
     /**
@@ -61,6 +75,12 @@ class UtilitiesController extends Controller
     public function edit($id)
     {
         //
+
+        $utilities = Utility::findOrFail($id);
+
+        $utility_types = UtilityType::all();
+
+        return view('utilities/edit', compact('utilities','utility_types'));
     }
 
     /**
@@ -73,6 +93,18 @@ class UtilitiesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'cost' => 'required|max:15',
+            'utility_type_id' => 'max:2'
+        ]);
+
+        $user = auth()->user();
+
+        Utility::whereId($id)->update($validatedData +[
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect('/utilities')->with('success', 'Utility successfully updated');
     }
 
     /**

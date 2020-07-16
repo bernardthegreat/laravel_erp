@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         $stock_counts = DB::select(DB::raw(
-            "select * from stock_qty_fast_view"
+            "select * from stock_qty_slow_view"
         ));
 
         $gross_income_today = DB::select(DB::raw(
@@ -61,7 +61,7 @@ class DashboardController extends Controller
 
         $count_pending_delivery_supplies = count($pending_delivery_supplies);
         
-         
+        
         return view('main_dashboard', compact(
                     'user', 
                     'stock_counts', 

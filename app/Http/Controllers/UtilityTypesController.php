@@ -49,14 +49,14 @@ class UtilityTypesController extends Controller
             
             $user = auth()->user();
 
-            $show = Supplier::create($validatedData + [
+            $show = UtilityType::create($validatedData + [
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
             ]);
 
-            return redirect('/utility_types')->with('success', 'Utility Types successfully saved');
+            return redirect('/utilities')->with('success', 'Utility Types successfully saved');
         } else {
-            return redirect('/utility_types')->with('error', 'Utility Types already exists');
+            return redirect('/utilities')->with('error', 'Utility Types already exists');
         }
     }
 
@@ -80,6 +80,9 @@ class UtilityTypesController extends Controller
     public function edit($id)
     {
         //
+        $utility_types = UtilityType::findOrFail($id);
+
+        return view('utility_types/edit', compact('utility_types'));
     }
 
     /**
@@ -92,6 +95,18 @@ class UtilityTypesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'cost' => 'required|max:15',
+            'utility_type_id' => 'max:2'
+        ]);
+
+        $user = auth()->user();
+
+        UtilityType::whereId($id)->update($validatedData +[
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect('/utilities')->with('success', 'Utility Type successfully updated');
     }
 
     /**

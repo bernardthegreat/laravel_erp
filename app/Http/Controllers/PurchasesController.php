@@ -24,19 +24,23 @@ class PurchasesController extends Controller
         //
         $purchases = Purchase::with('items')->get();
         
-        $items = Item::all()->where('remarks', '!=','inactive');
+        $items = Item::all();
 
         return view('purchases/index', compact('purchases','items'));
     }
 
-    public static function receive_purchase(Request $request, $id)
+    public static function pending_deliveries()
     {
-        //
+        $purchases = Purchase::with('items')->get();
+        return view('purchases/pendings', compact('purchases'));
+    }
 
+    public function receive_purchase(Request $request, $id)
+    {
         Purchase::where('id', $request->id)->update(array(
-            'dr_no' => $request->dr_no
+            'dr_no' => $request->dr_no,
+            'received_at' => date('Y-m-d H:i:s'),
         ));
-
         return redirect()->back()->with('success', 'Order received');
     }
 
@@ -58,8 +62,6 @@ class PurchasesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         $validatedData = $request->validate([
             'item_id' => 'required|max:255',
             'dr_no' => 'max:255',
@@ -75,7 +77,6 @@ class PurchasesController extends Controller
             'code' => $code,
             'created_by' => $user->id,
             'updated_by' => $user->id,
-            'remarks' => 'active'
         ]);
 
         return redirect()->back()->with('success', 'Successfully purchased item(s)');
@@ -119,17 +120,19 @@ class PurchasesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $receive_date = date('Y-m-d H:i:s', strtotime($request->received_at));
 
         $validatedData = $request->validate([
-            'cost' => 'required|max:255',
-            'dr_no' => 'required|max:255',
-            'qty' => 'required|max:255',
+            'cost' => 'required|max:20',
+            'dr_no' => 'required|max:20',
+            'qty' => 'required|max:10',
         ]);
 
         $user = auth()->user();
 
         Purchase::whereId($id)->update($validatedData +[
             'updated_by' => $user->id,
+            'received_at' => $receive_date
         ]);
 
 

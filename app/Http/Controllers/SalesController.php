@@ -8,6 +8,7 @@ use DB;
 use PDF;
 use App\Item;
 use App\Client;
+use App\Purchase;
 use App\Sale;
 
 class SalesController extends Controller
@@ -67,9 +68,6 @@ class SalesController extends Controller
         ));
         
         $client = Client::all()->where('id', $id);
-
-
-
         return view('sales/create', compact('items', 'client'));
     }
 
@@ -106,6 +104,7 @@ class SalesController extends Controller
                 $remarks
             )
         );
+        
         $select_error_code = DB::select('select @sale as error_code');
         
         switch ($select_error_code[0]->error_code) {
@@ -248,6 +247,11 @@ class SalesController extends Controller
     public function edit($id)
     {
         //
+        $sales = Sale::findOrFail($id);
+        $purchases = Purchase::whereNotNull('received_at')->get();
+        $clients = Client::all();
+
+        return view('sales/edit', compact('purchases','clients','sales'));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\Payroll;
+use App\SalaryRate;
 use App\Attendance;
 use DB;
 use PDF;
@@ -48,7 +49,8 @@ class EmployeesController extends Controller
                 ORDER BY ID DESC
                 LIMIT 1) AS to_date
         FROM
-            employees e;"
+            employees e 
+        "
         ));
 
         $attendance = DB::select(DB::raw(
@@ -182,15 +184,19 @@ class EmployeesController extends Controller
         
 
         $employee_id = $request->employee_id;
+        $additional_pay = $request->additional_pay;
+        $deduction = $request->deduction;
         $from_date = date('Y-m-d', strtotime($splitted_date[0]));
         $to_date = date('Y-m-d', strtotime($splitted_date[1]));
         $user_id = $user->id;
-        $remarks = $request->remarks;
+        $remarks = '';
         
         
-        $payroll = DB::select('call insert_payroll(?,?,?,?,?, @payroll)',
+        $payroll = DB::select('call insert_payroll(?,?,?,?,?,?,?, @payroll)',
             array(
-                $employee_id, 
+                $employee_id,
+                $additional_pay,
+                $deduction, 
                 $from_date,
                 $to_date,
                 $user_id,
@@ -249,8 +255,24 @@ class EmployeesController extends Controller
     public function get_payslip($id)
     {
         $payslip = DB::select(DB::raw(
-            "SELECT * FROM payroll where id = $id order by id desc limit 1"));
-        dd($payslip);
+            "SELECT 
+            fullname,
+            contact_no,
+            address,
+            hours_worked,
+            cost,
+            addl_pay,
+            deduction,
+            from_date,
+            to_date,
+            p.created_at
+        FROM
+            payroll p
+                JOIN
+            employees e ON e.id = p.employee_id
+        WHERE
+            p.id = $id"));
+        
         $pdf = PDF::loadView('employees/payslip_print', compact('payslip') );  
         $pdf->setPaper('LETTER', 'landscape'); 
         return $pdf->stream('Payslip.pdf');
@@ -282,7 +304,9 @@ class EmployeesController extends Controller
 
         $payrolls = Payroll::all()->where('employee_id', $id);
 
-        return view('employees/edit', compact('employees', 'payrolls'));
+        $salary_rates = SalaryRate::all()->where('employee_id', $id);
+
+        return view('employees/edit', compact('employees', 'payrolls', 'salary_rates'));
     }
 
     /**

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Interest;
+use App\Item;
 
 class InterestsController extends Controller
 {
     //
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -58,6 +58,11 @@ class InterestsController extends Controller
     public function edit($id)
     {
         //
+        $interests = Interest::findOrFail($id);
+
+        $items = Item::all();
+
+        return view('interests/edit', compact('interests','items'));
     }
 
     /**
@@ -70,6 +75,20 @@ class InterestsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'item_id' => 'required|max:15',
+            'qty_from' => 'max:10',
+            'qty_to' => 'max:10',
+            'rate' => 'max:10'
+        ]);
+
+        $user = auth()->user();
+
+        Interest::whereId($id)->update($validatedData +[
+            'updated_by' => $user->id,
+        ]);
+
+        return redirect('/interests')->with('success', 'Interest successfully updated');
     }
 
     /**

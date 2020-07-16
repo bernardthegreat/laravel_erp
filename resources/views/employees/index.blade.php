@@ -155,8 +155,16 @@
                                                     <tr>
                                                         <td> {{$attendance_employee->code}} </td>
                                                         <td> {{$attendance_employee->fullname}} </td>
-                                                        <td> {{$attendance_employee->from_time}}</td>
-                                                        <td> {{$attendance_employee->to_time}}</td>
+                                                        <td> 
+                                                            @if(isset($attendance_employee->from_time))
+                                                                {{ date('h:i:s A', strtotime($attendance_employee->from_time)) }} 
+                                                            @endif
+                                                        </td>
+                                                        <td> 
+                                                            @if(isset($attendance_employee->to_time))
+                                                                {{ date('h:i:s A', strtotime($attendance_employee->to_time)) }} 
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                     @endforeach
 
@@ -222,6 +230,25 @@
                                         <!-- /.input group -->
                                     </div>
 
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="additional_pay" id="additional_pay" class="form-control"
+                                            placeholder="Additional Pay" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-money-bill"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="deduction" id="deduction" class="form-control"
+                                            placeholder="Deductions" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-money-bill"></span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="card">
                                         <div class="card-body">
@@ -247,7 +274,6 @@
 
                                         </div>
                                     </div>
-
 
                                 </div>
 
@@ -333,7 +359,7 @@
                                     data-toggle="modal" data-target="#modal-payroll"
                                     data-employee-id="{{$employee->id}}" 
                                     data-url="{{ route('process_payroll')}}"
-                                    data-payslip-url="window.open('{{route('generate_latest_payslip', $employee->id)}}', '_blank')"
+                                    data-payslip-url="window.open('{{route('generate_latest_payslip', $employee->id            )}}', '_blank')"
                                     data-payroll-from="{{ $employee->from_date ? date('m/d/Y', strtotime($employee->from_date)) : '' }}"
                                     data-payroll-to="{{ $employee->to_date ? date('m/d/Y', strtotime($employee->to_date)) : '' }}"
                                 >

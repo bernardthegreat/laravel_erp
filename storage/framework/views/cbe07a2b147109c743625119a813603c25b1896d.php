@@ -172,7 +172,7 @@
                         <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <!-- <th> </th> -->
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,7 +184,7 @@
                         <td> <?php echo e($sale->dr_no); ?> </td>
                         <td> <?php echo e($sale->cost); ?> </td>
                         <td> <?php echo e($sale->qty); ?> </td>
-                        <!-- <td> 
+                        <td> 
 
                             <div class="btn-group">
                                 <a class="btn btn-danger btn-sm" href="<?php echo e(route('sales.edit', $sale->id)); ?>"
@@ -195,7 +195,7 @@
                                 </a>
 
                             </div>
-                        </td> -->
+                        </td>
                     </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
@@ -207,7 +207,7 @@
                         <th>DR #</th>
                         <th>Cost</th>
                         <th>Quantity</th>
-                        <!-- <th> </th> -->
+                        <th> </th>
                     </tr>
                 </tfoot>
             </table>

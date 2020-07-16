@@ -9,14 +9,14 @@
         <div class="row mb-2">
             <div class="col-sm-3">
                 <h1>
-                    Orders
+                    Revenue
                 </h1>
 
             </div>
             <div class="col-sm-9">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{route('purchases.index')}}">Orders</a></li>
-                    <li class="breadcrumb-item active">Update Order</li>
+                    <li class="breadcrumb-item"><a href="/revenue">Revenue</a></li>
+                    <li class="breadcrumb-item active">Update Revenue</li>
                 </ol>
             </div>
         </div>
@@ -28,7 +28,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                Update Order
+                Update Revenue
             </h3>
 
             <div class="card-tools">
@@ -42,23 +42,34 @@
         </div>
         <div class="card-body">
 
-            <form role="form" method="post" action="{{ route('purchases.update', $purchases->id) }}">
+            <form role="form" method="post" action="{{ route('sales.update', $sales->id) }}">
 
                 <div class="card-body">
-                @csrf
-                        @method('PATCH')
+                    @csrf
+                    @method('PATCH')
                     <div class="form-group">
-                        <label for="code">P.O. #</label>
+                        <label for="code">Sales #</label>
                         <input type="text" class="form-control" name="code" id="code"
-                            value="{{$purchases->code}}" autocomplete="off" readonly>
+                            value="{{$sales->code}}" autocomplete="off" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label for="name_long">Item</label>
+                        <label for="name_long">Client</label>
                         <select name="supplier_id" class="custom-select" id="supplier_id">
-                            @foreach($items as $item)
-                            <option value="{{$item->id}}" {{ ( $item->id == $purchases->item_id) ? 'selected' : '' }}>
-                                {{$item->name_long}}
+                            @foreach($clients as $client)
+                            <option value="{{$client->id}}" {{ ( $client->id == $sales->client_id) ? 'selected' : '' }}>
+                                {{$client->name_long}}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name_long">Purchase</label>
+                        <select name="supplier_id" class="custom-select" id="supplier_id">
+                            @foreach($purchases as $purchase)
+                            <option value="{{$purchase->id}}" {{ ( $purchase->id == $sales->purchase_id) ? 'selected' : '' }}>
+                                {{$purchase->code}} / {{$purchase->dr_no}} 
                             </option>
                             @endforeach
                         </select>
@@ -66,24 +77,35 @@
 
                     <div class="form-group">
                         
-                        <label for="dr_no">DR #</label>
-                        <input type="text" class="form-control" name="dr_no" id="dr_no"
-                            value="{{$purchases->dr_no}}" autocomplete="off">
-                    </div>
-
-                    
-                    <div class="form-group">
                         <label for="cost">Cost</label>
                         <input type="text" class="form-control" name="cost" id="cost"
-                            value="{{$purchases->cost}}" autocomplete="off">
+                            value="{{$sales->cost}}" autocomplete="off">
                     </div>
 
-                    <label for="received_at">Received At</label>
+                    <div class="form-group">
+                        <label for="cost">Quantity</label>
+                        <input type="text" class="form-control" name="quantity" id="quantity"
+                            value="{{$sales->quantity}}" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discount">Discount</label>
+                        <input type="text" class="form-control" name="discount" id="discount"
+                            value="{{$sales->discount}}" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addl_fee">Additional Fee</label>
+                        <input type="text" class="form-control" name="addl_fee" id="addl_fee"
+                            value="{{$sales->addl_fee}}" autocomplete="off">
+                    </div>
+                    
+                    <label for="paid_on">Paid Date</label>
                     <div class="input-group date" id="receive_date" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input"
-                            value="{{$purchases->received_at}}"
+                            value="@if(isset($sales->paid_on)){{ date('m/d/Y h:i:s A', strtotime($sales->paid_on)) }}@endif"
                             autocomplete="off" value="" 
-                            name="received_at" data-target="#receive_date" 
+                            name="paid_on" data-target="#receive_date" 
                             data-placement="top" rel="tooltip" 
                             title="Click the icon on the right side to display the calendar" 
                             data-original-title="Click the icon on the right side to display the calendar">
@@ -92,21 +114,6 @@
                                 <div class="input-group-text" data-placement="top" rel="tooltip" title="Click this icon to display the calendar" data-original-title="Click the icon on the right side to display the calendar"><i class="fa fa-calendar"></i></div>
                             </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="qty">Quantity</label>
-                        <input type="text" class="form-control" name="qty" id="cost"
-                            value="{{$purchases->qty}}" autocomplete="off">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="order_datetime">Ordered On</label>
-                        <input type="text" class="form-control" id="order_datetime"
-                            value="{{ date('m/d/Y h:i:s A', strtotime($purchases->created_at)) }}" autocomplete="off" readonly>
-                    </div>
-
-
-                    
 
                 </div>
                 <!-- /.card-body -->

@@ -1,6 +1,6 @@
-@extends('layouts.main_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 
 <!-- Content Header (Page header) -->
@@ -25,18 +25,19 @@
                             <div class="modal-body">
 
 
-                                <form method="post" action="{{ route('utilities.store') }}">
-                                    @csrf
+                                <form method="post" action="<?php echo e(route('utilities.store')); ?>">
+                                    <?php echo csrf_field(); ?>
 
                                     <div class="input-group mb-3">
 
                                         <select id="items" name="utility_type_id" class="custom-select" style="width: 100px;"
                                             data-placement="right" rel="tooltip" title="Utility Type">
-                                            @foreach($utility_types as $utility_type)
-                                            <option value="{{$utility_type->id}}">
-                                                {{$utility_type->name_long}}
+                                            <?php $__currentLoopData = $utility_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $utility_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($utility_type->id); ?>">
+                                                <?php echo e($utility_type->name_long); ?>
+
                                             </option>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
 
@@ -77,8 +78,8 @@
                             <div class="modal-body">
 
 
-                                <form method="post" action="{{ route('utility_types.store') }}">
-                                    @csrf
+                                <form method="post" action="<?php echo e(route('utility_types.store')); ?>">
+                                    <?php echo csrf_field(); ?>
 
                                     <div class="input-group mb-3">
                                         <input type="text" name="name_long" class="form-control"
@@ -193,26 +194,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($utilities as $utility)
+                                    <?php $__currentLoopData = $utilities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $utility): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td> {{$utility->utility_types->name_long}} </td>
-                                        <td> {{$utility->cost}} </td>
-                                        <td> {{ date('m/d/Y h:i:s A', strtotime($utility->created_at)) }} </td>
+                                        <td> <?php echo e($utility->utility_types->name_long); ?> </td>
+                                        <td> <?php echo e($utility->cost); ?> </td>
+                                        <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($utility->created_at))); ?> </td>
                                         <td>
                                             <div class="btn-group">
                                                 <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('utilities.edit', $utility->id)}}"
+                                                    href="<?php echo e(route('utilities.edit', $utility->id)); ?>"
                                                     data-placement="top" rel="tooltip"
-                                                    title="Edit {{$utility->utility_types->name_long}}"
+                                                    title="Edit <?php echo e($utility->utility_types->name_long); ?>"
                                                     data-original-title="Edit">
                                                     <i class="fa fa-edit">
                                                     </i>
                                                 </a>
 
                                                 <a class="btn btn-danger btn-sm delete"
-                                                    href="{{ route('utilities.soft_delete', $utility->id)}} "
+                                                    href="<?php echo e(route('utilities.soft_delete', $utility->id)); ?> "
                                                     data-placement="top" rel="tooltip"
-                                                    title="Delete {{$utility->utility_types->name_long}}"
+                                                    title="Delete <?php echo e($utility->utility_types->name_long); ?>"
                                                     data-original-title="soft ">
                                                     <i class="fa fa-trash">
                                                     </i>
@@ -223,7 +224,7 @@
 
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                 </tbody>
                                 <tfoot>
@@ -252,26 +253,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($utility_types as $utility_type)
+                                    <?php $__currentLoopData = $utility_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $utility_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td> {{$utility_type->name_short}} </td>
-                                        <td> {{$utility_type->name_long}} </td>
-                                        <td> {{ date('m/d/Y h:i:s A', strtotime($utility_type->created_at)) }} </td>
+                                        <td> <?php echo e($utility_type->name_short); ?> </td>
+                                        <td> <?php echo e($utility_type->name_long); ?> </td>
+                                        <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($utility_type->created_at))); ?> </td>
                                         <td>
                                             <div class="btn-group">
                                                 <a class="btn btn-danger btn-sm"
-                                                    href="{{ route('utility_types.edit', $utility_type->id)}}"
+                                                    href="<?php echo e(route('utility_types.edit', $utility_type->id)); ?>"
                                                     data-placement="top" rel="tooltip"
-                                                    title="Edit {{$utility_type->name_long}}"
+                                                    title="Edit <?php echo e($utility_type->name_long); ?>"
                                                     data-original-title="Edit">
                                                     <i class="fa fa-edit">
                                                     </i>
                                                 </a>
 
                                                 <a class="btn btn-danger btn-sm delete"
-                                                    href="{{ route('utility_types.soft_delete', $utility_type->id)}} "
+                                                    href="<?php echo e(route('utility_types.soft_delete', $utility_type->id)); ?> "
                                                     data-placement="top" rel="tooltip"
-                                                    title="Delete {{$utility_type->name_long}}"
+                                                    title="Delete <?php echo e($utility_type->name_long); ?>"
                                                     data-original-title="soft ">
                                                     <i class="fa fa-trash">
                                                     </i>
@@ -282,7 +283,7 @@
 
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                 </tbody>
                                 <tfoot>
@@ -332,4 +333,6 @@
 
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/utilities/index.blade.php ENDPATH**/ ?>

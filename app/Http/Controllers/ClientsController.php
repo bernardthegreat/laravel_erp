@@ -27,6 +27,7 @@ class ClientsController extends Controller
                 c.name_short,
                 c.name_long,
                 c.contact_no,
+                c.address,
                 c.created_at,
                 c.payment_term,
                 if(sum(ifnull(((s.cost * s.qty) + s.addl_fee) - s.discount, 0))>0, 1, 0) as has_debt
@@ -44,9 +45,35 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $client_exist = Client::where([
+            ['name_short', '=', $request->name_short],
+            ['name_long', '=', $request->name_long],
+        ])->first();
+        
+        if ($client_exist === null) {
+            $validatedData = $request->validate([
+              'name_short' => 'max:25',
+              'name_long' => 'required|max:55',
+              'address' => 'max:100',
+              'contact_no' => 'max:25',
+              'payment_term' => 'max:5'
+            ]);
+            
+            $user = auth()->user();
+
+            $show = Client::create($validatedData + [
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+                'remarks' => 'active'
+            ]);
+
+            return redirect('/clients')->with('success', 'Client successfully saved');
+        } else {
+            return redirect('/clients')->with('error', 'Client already exists');
+        }
     }
 
     /**
@@ -65,11 +92,11 @@ class ClientsController extends Controller
         
         if ($client_exist === null) {
             $validatedData = $request->validate([
-                'name_short' => 'required|max:255',
-                'name_long' => 'required|max:255',
-                'address' => 'max:255',
-                'contact_no' => 'max:255',
-                'payment_term' => 'max:255'
+                'name_short' => 'max:25',
+                'name_long' => 'required|max:55',
+                'address' => 'max:100',
+                'contact_no' => 'max:25',
+                'payment_term' => 'max:5'
             ]);
             
             $user = auth()->user();

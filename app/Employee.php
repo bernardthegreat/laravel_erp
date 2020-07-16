@@ -24,6 +24,11 @@ class Employee extends Model
         return $this->hasMany('App\Payroll', 'employee_id');
     }
 
+    public function salary_rates()
+    {
+        return $this->hasMany('App\SalaryRate', 'employee_id');
+    }
+
     public function attendances()
     {
         return $this->hasMany('App\Attendance', 'employee_id');
