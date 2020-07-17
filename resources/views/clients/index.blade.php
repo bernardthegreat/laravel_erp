@@ -93,129 +93,57 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="card card-danger card-tabs">
-        <div class="card-header p-0 pt-1">
-          <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home"
-                role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Clients</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile"
-                role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Has Debt</a>
-            </li>
-          </ul>
-        </div>
-        <div class="card-body">
-          <div class="tab-content" id="custom-tabs-four-tabContent">
-            <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel"
-              aria-labelledby="custom-tabs-four-home-tab">
-              <table id="asc_first_column1" class="table table-bordered table-striped text-center">
-                <thead>
-                  <tr>
-                    <th>Name Long</th>
-                    <th>Address</th>
-                    <th>Contact No</th>
-                    <th>Creation Date</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($clients as $client)
-                  <tr>
-                    <td> {{$client->name_long}} </td>
-                    <td> {{$client->address}} </td>
-                    <td> {{$client->contact_no}} </td>
-                    <td> {{ date('m/d/Y h:i:s A', strtotime($client->created_at)) }} </td>
-                    <td>
-                      <div class="btn-group">
-                        <a class="btn btn-danger btn-sm" href="{{ route('clients.edit', $client->id)}}"
-                          data-placement="top" rel="tooltip" title="Edit {{$client->name_short}}"
-                          data-original-title="Edit">
-                          <i class="fa fa-edit">
-                          </i>
-                        </a>
-                        <a class="btn btn-danger btn-sm delete" href="{{ route('clients.soft_delete', $client->id)}} "
-                          data-placement="top" rel="tooltip" title="Delete {{$client->name_short}}"
-                          data-original-title="soft ">
-                          <i class="fa fa-trash">
-                          </i>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  @endforeach
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>Name Long</th>
-                    <th>Address</th>
-                    <th>Contact No</th>
-                    <th>Creation Date</th>
-                    <th></th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-            <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
-              aria-labelledby="custom-tabs-four-profile-tab">
-              <table id="asc_first_column2" class="table table-bordered table-striped text-center">
-                <thead>
-                  <tr>
-                    <th>Name Long</th>
-                    <th>Address</th>
-                    <th>Contact No</th>
-                    <th>Creation Date</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($clients as $client)
-                  @if($client->has_debt == 1)
-                  <tr>
-                    <td> {{$client->name_long}} </td>
-                    <td> {{$client->address}} </td>
-                    <td> {{$client->contact_no}} </td>
-                    <td> {{ date('m/d/Y h:i:s A', strtotime($client->created_at)) }} </td>
-                    <td>
-                      <div class="btn-group">
-                        <a class="btn btn-danger btn-sm" href="{{ route('generate_billing_statement', $client->id)}}"
-                          data-placement="top" rel="tooltip" title="Bill {{$client->name_short}}">
-                          <i class="fa fa-credit-card">
-                          </i>
-                        </a>
-                        <a class="btn btn-danger btn-sm" href="{{ route('clients.edit', $client->id)}}"
-                          data-placement="top" rel="tooltip" title="Edit {{$client->name_short}}"
-                          data-original-title="Edit">
-                          <i class="fa fa-edit">
-                          </i>
-                        </a>
-                        <a class="btn btn-danger btn-sm delete" href="{{ route('clients.soft_delete', $client->id)}} "
-                          data-placement="top" rel="tooltip" title="Delete {{$client->name_short}}"
-                          data-original-title="soft ">
-                          <i class="fa fa-trash">
-                          </i>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  @endif
-                  @endforeach
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>Name Long</th>
-                    <th>Address</th>
-                    <th>Contact No</th>
-                    <th>Creation Date</th>
-                    <th></th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <table id="desc_last_column1" class="table table-bordered table-striped text-center">
+        <thead>
+          <tr>
+            <th>Name Long</th>
+            <th>Address</th>
+            <th>Contact No</th>
+            <th>Creation Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($clients as $client)
+          <tr>
+            <td> {{$client->name_long}} </td>
+            <td> {{$client->address}} </td>
+            <td> {{$client->contact_no}} </td>
+            <td> {{ date('m/d/Y h:i:s A', strtotime($client->created_at)) }} </td>
+            <td>
+              <div class="btn-group">
+                @if($client->has_debt == 1)
+                <a class="btn btn-danger btn-sm" href="{{ route('generate_billing_statement', $client->id)}}"
+                  data-placement="top" rel="tooltip" title="Bill {{$client->name_short}}">
+                  <i class="fa fa-credit-card">
+                  </i>
+                </a>
+                @endif
+                <a class="btn btn-danger btn-sm" href="{{ route('clients.edit', $client->id)}}" data-placement="top"
+                  rel="tooltip" title="Edit {{$client->name_short}}" data-original-title="Edit">
+                  <i class="fa fa-edit">
+                  </i>
+                </a>
+                <a class="btn btn-danger btn-sm delete" href="{{ route('clients.soft_delete', $client->id)}} "
+                  data-placement="top" rel="tooltip" title="Delete {{$client->name_short}}" data-original-title="soft ">
+                  <i class="fa fa-trash">
+                  </i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Name Long</th>
+            <th>Address</th>
+            <th>Contact No</th>
+            <th>Creation Date</th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   </div>
 </section>

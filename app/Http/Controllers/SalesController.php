@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use DB;
-use PDF;
-use App\Item;
 use App\Client;
 use App\Purchase;
 use App\Sale;
+use DB;
+use Illuminate\Http\Request;
+use PDF;
 
 class SalesController extends Controller
 {
@@ -28,28 +26,27 @@ class SalesController extends Controller
     {
         //
         $sales = DB::table('sales')
-                        ->join('clients', 'clients.id', '=', 'sales.client_id')
-                        ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
-                        ->join('items', 'items.id', '=', 'purchases.item_id')
-                        ->select(
-                                'sales.id as id',
-                                'clients.name_long as client_name', 
-                                'items.name_long as item_name',
-                                'sales.invoice_no as invoice_no',
-                                'sales.dr_no as dr_no',
-                                'sales.client_id as client_id', 
-                                'sales.cost as cost',
-                                'sales.qty as qty',
-                                'sales.created_at as created_at'
-                        )->get();
+            ->join('clients', 'clients.id', '=', 'sales.client_id')
+            ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+            ->join('items', 'items.id', '=', 'purchases.item_id')
+            ->select(
+                'sales.id as id',
+                'clients.name_long as client_name',
+                'items.name_long as item_name',
+                'sales.invoice_no as invoice_no',
+                'sales.dr_no as dr_no',
+                'sales.client_id as client_id',
+                'sales.cost as cost',
+                'sales.qty as qty',
+                'sales.created_at as created_at'
+            )->get();
 
         $items = DB::select(DB::raw(
             "select * from stock_qty_fast_view"
         ));
 
         $clients = Client::all()->where('remarks', '!=', 'active');
-                
-        
+
         return view('sales/index', compact('sales', 'items', 'clients'));
     }
 
@@ -66,11 +63,10 @@ class SalesController extends Controller
         $items = DB::select(DB::raw(
             "select * from stock_qty_fast_view"
         ));
-        
+
         $client = Client::all()->where('id', $id);
         return view('sales/create', compact('items', 'client'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -93,7 +89,7 @@ class SalesController extends Controller
 
         $insert_sale = DB::select('call insert_sale(?,?,?,?,?,?,?,?,?, @sale)',
             array(
-                $client_id, 
+                $client_id,
                 $item_id,
                 $dr_no,
                 $invoice_no,
@@ -101,12 +97,12 @@ class SalesController extends Controller
                 $discount,
                 $additional_fee,
                 $user_id,
-                $remarks
+                $remarks,
             )
         );
-        
+
         $select_error_code = DB::select('select @sale as error_code');
-        
+
         switch ($select_error_code[0]->error_code) {
             case 1:
                 return redirect()->back()->with('error', 'Unable to sold the item: Insufficient Stocks');
@@ -138,7 +134,7 @@ class SalesController extends Controller
         $clients = Client::findOrFail($id);
 
         $break_downs = DB::select(DB::raw(
-            "SELECT 
+            "SELECT
                 _s.cost,
                 _s.qty,
                 _i.name_long,
@@ -165,7 +161,7 @@ class SalesController extends Controller
         $clients = Client::findOrFail($id);
 
         $break_downs = DB::select(DB::raw(
-            "SELECT 
+            "SELECT
                 _s.cost,
                 _s.qty,
                 _i.name_long,
@@ -183,11 +179,10 @@ class SalesController extends Controller
             WHERE
                 _s.client_id = $id"));
         //dd($break_down);
-        $pdf = PDF::loadView('sales/billing_statement_print', compact('clients', 'break_downs') );  
-        $pdf->setPaper('LETTER', 'landscape'); 
+        $pdf = PDF::loadView('sales/billing_statement_print', compact('clients', 'break_downs'));
+        $pdf->setPaper('LETTER', 'landscape');
         return $pdf->stream('Billing Statement.pdf');
     }
-
 
     public function show($id)
     {
@@ -202,26 +197,25 @@ class SalesController extends Controller
      */
     public function get_payments()
     {
-        //
         $sales = DB::table('sales')
-                ->join('clients', 'clients.id', '=', 'sales.client_id')
-                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
-                ->join('items', 'items.id', '=', 'purchases.item_id')
-                ->groupByRaw('sales.dr_no')
-                ->select(
-                        'sales.id as id',
-                        'clients.name_long as client_name', 
-                        'items.name_long as item_name',
-                        'sales.invoice_no as invoice_no',
-                        'sales.dr_no as dr_no',
-                        'sales.client_id as client_id', 
-                        'sales.cost as cost',
-                        'sales.qty as qty',
-                        'sales.created_at as created_at',
-                        'sales.paid_on'
-                )->get();
+            ->join('clients', 'clients.id', '=', 'sales.client_id')
+            ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
+            ->join('items', 'items.id', '=', 'purchases.item_id')
+            ->groupByRaw('sales.dr_no')
+            ->select(
+                'sales.id as id',
+                'clients.name_long as client_name',
+                'items.name_long as item_name',
+                'sales.invoice_no as invoice_no',
+                'sales.dr_no as dr_no',
+                'sales.client_id as client_id',
+                'sales.cost as cost',
+                'sales.qty as qty',
+                'sales.created_at as created_at',
+                'sales.paid_on',
+                'sales.remarks'
+            )->get();
 
-        
         return view('sales/payments', compact('sales'));
     }
 
@@ -232,7 +226,8 @@ class SalesController extends Controller
         Sale::where(
             'dr_no', $request->dr_no,
         )->update(array(
-            'paid_on' => $paid_on
+            'paid_on' => $paid_on,
+            'remarks' => $request->remarks,
         ));
 
         return redirect()->back()->with('success', 'Payment successfully processed');
@@ -251,7 +246,7 @@ class SalesController extends Controller
         $purchases = Purchase::whereNotNull('received_at')->get();
         $clients = Client::all();
 
-        return view('sales/edit', compact('purchases','clients','sales'));
+        return view('sales/edit', compact('purchases', 'clients', 'sales'));
     }
 
     /**
@@ -263,7 +258,26 @@ class SalesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $paid_date = date('Y-m-d H:i:s', strtotime($request->received_at));
+
+        $validatedData = $request->validate([
+            'client_id' => 'required|max:20',
+            'purchase_id' => 'required|max:20',
+            'dr_no' => 'max:50',
+            'cost' => 'required|max:10',
+            'qty' => 'required|max:10',
+            'discount' => 'max:10',
+            'addl_fee' => 'max:10',
+        ]);
+
+        $user = auth()->user();
+
+        Sale::whereId($id)->update($validatedData + [
+            'updated_by' => $user->id,
+            'paid_on' => $paid_date,
+        ]);
+
+        return redirect('/sales')->with('success', 'Sale successfully updated');
     }
 
     /**
@@ -281,29 +295,28 @@ class SalesController extends Controller
     {
         $monthly_sales_report = $this->monthly_sales_income();
 
-        return view('sales/reports',  compact('monthly_sales_report'));
+        return view('sales/reports', compact('monthly_sales_report'));
     }
 
     public function monthly_sales_income()
     {
         $sales = DB::select(DB::raw(
             "SELECT * FROM dealer_erp.sales_view;"));
-        
+
         return $sales;
-       
-       
-    //    $pdf = PDF::loadView('analytics/disposition_analytics_print', compact('disposition','total') );  
-    //    $pdf->setPaper('LETTER', 'landscape'); 
-    //    return $pdf->stream('dispositions.pdf');
+
+        //    $pdf = PDF::loadView('analytics/disposition_analytics_print', compact('disposition','total') );
+        //    $pdf->setPaper('LETTER', 'landscape');
+        //    return $pdf->stream('dispositions.pdf');
     }
 
     public function monthly_sales_income_print()
     {
         $sales = DB::select(DB::raw(
             "SELECT * FROM dealer_erp.sales_view;"));
-        
-        $pdf = PDF::loadView('sales/monthly_sales_income', compact('sales') );  
-        $pdf->setPaper('LETTER', 'landscape'); 
+
+        $pdf = PDF::loadView('sales/monthly_sales_income', compact('sales'));
+        $pdf->setPaper('LETTER', 'landscape');
         return $pdf->stream('Sales.pdf');
     }
 }

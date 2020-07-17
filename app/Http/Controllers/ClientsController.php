@@ -140,12 +140,13 @@ class ClientsController extends Controller
                     'sales.created_at',
                     'sales.invoice_no', 
                     'sales.paid_on',
+                    'sales.cost',
                     'sales.dr_no',
                     'items.name_long',
                 )
                 ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
                 ->join('items', 'items.id', '=', 'purchases.item_id')
-                ->groupByRaw('sales.invoice_no')
+                ->groupByRaw('sales.invoice_no, sales.dr_no')
                 ->whereRaw('paid_on is not null')
                 ->where('client_id', $id)
                 ->get();
