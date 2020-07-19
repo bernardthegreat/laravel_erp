@@ -80,7 +80,13 @@
                 <br>
                 <strong>{{$clients->name_long}}</strong><br>
                 Address: {{$clients->address}}<br>
-                Contact #: {{$clients->contact_no}}
+                Contact #: {{$clients->contact_no}} <br>
+                Status: 
+                @if(isset($break_downs[0]->paid_on))
+                  <span style="font-weight:bold; color:green">PAID</span>
+                @else 
+                  <span style="font-weight:bold; color:red">NOT PAID</span>
+                @endif 
             </td>
         </tr>
     </table>

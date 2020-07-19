@@ -109,12 +109,12 @@
             <td> {{$client->name_long}} </td>
             <td> {{$client->address}} </td>
             <td> {{$client->contact_no}} </td>
-            <td> {{ date('m/d/Y h:i:s A', strtotime($client->created_at)) }} </td>
+            <td> {{date('m/d/Y h:i:s A', strtotime($client->created_at)) }} </td>
             <td>
               <div class="btn-group">
                 @if($client->has_debt == 1)
                 <a class="btn btn-danger btn-sm" href="{{ route('generate_billing_statement', $client->id)}}"
-                  data-placement="top" rel="tooltip" title="Bill {{$client->name_short}}">
+                  data-placement="top" rel="tooltip" title="Billing Statement for {{$client->name_short}}">
                   <i class="fa fa-credit-card">
                   </i>
                 </a>

@@ -9,14 +9,14 @@
         <div class="row mb-2">
             <div class="col-sm-3">
                 <h1>
-                    Orders
+                    Utility Types
                 </h1>
 
             </div>
             <div class="col-sm-9">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="<?php echo e(route('purchases.index')); ?>">Orders</a></li>
-                    <li class="breadcrumb-item active">Update Order</li>
+                    <li class="breadcrumb-item"><a href="<?php echo e(route('utilities.index')); ?>">Utilities</a></li>
+                    <li class="breadcrumb-item active">Edit <?php echo e($utility_types->name_long); ?></li>
                 </ol>
             </div>
         </div>

@@ -114,7 +114,7 @@
               <div class="btn-group">
                 <?php if($client->has_debt == 1): ?>
                 <a class="btn btn-danger btn-sm" href="<?php echo e(route('generate_billing_statement', $client->id)); ?>"
-                  data-placement="top" rel="tooltip" title="Bill <?php echo e($client->name_short); ?>">
+                  data-placement="top" rel="tooltip" title="Billing Statement for <?php echo e($client->name_short); ?>">
                   <i class="fa fa-credit-card">
                   </i>
                 </a>

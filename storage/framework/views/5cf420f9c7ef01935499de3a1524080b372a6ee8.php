@@ -80,8 +80,13 @@
                 <br>
                 <strong><?php echo e($clients->name_long); ?></strong><br>
                 Address: <?php echo e($clients->address); ?><br>
-                Contact #: <?php echo e($clients->contact_no); ?>
-
+                Contact #: <?php echo e($clients->contact_no); ?> <br>
+                Status: 
+                <?php if(isset($break_downs[0]->paid_on)): ?>
+                  <span style="font-weight:bold; letter-spacing: 2px; color:green">PAID</span>
+                <?php else: ?> 
+                  <span style="font-weight:bold; color:red">NOT PAID</span>
+                <?php endif; ?> 
             </td>
         </tr>
     </table>

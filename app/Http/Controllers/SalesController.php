@@ -157,7 +157,6 @@ class SalesController extends Controller
 
     public function print_billing_statement($id)
     {
-        //
         $clients = Client::findOrFail($id);
 
         $break_downs = DB::select(DB::raw(
@@ -169,7 +168,8 @@ class SalesController extends Controller
                 _s.discount,
                 _s.created_at,
                 _s.invoice_no,
-                _s.dr_no
+                _s.dr_no,
+                _s.paid_on
             FROM
                 sales _s
                     JOIN
@@ -180,6 +180,38 @@ class SalesController extends Controller
                 _s.client_id = $id"));
         //dd($break_down);
         $pdf = PDF::loadView('sales/billing_statement_print', compact('clients', 'break_downs'));
+        $pdf->setPaper('LETTER', 'landscape');
+        return $pdf->stream('Billing Statement.pdf');
+    }
+
+    public function statement_of_account_print($id)
+    {
+        $break_downs = DB::select(DB::raw(
+            "SELECT
+                _s.cost,
+                _s.qty,
+                _i.name_long,
+                _s.addl_fee,
+                _s.discount,
+                _s.created_at,
+                _s.invoice_no,
+                _s.dr_no,
+                _s.paid_on,
+                _c.name_long as client_name,
+                _c.address,
+                _c.contact_no
+            FROM
+                sales _s
+                    JOIN
+                purchases _p ON _p.id = _s.purchase_id
+                    JOIN
+                items _i ON _i.id = _p.item_id
+                    JOIN
+                clients _c ON _c.id = _s.client_id
+            WHERE
+                _s.dr_no = $id"));
+        
+        $pdf = PDF::loadView('sales/statement_of_account_print', compact('break_downs'));
         $pdf->setPaper('LETTER', 'landscape');
         return $pdf->stream('Billing Statement.pdf');
     }

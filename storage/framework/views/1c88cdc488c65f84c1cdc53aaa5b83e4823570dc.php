@@ -49,8 +49,8 @@
                         <?php echo method_field('PATCH'); ?>
                     
                     <div class="form-group">
-                        <label for="name_long">Utility Type</label>
-                        <select name="supplier_id" class="custom-select" id="supplier_id">
+                        <label for="utility_type_id">Utility Type</label>
+                        <select name="utility_type_id" class="custom-select" id="utility_type_id">
                             <?php $__currentLoopData = $utility_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $utility_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <option value="<?php echo e($utility_type->id); ?>" <?php echo e(( $utility_type->id == $utilities->utility_type_id) ? 'selected' : ''); ?>>
                                 <?php echo e($utility_type->name_long); ?>

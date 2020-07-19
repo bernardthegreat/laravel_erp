@@ -43,6 +43,7 @@ Route::post('/sales/process_payment/', 'SalesController@process_payment')->name(
 Route::get('/sales/bill/{id}', 'SalesController@generate_billing_statement')->name('generate_billing_statement');
 Route::post('/sales/bill_client/{id}', 'SalesController@bill_client')->name('bill_client');
 Route::get('/sales/print_bill/{id}', 'SalesController@print_billing_statement')->name('print_billing_statement');
+Route::get('/sales/print_soa/{id}', 'SalesController@statement_of_account_print')->name('statement_of_account_print');
 Route::resource('sales', 'SalesController');
 /* Sales */
 
@@ -93,7 +94,6 @@ Route::get('/utility_types/soft_delete/{id}', 'UtilityTypesController@soft_delet
 
 
 Route::get('/accounting/dashboard', 'AccountingController@index')->name('accounting_dashboard');
-
 
 Route::resource('analytics', 'AnalyticsController');
 
