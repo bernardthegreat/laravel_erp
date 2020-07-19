@@ -135,7 +135,7 @@
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">
-        Paid
+        Payments
       </h3>
       <div class="card-tools">
         <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -203,14 +203,6 @@ $(document).ready(function() {
 
   $('#modal-receive-purchase').on('shown.bs.modal', function() {
     $('#dr_no').focus();
-  });
-
-  $('[rel="tooltip"]').tooltip({
-    trigger: "hover"
-  });
-
-  $(".delete").on("click", function() {
-    return confirm("Do you want to delete this?");
   });
 });
 </script>
