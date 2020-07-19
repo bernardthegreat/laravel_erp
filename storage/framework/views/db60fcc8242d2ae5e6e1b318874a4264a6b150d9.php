@@ -142,7 +142,7 @@
               <tr>
                 <td> <?php echo e($utility->utility_types->name_long); ?> </td>
                 <td> <?php echo e($utility->cost); ?> </td>
-                <td> <?php echo e($utility->coverage); ?> </td>
+                <td> <?php echo e($utility->remarks); ?> </td>
                 <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($utility->created_at))); ?> </td>
                 <td>
                   <div class="btn-group">

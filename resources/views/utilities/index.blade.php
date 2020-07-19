@@ -141,7 +141,7 @@
               <tr>
                 <td> {{$utility->utility_types->name_long}} </td>
                 <td> {{$utility->cost}} </td>
-                <td> {{$utility->coverage}} </td>
+                <td> {{$utility->remarks}} </td>
                 <td> {{ date('m/d/Y h:i:s A', strtotime($utility->created_at)) }} </td>
                 <td>
                   <div class="btn-group">
