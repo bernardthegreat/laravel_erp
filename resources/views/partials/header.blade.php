@@ -39,27 +39,29 @@
             <small style="text-transform: uppercase;">{{$user->role}}</small>
           </p>
         </li>
-        <li class="user-footer">
-          <a href="{{ route('pending_deliveries') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
-            rel="tooltip" title="Receive Orders">
-            <i class="fa fa-truck"></i>
-          </a>
-          <a href="{{ route('payments') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
-            rel="tooltip" title="Process Payment">
-            <i class="fa fa fa-money-bill-alt"></i>
-          </a>
-          <a href="{{ route('employees.index') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
-            rel="tooltip" title="Daily Time Record">
-            <i class="fa fa-clock"></i>
-          </a>
-          <a href="{{ route('logout') }}" class="btn btn-warning btn-flat float-right" data-placement="bottom"
-            rel="tooltip" title="Logout">
-            <i class="fa fa-sign-out-alt"></i>
-          </a>
-          <a href="{{ route('users.edit', $user->id)}}" class="btn btn-warning btn-flat float-right"
-            data-placement="bottom" rel="tooltip" title="Edit Profile">
-            <i class="fa fa-user-edit"></i>
-          </a>
+        <li class="user-footer  text-center">
+          <div class="btn-group">
+            <a href="{{ route('pending_deliveries') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
+              rel="tooltip" title="Receive Orders">
+              <i class="fa fa-truck"></i>
+            </a>
+            <a href="{{ route('payments') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
+              rel="tooltip" title="Process Payment">
+              <i class="fa fa fa-money-bill-alt"></i>
+            </a>
+            <a href="{{ route('employees.index') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
+              rel="tooltip" title="Daily Time Record">
+              <i class="fa fa-clock"></i>
+            </a>
+            <a href="{{ route('users.edit', $user->id)}}" class="btn btn-warning btn-flat"
+              data-placement="bottom" rel="tooltip" title="Edit Profile">
+              <i class="fa fa-user-edit"></i>
+            </a>
+            <a href="{{ route('logout') }}" class="btn btn-warning btn-flat" data-placement="bottom"
+              rel="tooltip" title="Logout">
+              <i class="fa fa-sign-out-alt"></i>
+            </a>
+          </div>
         </li>
       </ul>
     </li>

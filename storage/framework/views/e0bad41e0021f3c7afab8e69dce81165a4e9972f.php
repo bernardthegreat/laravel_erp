@@ -18,7 +18,6 @@
   </div>
 </section>
 
-
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -238,10 +237,6 @@
     </div>
   </div>
 </section>
-
-
-
-
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/clients/edit.blade.php ENDPATH**/ ?>

@@ -44,6 +44,8 @@ Route::get('/sales/bill/{id}', 'SalesController@generate_billing_statement')->na
 Route::post('/sales/bill_client/{id}', 'SalesController@bill_client')->name('bill_client');
 Route::get('/sales/print_bill/{id}', 'SalesController@print_billing_statement')->name('print_billing_statement');
 Route::get('/sales/print_soa/{id}', 'SalesController@statement_of_account_print')->name('statement_of_account_print');
+Route::get('/sales/point_of_sale/', 'SalesController@point_of_sale')->name('point_of_sale');
+Route::get('/sales/sales_ordering/{id}', 'SalesController@sales_ordering')->name('sales_ordering');
 Route::resource('sales', 'SalesController');
 /* Sales */
 

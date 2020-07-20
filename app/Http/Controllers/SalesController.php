@@ -216,6 +216,17 @@ class SalesController extends Controller
         return $pdf->stream('Billing Statement.pdf');
     }
 
+    public function sales_ordering($client_id)
+    {
+      
+      return view('sales/sales_ordering');
+    }
+
+    public function point_of_sale()
+    {
+      return view('sales/point_of_sale');
+    }
+
     public function show($id)
     {
         //
