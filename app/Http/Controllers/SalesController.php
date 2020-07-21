@@ -218,13 +218,14 @@ class SalesController extends Controller
 
     public function sales_ordering($client_id)
     {
-      
       return view('sales/sales_ordering');
     }
 
     public function point_of_sale()
     {
-      return view('sales/point_of_sale');
+      $clients = Client::all();
+      $items = DB::select(DB::raw("SELECT * FROM dealer_erp.stock_qty_slow_view"));
+      return view('sales/point_of_sale', compact('clients', 'items'));
     }
 
     public function show($id)

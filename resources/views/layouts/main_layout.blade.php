@@ -120,6 +120,17 @@
       "order": [1, "desc"],
     });
 
+    $('#pos_2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "order": [1, "desc"],
+    });
+
     $('#payment_date').datetimepicker();
     $('#receive_date').datetimepicker();
 
