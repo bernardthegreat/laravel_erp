@@ -45,6 +45,10 @@
               rel="tooltip" title="Receive Orders">
               <i class="fa fa-truck"></i>
             </a>
+            <a href="{{ route('point_of_sale') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
+              rel="tooltip" title="Point of Sale">
+              <i class="fa fa-dollar-sign"></i>
+            </a>
             <a href="{{ route('payments') }}" class="btn btn-warning btn-flat float-left" data-placement="bottom"
               rel="tooltip" title="Process Payment">
               <i class="fa fa fa-money-bill-alt"></i>

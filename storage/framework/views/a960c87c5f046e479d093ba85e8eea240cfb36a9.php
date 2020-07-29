@@ -4,8 +4,7 @@
 </div>
 <div class="card">
   <div class="card-body login-card-body">
-    <p class="login-box-msg">Sign in to start your session</p>
-
+    <p class="login-box-msg">Sign in using your account.</p>
     <form method="POST" action="<?php echo e(route('login')); ?>">
       <?php echo csrf_field(); ?>
       <div class="input-group mb-3">
@@ -23,7 +22,6 @@ unset($__errorArgs, $__bag); ?>" placeholder="Username"
             <span class="fas fa-user"></span>
           </div>
         </div>
-
         <?php $__errorArgs = ['username'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

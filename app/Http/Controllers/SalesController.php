@@ -228,6 +228,63 @@ class SalesController extends Controller
       return view('sales/point_of_sale', compact('clients', 'items'));
     }
 
+    public function submit_pos_order(Request $request) 
+    {
+      
+      $client_id = $request->client_id;
+      $item_ids = $request->item_id;
+      $dr_no = $request->dr_no;
+      $invoice_no = '0'; 
+      $costs = '0';
+      $order_qtys = $request->qty;
+      $discounts = $request->discount;
+      $additional_fees = $request->additional_fee;
+      $user_id = $request->user_id;
+      $remarks = $request->remarks;
+
+      $orders = array();
+
+      $item_ids_count = count($item_ids);
+
+      for ($i = 0; $i < $item_ids_count; $i++) {
+        array_push($orders, array(
+            $item_ids[$i],
+            $order_qtys[$i],
+            $discounts[$i],
+            $additional_fees[$i],
+            $remarks[$i]
+        ));
+      }
+
+      DB::transaction(function() use ($orders,$client_id,$dr_no,$invoice_no,$user_id) {
+        foreach ($orders as $o) {
+          $insert_sale = DB::select('call insert_sale(?, ?, ?, ?, ?, ?, ?, ?, ?, @err)', array(
+              $client_id,
+              $o[0],
+              $dr_no,
+              $invoice_no,
+              $o[1],
+              $o[2],
+              $o[3],
+              $user_id,
+              $o[4]
+          ));
+          $select_error_code = DB::select('select @err as error_code');
+          if ($select_error_code) {
+              $error_code = $select_error_code[0]->error_code;
+              if ($error_code > 0) {
+                  throw new \Exception('Error saving order. Error code is ' . $error_code); // Throwing exception rolls back the transaction
+              }
+              
+          } else {
+              throw new \Exception('Error saving order.'); // Throwing exception rolls back the transaction
+          }
+        }
+      });
+
+      return redirect()->back()->with('success', 'Items successfully sold');
+    }
+
     public function show($id)
     {
         //
