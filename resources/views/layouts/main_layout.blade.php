@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="{{ asset('css/datatables-bs4/css/dataTables.bootstrap4.min.css') }} ">
   <link rel="stylesheet" href="{{ asset('css/datatables-responsive/css/responsive.bootstrap4.min.css') }} ">
   <script src="{{ asset('js/jquery.min.js') }} "></script>
+  <script src="{{ asset('js/vue.js') }}"></script>
+  <script src="{{ asset('js/axios.min.js') }}"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -42,8 +44,6 @@
   <script src="{{ asset('js/inputmask/min/jquery.inputmask.bundle.min.js') }}"></script>
   <script src="{{ asset('js/daterangepicker/daterangepicker.js') }}"></script>
   <script src="{{ asset('js/adminlte.js') }}"></script>
-  <script src="{{ asset('js/vue.js') }}"></script>
-  <script src="{{ asset('js/axios.min.js') }}"></script>
 
   <script>
   $(function() {

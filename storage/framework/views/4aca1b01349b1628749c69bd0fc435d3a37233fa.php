@@ -277,15 +277,10 @@ $(document).ready(function() {
           </div>
         </div>`);
     }
-
     
     $(`.order-item-${data_id.val()}`).dblclick(function(){
       $(this).remove();
       $(`.order-content-item-${data_id.val()}`).remove();
-    });
-
-    $(`.order-item-${data_id.val()}`).click(function(){
-
     });
 
   });

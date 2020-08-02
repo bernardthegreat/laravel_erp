@@ -230,7 +230,6 @@ class SalesController extends Controller
 
     public function submit_pos_order(Request $request) 
     {
-      
       $client_id = $request->client_id;
       $item_ids = $request->item_id;
       $dr_no = $request->dr_no;

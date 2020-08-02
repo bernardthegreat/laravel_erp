@@ -17,11 +17,10 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
     <section class="content">
 
-<!-- Default box -->
 
 
 <div class="card">

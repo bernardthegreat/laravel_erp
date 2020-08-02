@@ -100,6 +100,9 @@ Route::get('/utility_types/soft_delete/{id}', 'UtilityTypesController@soft_delet
 Route::get('/accounting/dashboard', 'AccountingController@index')->name('accounting_dashboard');
 
 Route::resource('analytics', 'AnalyticsController');
+Route::post('/get_analytics', 'AnalyticsController@get_analytics_listing')->name('get_analytics_listing');
+Route::get('/monthly_sales_report_print', 'AnalyticsController@monthly_sales_report_print')->name('monthly_sales_report_print');
+Route::get('/sales_vs_purchases_print', 'AnalyticsController@sales_vs_purchases_print')->name('sales_vs_purchases_print');
 
 /* Report PDF */
 Route::get('/sales/reports/print/monthly_sales_income', [ 'as' => 'sales_report.monthly_sales_income_print', 'uses' => 'SalesController@monthly_sales_income_print']);
