@@ -40,10 +40,10 @@ class AnalyticsController extends Controller
     $current_year = date('Y');
     $lastday = sprintf("%02s",cal_days_in_month(CAL_GREGORIAN,$current_month,$current_year));
 		$month = sprintf("%02s",$current_month);
-    // $start_date = '2020-06-01';
-    $start_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-01'));
+    $start_date = '2020-06-01';
+    // $start_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-01'));
     $end_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-'.$lastday));
-    $sales = DB::select(DB::raw("SELECT * FROM sales_view where added_on >= '$start_date' and added_on <= '$end_date' "));
+    $sales = DB::select(DB::raw("SELECT * FROM sales_view where paid_on >= '$start_date' and paid_on <= '$end_date' "));
     return $sales;
   }
 

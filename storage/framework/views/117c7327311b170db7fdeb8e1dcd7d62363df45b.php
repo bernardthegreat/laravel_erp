@@ -15,6 +15,7 @@
   <script src="<?php echo e(asset('js/jquery.min.js')); ?> "></script>
   <script src="<?php echo e(asset('js/vue.js')); ?>"></script>
   <script src="<?php echo e(asset('js/axios.min.js')); ?>"></script>
+  
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -47,11 +48,13 @@
 
   <script>
   $(function() {
+
     $("#example1").DataTable({
       "responsive": true,
       "autoWidth": false,
       "order": [0, "desc"],
     });
+    
     $("#example2").DataTable({
       "responsive": true,
       "autoWidth": false,
@@ -112,14 +115,29 @@
     $('#analytics1').DataTable({
       "paging": true,
       "lengthChange": false,
-      "searching": false,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
-      "responsive": true,
+      "responsive": false,
       "order": [1, "desc"],
+      dom: '<"d-flex w-100"<l><"#mydiv.d-flex mr-auto text-left"f>>t<"#bottom.d-flex mr-auto text-left py-3"p<"#bottom-info.px-3">i>',
+      // dom: '<"top"<"d-flex w-100"<l><"#filterDiv"f>>tips<"bottom"lpi><"clear">'
     });
 
+    $('#analytics2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": false,
+      "order": [1, "desc"],
+      dom: '<"d-flex w-100"<l><"#mydiv.d-flex mr-auto text-left"f>>t<"#bottom.d-flex mr-auto text-left py-3"p<"#bottom-info.px-3">i>',
+      // dom: '<"top"<"d-flex w-100"<l><"#filterDiv"f>>tips<"bottom"lpi><"clear">'
+    });
+    
     $('#pos_2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -150,6 +168,12 @@
     });
   });
   </script>
+
+  <style>
+    .pagination {
+      margin-right: auto !important;
+    }
+  </style>
 
 </body>
 

@@ -39,7 +39,15 @@
         <div class="input-group mb-3">
           <select id="items" name="analytics_id" class="custom-select" style="width: 100px;">
             @foreach($analytics_listings as $keys => $lists)
-              <option id="{{$keys}}" value="{{$keys}}" {{ ( $analytics_selected == $keys) ? 'selected' : '' }}>{{$lists}}</option>
+                @php
+                  if(isset($analytics_selected)) {
+                    $selected = $analytics_selected;
+                  } else {
+                    $selected = '';
+                  }
+                @endphp
+                <option id="{{$keys}}" value="{{$keys}}" {{ ( $selected == $keys) ? 'selected' : '' }}>{{$lists}}</option>
+            
             @endforeach
           </select>
           <div class="input-group-append">
@@ -57,11 +65,11 @@
         @if($results ?? '')
           @if($analytics_selected == 'monthly_sales_report')
             <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
-              <table id="example1" class="table table-bordered table-striped text-center" width="100%">
+              <table id="analytics1" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
                   <tr>
                     <!-- <th>Sale #</th> -->
-                    <th>DR #</th>
+                    <th width="5%">DR #</th>
                     <th>Client</th>
                     <th>Item</th>
                     <th>Cost</th>
@@ -119,7 +127,7 @@
             </div>
           @elseif($analytics_selected == 'sales_vs_purchases')
             <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
-              <table id="example2" class="table table-bordered table-striped text-center" width="100%">
+              <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
                   <tr>
                     <th>Sale Date</th>

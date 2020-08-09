@@ -252,6 +252,14 @@ $(document).ready(function() {
             </div>
           </div>
           <div class="input-group mb-3">
+            <input type="text" name="cost[]" class="form-control cost" placeholder="Cost" autocomplete="off">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-dollar-sign"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
             <input type="text" name="discount[]" class="form-control qty" placeholder="Discount" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">

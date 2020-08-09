@@ -234,7 +234,7 @@ class SalesController extends Controller
       $item_ids = $request->item_id;
       $dr_no = $request->dr_no;
       $invoice_no = '0'; 
-      $costs = '0';
+      $costs = $request->cost;
       $order_qtys = $request->qty;
       $discounts = $request->discount;
       $additional_fees = $request->additional_fee;
@@ -249,6 +249,7 @@ class SalesController extends Controller
         array_push($orders, array(
             $item_ids[$i],
             $order_qtys[$i],
+            $costs[$i],
             $discounts[$i],
             $additional_fees[$i],
             $remarks[$i]
@@ -257,16 +258,17 @@ class SalesController extends Controller
 
       DB::transaction(function() use ($orders,$client_id,$dr_no,$invoice_no,$user_id) {
         foreach ($orders as $o) {
-          $insert_sale = DB::select('call insert_sale(?, ?, ?, ?, ?, ?, ?, ?, ?, @err)', array(
+          $insert_sale = DB::select('call insert_sale(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @err)', array(
               $client_id,
               $o[0],
               $dr_no,
               $invoice_no,
-              $o[1],
               $o[2],
+              $o[1],
               $o[3],
+              $o[4],
               $user_id,
-              $o[4]
+              $o[5]
           ));
           $select_error_code = DB::select('select @err as error_code');
           if ($select_error_code) {
