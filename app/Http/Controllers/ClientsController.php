@@ -142,7 +142,7 @@ class ClientsController extends Controller
                     'sales.paid_on',
                     'sales.cost',
                     'sales.dr_no',
-                    'items.name_long',
+                    'items.name_long'
                 )
                 ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
                 ->join('items', 'items.id', '=', 'purchases.item_id')

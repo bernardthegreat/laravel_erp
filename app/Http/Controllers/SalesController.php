@@ -325,9 +325,7 @@ class SalesController extends Controller
     {
 
         $paid_on = date('Y-m-d H:i:s', strtotime($request->paid_on));
-        Sale::where(
-            'dr_no', $request->dr_no,
-        )->update(array(
+        Sale::where('dr_no', $request->dr_no)->update(array(
             'paid_on' => $paid_on,
             'remarks' => $request->remarks,
         ));
