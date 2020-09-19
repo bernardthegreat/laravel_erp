@@ -103,13 +103,13 @@
     <div class="card-header">
       <h3 class="card-title">
         <div class="card-tools btn-group">
-          <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
-            data-placement="top" rel="tooltip" title="Add Utility">
-            <i class="fa fa-plus"> </i>
-          </button>
           <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default2"
             data-placement="top" rel="tooltip" title="Add Utility Types">
             <i class="fa fa-bolt"> </i>
+          </button>
+          <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
+            data-placement="top" rel="tooltip" title="Add Utility">
+            <i class="fa fa-plus"> </i>
           </button>
         </div>
       </h3>
