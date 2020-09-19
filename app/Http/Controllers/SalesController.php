@@ -343,7 +343,7 @@ class SalesController extends Controller
     {
         //
         $sales = Sale::findOrFail($id);
-        $purchases = Purchase::with('items')->whereNotNull('received_at')->get();
+        $purchases = Purchase::with('items')->whereNotNull('received_at')->groupBy('code')->get();
         $clients = Client::all();
         return view('sales/edit', compact('purchases', 'clients', 'sales'));
     }
