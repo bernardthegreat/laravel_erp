@@ -22,7 +22,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-5" id="clients">
-        <div class="card card-danger card-outline" style="height:53%;overflow-y:auto;">
+        <div class="card card-danger card-outline" style="height:100%;overflow-y:auto;">
           <div class="card-header">
             <h3 class="card-title">
               Clients
