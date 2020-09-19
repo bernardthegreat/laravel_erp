@@ -95,7 +95,9 @@
                                         <td>{{ date('m/d/Y h:i:s A', strtotime($break_down->created_at)) }}</td>
                                         <td>
                                             {{$break_down->cost}}
-                                            @php ($total += $break_down->cost); @endphp
+                                            @php 
+                                              $total += $break_down->cost * $break_down->qty; 
+                                            @endphp
                                         </td>
                                     </tr>
 

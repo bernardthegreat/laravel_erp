@@ -97,7 +97,9 @@
                                         <td>
                                             <?php echo e($break_down->cost); ?>
 
-                                            <?php ($total += $break_down->cost); ?>
+                                            <?php 
+                                              $total += $break_down->cost * $break_down->qty; 
+                                            ?>
                                         </td>
                                     </tr>
 

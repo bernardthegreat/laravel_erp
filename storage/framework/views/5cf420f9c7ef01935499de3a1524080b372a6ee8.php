@@ -83,7 +83,7 @@
                 Contact #: <?php echo e($clients->contact_no); ?> <br>
                 Status: 
                 <?php if(isset($break_downs[0]->paid_on)): ?>
-                  <span style="font-weight:bold; letter-spacing: 2px; color:green">PAID</span>
+                  <span style="font-weight:bold; color:green">PAID</span>
                 <?php else: ?> 
                   <span style="font-weight:bold; color:red">NOT PAID</span>
                 <?php endif; ?> 
@@ -141,7 +141,7 @@
                 <td>
                     <?php echo e($break_down->cost); ?>
 
-                    <?php ($total += $break_down->cost); ?>
+                    <?php ($total += $break_down->cost * $break_down->qty); ?>
                 </td>
             </tr>
 
