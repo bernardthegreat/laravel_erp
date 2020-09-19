@@ -260,7 +260,7 @@ $(document).ready(function() {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" name="discount[]" class="form-control qty" placeholder="Discount" autocomplete="off">
+            <input type="text" name="discount[]" value="0.00" class="form-control qty" placeholder="Discount" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-dollar-sign"></span>
@@ -268,7 +268,7 @@ $(document).ready(function() {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="text" name="additional_fee[]" class="form-control qty" placeholder="Additional Fee" autocomplete="off">
+            <input type="text" name="additional_fee[]" value="0.00" class="form-control qty" placeholder="Additional Fee" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-dollar-sign"></span>
