@@ -37,13 +37,12 @@ class UtilityTypesController extends Controller
     {
         //
         $utility_type_exists = UtilityType::where([
-            ['name_short', '=', $request->name_short],
             ['name_long', '=', $request->name_long],
         ])->first();
         
         if ($utility_type_exists === null) {
             $validatedData = $request->validate([
-                'name_short' => 'required|max:255',
+                'name_short' => 'max:255',
                 'name_long' => 'required|max:255',
             ]);
             
