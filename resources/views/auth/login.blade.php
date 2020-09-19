@@ -39,7 +39,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <button type="submit" class="btn btn-danger btn-block">Sign In</button>
+          <button type="submit" class="btn btn-danger btn-block">Log In</button>
         </div>
       </div>
     </form>
