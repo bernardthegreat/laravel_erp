@@ -391,9 +391,11 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $sales = Sale::findOrFail($id);
+        $sales->delete();
 
+        return redirect('/sales')->with('success', 'Sale successfully deleted');
+    }
     public function reports()
     {
         $monthly_sales_report = $this->monthly_sales_income();

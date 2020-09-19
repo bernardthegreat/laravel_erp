@@ -39,6 +39,7 @@ Route::get('/sales/reports', 'SalesController@reports')->name('sales_report');
 Route::post('/sales/sell', 'SalesController@insert_sale')->name('insert_sale');
 Route::get('/sales/payments', 'SalesController@get_payments')->name('payments');
 Route::get('/sales/create/{id}', 'SalesController@create')->name('create_sales');
+Route::get('/sales/delete/{id}', 'SalesController@delete')->name('sales.delete');
 Route::post('/sales/process_payment/', 'SalesController@process_payment')->name('process_payment');
 Route::get('/sales/bill/{id}', 'SalesController@generate_billing_statement')->name('generate_billing_statement');
 Route::post('/sales/bill_client/{id}', 'SalesController@bill_client')->name('bill_client');
@@ -72,7 +73,7 @@ Route::get('/interests/soft_delete/{id}', 'InterestsController@soft_delete')->na
 
 /* Purchases */
 Route::resource('purchases', 'PurchasesController');
-Route::get('/purchases/soft_delete/{id}', 'PurchasesController@soft_delete')->name('purchases.soft_delete');
+Route::get('/purchases/delete/{id}', 'PurchasesController@delete')->name('purchases.delete');
 Route::post('/purchases/receive_purchase/{id}', 'PurchasesController@receive_purchase')->name('receive_purchase');
 Route::get('pending_deliveries', 'PurchasesController@pending_deliveries')->name('pending_deliveries');
 /* Purchases */

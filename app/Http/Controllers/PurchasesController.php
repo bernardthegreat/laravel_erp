@@ -136,7 +136,7 @@ class PurchasesController extends Controller
         ]);
 
 
-        return redirect('/purchases')->with('success', 'Purchase successfully updated');
+        return redirect('/purchases')->with('success', 'Order successfully updated');
     }
 
     /**
@@ -147,6 +147,9 @@ class PurchasesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $purchases = Purchase::findOrFail($id);
+        $purchases->delete();
+
+        return redirect('/purchases')->with('success', 'Order successfully deleted');
     }
 }

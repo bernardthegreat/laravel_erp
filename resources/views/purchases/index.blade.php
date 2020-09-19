@@ -134,12 +134,13 @@
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <a class="btn btn-danger btn-sm delete" href="{{ route('purchases.soft_delete', $purchase->id)}} "
-                  data-placement="top" rel="tooltip" title="Delete order of {{$purchase->items->name_long}}"
-                  data-original-title="soft ">
-                  <i class="fa fa-trash">
-                  </i>
-                </a>
+                <form class="delete" action="{{ route('purchases.destroy', $purchase->id)}}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete order of {{$purchase->items->name_long}}"
+                  data-original-title="soft" type="submit"><i class="fas fa-trash">
+                    </i></button>
+                </form>
               </div>
             </td>
           </tr>

@@ -40,7 +40,7 @@
                     </div>
                   </div>
                   <div class="input-group mb-3">
-                    <input type="number" name="cost" class="form-control" placeholder="Cost" autocomplete="off"
+                    <input type="text" name="cost" class="form-control" placeholder="Cost" autocomplete="off"
                       required>
                     <div class="input-group-append">
                       <div class="input-group-text">
@@ -136,12 +136,13 @@
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <a class="btn btn-danger btn-sm delete" href="<?php echo e(route('purchases.soft_delete', $purchase->id)); ?> "
-                  data-placement="top" rel="tooltip" title="Delete order of <?php echo e($purchase->items->name_long); ?>"
-                  data-original-title="soft ">
-                  <i class="fa fa-trash">
-                  </i>
-                </a>
+                <form class="delete" action="<?php echo e(route('purchases.destroy', $purchase->id)); ?>" method="post">
+                  <?php echo csrf_field(); ?>
+                  <?php echo method_field('DELETE'); ?>
+                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete order of <?php echo e($purchase->items->name_long); ?>"
+                  data-original-title="soft" type="submit"><i class="fas fa-trash">
+                    </i></button>
+                </form>
               </div>
             </td>
           </tr>

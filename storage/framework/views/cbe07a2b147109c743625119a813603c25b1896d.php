@@ -161,7 +161,13 @@
                   <i class="fa fa-edit">
                   </i>
                 </a>
-
+                <form class="delete" action="<?php echo e(route('sales.destroy', $sale->id)); ?>" method="post">
+                  <?php echo csrf_field(); ?>
+                  <?php echo method_field('DELETE'); ?>
+                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete sale for <?php echo e($sale->client_name); ?>"
+                  data-original-title="soft" type="submit"><i class="fas fa-trash">
+                    </i></button>
+                </form>
               </div>
             </td>
           </tr>
