@@ -120,7 +120,12 @@ class PurchasesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $receive_date = date('Y-m-d H:i:s', strtotime($request->received_at));
+        if(!is_null($request->received_at) && $request->received_at != '') {
+          $receive_date = date('Y-m-d H:i:s', strtotime($request->received_at));
+        } else {
+          $receive_date = NULL;
+        }
+
 
         $validatedData = $request->validate([
             'cost' => 'required|max:20',
