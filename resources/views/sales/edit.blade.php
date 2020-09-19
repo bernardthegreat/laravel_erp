@@ -64,7 +64,7 @@
             <select name="purchase_id" class="custom-select" id="purchase_id">
               @foreach($purchases as $purchase)
               <option value="{{$purchase->id}}" {{ ( $purchase->id == $sales->purchase_id) ? 'selected' : '' }}>
-                {{$purchase->code}} / {{$purchase->dr_no}}
+                P.O. Code: {{$purchase->code}} / P.O. DR No.: {{$purchase->dr_no}}  - {{$purchase->items->name_long}}
               </option>
               @endforeach
             </select>
@@ -82,7 +82,7 @@
 
           <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input type="text" class="form-control" name="qty" id="quantity" value="{{$sales->quantity}}"
+            <input type="text" class="form-control" name="qty" id="quantity" value="{{$sales->qty}}"
               autocomplete="off">
           </div>
 

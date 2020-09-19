@@ -343,9 +343,8 @@ class SalesController extends Controller
     {
         //
         $sales = Sale::findOrFail($id);
-        $purchases = Purchase::whereNotNull('received_at')->get();
+        $purchases = Purchase::with('items')->whereNotNull('received_at')->get();
         $clients = Client::all();
-
         return view('sales/edit', compact('purchases', 'clients', 'sales'));
     }
 
@@ -358,7 +357,11 @@ class SalesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $paid_date = date('Y-m-d H:i:s', strtotime($request->received_at));
+        if(!is_null($request->paid_on) && $request->paid_on != '') {
+          $paid_date = date('Y-m-d H:i:s', strtotime($request->paid_on));
+        } else {
+          $paid_date = NULL;
+        }
 
         $validatedData = $request->validate([
             'client_id' => 'required|max:20',

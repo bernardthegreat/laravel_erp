@@ -65,7 +65,7 @@
             <select name="purchase_id" class="custom-select" id="purchase_id">
               <?php $__currentLoopData = $purchases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $purchase): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
               <option value="<?php echo e($purchase->id); ?>" <?php echo e(( $purchase->id == $sales->purchase_id) ? 'selected' : ''); ?>>
-                <?php echo e($purchase->code); ?> / <?php echo e($purchase->dr_no); ?>
+                P.O. Code: <?php echo e($purchase->code); ?> / P.O. DR No.: <?php echo e($purchase->dr_no); ?>  - <?php echo e($purchase->items->name_long); ?>
 
               </option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -84,7 +84,7 @@
 
           <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input type="text" class="form-control" name="qty" id="quantity" value="<?php echo e($sales->quantity); ?>"
+            <input type="text" class="form-control" name="qty" id="quantity" value="<?php echo e($sales->qty); ?>"
               autocomplete="off">
           </div>
 
