@@ -39,7 +39,7 @@
                     </div>
                   </div>
                   <div class="input-group mb-3">
-                    <input type="number" name="cost" class="form-control" placeholder="Cost" autocomplete="off"
+                    <input type="text" name="cost" class="form-control" placeholder="Cost" autocomplete="off"
                       required>
                     <div class="input-group-append">
                       <div class="input-group-text">
