@@ -64,7 +64,8 @@
             <select name="purchase_id" class="custom-select" id="purchase_id">
               @foreach($purchases as $purchase)
               <option value="{{$purchase->id}}" {{ ( $purchase->id == $sales->purchase_id) ? 'selected' : '' }}>
-                P.O. Code: {{$purchase->code}} / P.O. DR No.: {{$purchase->dr_no}}  - {{$purchase->items->name_long}}
+                <!-- P.O. Code: {{$purchase->code}} /  -->
+                P.O. DR No.: {{$purchase->dr_no}}  - {{$purchase->items->name_long}}
               </option>
               @endforeach
             </select>
