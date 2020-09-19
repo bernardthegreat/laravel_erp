@@ -243,6 +243,7 @@ $(document).ready(function() {
       $("#v-pills-tabContent").append(`
         <div class="tab-pane fade show list-order order-content-item-${data_id.val()} px-2" id="v-pills-${data_id.val()}" role="tabpanel" aria-labelledby="v-pills-${data_id.val()}-tab">
           <input type="hidden" name="item_id[]" value="${data_id.val()}">
+          <label for="qty">Quantity</label>
           <div class="input-group mb-3">
             <input type="text" name="qty[]" class="form-control qty" placeholder="Quantity" autocomplete="off">
             <div class="input-group-append">
@@ -251,6 +252,7 @@ $(document).ready(function() {
               </div>
             </div>
           </div>
+          <label for="cost">Cost</label>
           <div class="input-group mb-3">
             <input type="text" name="cost[]" class="form-control cost" placeholder="Cost" autocomplete="off">
             <div class="input-group-append">
@@ -259,24 +261,27 @@ $(document).ready(function() {
               </div>
             </div>
           </div>
+          <label for="discount">Discount</label>
           <div class="input-group mb-3">
-            <input type="text" name="discount[]" class="form-control qty" placeholder="Discount" autocomplete="off">
+            <input type="text" name="discount[]" value="0.00" class="form-control discount" placeholder="Discount" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-dollar-sign"></span>
               </div>
             </div>
           </div>
+          <label for="addl_fee">Additional Fee</label>
           <div class="input-group mb-3">
-            <input type="text" name="additional_fee[]" class="form-control qty" placeholder="Additional Fee" autocomplete="off">
+            <input type="text" name="additional_fee[]" value="0.00" class="form-control addl_fee" placeholder="Additional Fee" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-dollar-sign"></span>
               </div>
             </div>
           </div>
+          <label for="remarks">Remarks</label>
           <div class="input-group mb-3">
-            <input type="text" name="remarks[]" class="form-control qty" placeholder="Remarks" autocomplete="off">
+            <input type="text" name="remarks[]" class="form-control remarks" placeholder="Remarks" autocomplete="off">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-dollar-sign"></span>
