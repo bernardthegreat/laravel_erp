@@ -40,17 +40,21 @@
                       </div>
                     </div>
                   </div>
-                  <div class="input-group mb-3">
-                    <input type="text" name="remarks" class="form-control" placeholder="Month Coverage" autocomplete="off">
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        <span class="fas fa-dollar-sign"></span>
+                  <div class="input-group mb-3 date" id="utilities_coverage" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#utilities_coverage"
+                        name="remarks"
+                        autocomplete="off"
+                        data-placement="top" rel="tooltip" 
+                        title="Click the icon on the right side to display the calendar" 
+                        data-original-title="Click the icon on the right side to display the calendar"
+                      >
+                      <div class="input-group-append" data-target="#utilities_coverage" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
-                    </div>
-                  </div>                  
+                  </div>                 
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-danger">Save</button>
                   </div>
                 </form>
               </div>
@@ -104,13 +108,13 @@
     <div class="card-header">
       <h3 class="card-title">
         <div class="card-tools btn-group">
-          <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
-            data-placement="top" rel="tooltip" title="Add Utility">
-            <i class="fa fa-plus"> </i>
-          </button>
           <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default2"
             data-placement="top" rel="tooltip" title="Add Utility Types">
             <i class="fa fa-bolt"> </i>
+          </button>
+          <button type="button" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
+            data-placement="top" rel="tooltip" title="Add Utility">
+            <i class="fa fa-plus"> </i>
           </button>
         </div>
       </h3>

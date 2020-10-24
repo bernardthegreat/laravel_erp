@@ -22,7 +22,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-5" id="clients">
-        <div class="card card-danger card-outline" style="height:35%;overflow-y:auto;">
+        <div class="card card-danger card-outline" style="height:100%;overflow-y:auto;">
           <div class="card-header">
             <h3 class="card-title">
               Clients
@@ -207,7 +207,6 @@ $(document).ready(function() {
     var client_name = $(this).attr('data-client-name');
     var client_id = $(this).attr('data-client-id');
     var data_html = $("#data-client-name-html").html('Order for ' + client_name);
-    console.log(client_id);
     var data = $("#data-client-name").attr("value", client_name);
     var data_id = $("#data-client-id").attr("value", client_id);
     $("#items").show();

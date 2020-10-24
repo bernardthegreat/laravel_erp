@@ -151,11 +151,10 @@
 
     $('#payment_date').datetimepicker();
     $('#receive_date').datetimepicker();
-
-    $('#completed_datetime').datetimepicker();
-    $('#rejected_datetime').datetimepicker();
-    $('#expired_datetime').datetimepicker();
-
+    $('#analytics_from_and_to_date').daterangepicker()
+    $('#utilities_coverage').datetimepicker({
+        format: 'L'
+    });
   });
 
   $(document).ready(function() {

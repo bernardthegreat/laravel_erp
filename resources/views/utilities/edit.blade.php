@@ -65,11 +65,23 @@
                             value="{{$utilities->cost}}" autocomplete="off">
                     </div>
 
-               
-                    
-
+                    <div class="form-group">
+                      <label for="cost">Coverage</label>
+                      <div class="input-group mb-3 date" id="utilities_coverage" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#utilities_coverage"
+                          name="remarks"
+                          autocomplete="off"
+                          data-placement="top" rel="tooltip" 
+                          value="{{$utilities->remarks}}"
+                          title="Click the icon on the right side to display the calendar" 
+                          data-original-title="Click the icon on the right side to display the calendar"
+                        >
+                        <div class="input-group-append" data-target="#utilities_coverage" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div> 
+                    </div>
                 </div>
-                <!-- /.card-body -->
 
                 <div class="card-footer">
                     <button type="submit" class="btn btn-danger">Submit</button>

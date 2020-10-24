@@ -62,6 +62,36 @@
           </div>
         </div>
 
+        <div class="input-group mb-3">
+          <!-- <div class="input-group" id="analytics_from_and_to_date" data-target-input="nearest">
+            <input type="text" class="form-control"
+                autocomplete="off"
+                name="analytics_from_and_to_date" data-target="#analytics_from_and_to_date" 
+                data-placement="top" rel="tooltip" 
+                title="Click the icon on the right side to display the calendar" 
+                data-original-title="Click the icon on the right side to display the calendar">
+          </div> -->
+            <div class="input-group analytics_date">
+              <input type="text"
+                class="form-control float-right" id="analytics_from_and_to_date"
+                name="analytics_from_and_to_date"
+                autocomplete="off"
+                data-placement="top" rel="tooltip" 
+                title="Click the icon on the right side to display the calendar" 
+                data-original-title="Click the icon on the right side to display the calendar"
+              >    
+              <div class="input-group-prepend">
+                <span class="input-group-text" 
+                  data-placement="top" rel="tooltip" 
+                  title="Click the icon on the right side to display the calendar" 
+                  data-original-title="Click the icon on the right side to display the calendar"
+                >
+                  <i class="far fa-calendar-alt"></i>
+                </span>
+              </div>
+            </div>
+        </div>
+
         @if($results ?? '')
           @if($analytics_selected == 'monthly_sales_report')
             <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
@@ -173,6 +203,36 @@
                 </tfoot>
               </table>
             </div>
+            @elseif($analytics_selected == 'item_costs_history')
+            <div style="overflow-x:auto;">
+              <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                    <th>Cost Datetime</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($results as $value)
+                  <tr>
+                    <td>{{$value->item_name}}</td>
+                    <td>{{$value->cost}}</td>
+                    <td>
+                      {{$value->cost_datetime ? date('m/d/Y h:i:s A', strtotime($value->cost_datetime)) : '' }}
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                    <th>Cost Datetime</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           @endif
 
         @endif
@@ -180,5 +240,15 @@
     </div>
   </div>
 </section>
+
+<script>
+  $("#items").change(function(){
+    if($('#items').val() == 'item_costs_history') {
+      $('.analytics_date').hide()
+    } else {
+      $('.analytics_date').show()
+    }
+  });
+</script>
 
 @endsection

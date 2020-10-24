@@ -62,6 +62,36 @@
           </div>
         </div>
 
+        <div class="input-group mb-3">
+          <!-- <div class="input-group" id="analytics_from_and_to_date" data-target-input="nearest">
+            <input type="text" class="form-control"
+                autocomplete="off"
+                name="analytics_from_and_to_date" data-target="#analytics_from_and_to_date" 
+                data-placement="top" rel="tooltip" 
+                title="Click the icon on the right side to display the calendar" 
+                data-original-title="Click the icon on the right side to display the calendar">
+          </div> -->
+            <div class="input-group analytics_date">
+              <input type="text"
+                class="form-control float-right" id="analytics_from_and_to_date"
+                name="analytics_from_and_to_date"
+                autocomplete="off"
+                data-placement="top" rel="tooltip" 
+                title="Click the icon on the right side to display the calendar" 
+                data-original-title="Click the icon on the right side to display the calendar"
+              >    
+              <div class="input-group-prepend">
+                <span class="input-group-text" 
+                  data-placement="top" rel="tooltip" 
+                  title="Click the icon on the right side to display the calendar" 
+                  data-original-title="Click the icon on the right side to display the calendar"
+                >
+                  <i class="far fa-calendar-alt"></i>
+                </span>
+              </div>
+            </div>
+        </div>
+
         <?php if($results ?? ''): ?>
           <?php if($analytics_selected == 'monthly_sales_report'): ?>
             <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
@@ -175,6 +205,37 @@
                 </tfoot>
               </table>
             </div>
+            <?php elseif($analytics_selected == 'item_costs_history'): ?>
+            <div style="overflow-x:auto;">
+              <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                    <th>Cost Datetime</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <tr>
+                    <td><?php echo e($value->item_name); ?></td>
+                    <td><?php echo e($value->cost); ?></td>
+                    <td>
+                      <?php echo e($value->cost_datetime ? date('m/d/Y h:i:s A', strtotime($value->cost_datetime)) : ''); ?>
+
+                    </td>
+                  </tr>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                    <th>Cost Datetime</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           <?php endif; ?>
 
         <?php endif; ?>
@@ -182,6 +243,18 @@
     </div>
   </div>
 </section>
+
+<script>
+  console.log($('#items').val())
+  $("#items").change(function(){
+    if($('#items').val() == 'item_costs_history') {
+      console.log('herererere')
+      $('.analytics_date').hide()
+    } else {
+      $('.analytics_date').show()
+    }
+  });
+</script>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/analytics/index.blade.php ENDPATH**/ ?>

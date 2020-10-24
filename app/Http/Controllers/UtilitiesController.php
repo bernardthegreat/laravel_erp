@@ -96,7 +96,8 @@ class UtilitiesController extends Controller
         //
         $validatedData = $request->validate([
             'cost' => 'required|max:15',
-            'utility_type_id' => 'max:2'
+            'utility_type_id' => 'max:2',
+            'remarks' => 'max:50'
         ]);
 
         $user = auth()->user();

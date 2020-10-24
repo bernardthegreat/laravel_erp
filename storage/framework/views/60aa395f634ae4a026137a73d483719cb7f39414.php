@@ -67,12 +67,12 @@
                 <p>Clients</p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="<?php echo e(route('interests.index')); ?>" class="nav-link">
                 <i class="nav-icon fa fa-dollar-sign"></i>
                 <p>Interest</p>
               </a>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li class="nav-item has-treeview menu-open">

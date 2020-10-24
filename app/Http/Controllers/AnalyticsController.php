@@ -30,20 +30,26 @@ class AnalyticsController extends Controller
     $analytics_listings = $this->analytics();
     $analytics_selected = $request->analytics_id;
     $function = $request->analytics_id;
-    $results = $this->$function(); 
+
+    $analytics_date = $request->analytics_from_and_to_date;
+    $splitted_analytics_date = explode(' - ', $analytics_date);
+    $from_date = date('Y-m-d', strtotime($splitted_analytics_date[0]));
+    $to_date = date('Y-m-d', strtotime($splitted_analytics_date[1]));
+
+    $results = $this->$function($from_date, $to_date); 
     return view('analytics/index', compact('analytics_listings', 'analytics_selected', 'results'));
   }
 
-  function monthly_sales_report()
+  function monthly_sales_report($from_date, $to_date)
   {
-    $current_month = date('m');
-    $current_year = date('Y');
-    $lastday = sprintf("%02s",cal_days_in_month(CAL_GREGORIAN,$current_month,$current_year));
-		$month = sprintf("%02s",$current_month);
-    $start_date = '2020-06-01';
+    // $current_month = date('m');
+    // $current_year = date('Y');
+    // $lastday = sprintf("%02s",cal_days_in_month(CAL_GREGORIAN,$current_month,$current_year));
+		// $month = sprintf("%02s",$current_month);
+    // $start_date = '2020-06-01';
     // $start_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-01'));
-    $end_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-'.$lastday));
-    $sales = DB::select(DB::raw("SELECT * FROM sales_view where paid_on >= '$start_date' and paid_on <= '$end_date' "));
+    // $end_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-'.$lastday));
+    $sales = DB::select(DB::raw("SELECT * FROM sales_view where paid_on >= '$from_date' and paid_on <= '$to_date' "));
     return $sales;
   }
 
@@ -55,7 +61,7 @@ class AnalyticsController extends Controller
     return $pdf->stream('Sales.pdf');
   }
 
-  function sales_vs_purchases()
+  function sales_vs_purchases($from_date, $to_date)
   { 
     $current_month = date('m');
     $current_year = date('Y');
@@ -75,5 +81,26 @@ class AnalyticsController extends Controller
     $pdf = PDF::loadView('analytics/sales_pdf/sales_vs_purchases', compact('result_print'));
     $pdf->setPaper('LETTER', 'landscape');
     return $pdf->stream('Sales.pdf');
+  }
+
+  function item_costs_history()
+  { 
+    // $current_month = date('m');
+    // $current_year = date('Y');
+    // $lastday = sprintf("%02s",cal_days_in_month(CAL_GREGORIAN,$current_month,$current_year));
+		// $month = sprintf("%02s",$current_month);
+    // // $start_date = '2020-06-01';
+    // $start_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-01'));
+    // $end_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-'.$lastday));
+    $items = DB::select(DB::raw("SELECT * FROM item_costs_history_view"));
+    return $items;
+  }
+
+  function item_costs_history_print()
+  {
+    $result_print = $this->item_costs_history();
+    $pdf = PDF::loadView('analytics/sales_pdf/item_costs_history', compact('result_print'));
+    $pdf->setPaper('LETTER', 'landscape');
+    return $pdf->stream('Item Cost History.pdf');
   }
 }
