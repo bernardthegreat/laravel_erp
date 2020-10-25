@@ -36,15 +36,15 @@
       </div>
     </div>
     <div class="card-body">
-
-      <form role="form" method="post" action="<?php echo e(route('sales.update', $sales->id)); ?>">
+      
+      <form role="form" method="post" action="<?php echo e(route('sales.update', $sales[0]->id)); ?>">
 
         <div class="card-body">
           <?php echo csrf_field(); ?>
           <?php echo method_field('PATCH'); ?>
           <div class="form-group">
             <label for="code">Sales #</label>
-            <input type="text" class="form-control" name="code" id="code" value="<?php echo e($sales->code); ?>" autocomplete="off"
+            <input type="text" class="form-control" name="code" id="code" value="<?php echo e($sales[0]->code); ?>" autocomplete="off"
               readonly>
           </div>
 
@@ -52,7 +52,7 @@
             <label for="client_id">Client</label>
             <select name="client_id" class="custom-select" id="client_id">
               <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <option value="<?php echo e($client->id); ?>" <?php echo e(( $client->id == $sales->client_id) ? 'selected' : ''); ?>>
+              <option value="<?php echo e($client->id); ?>" <?php echo e(( $client->id == $sales[0]->client_id) ? 'selected' : ''); ?>>
                 <?php echo e($client->name_long); ?>
 
               </option>
@@ -61,12 +61,11 @@
           </div>
 
           <div class="form-group">
-            <label for="purchase_id">Purchase</label>
-            <select name="purchase_id" class="custom-select" id="purchase_id">
-              <?php $__currentLoopData = $purchases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $purchase): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <option value="<?php echo e($purchase->id); ?>" <?php echo e(( $purchase->id == $sales->purchase_id) ? 'selected' : ''); ?>>
-                <!-- P.O. Code: <?php echo e($purchase->code); ?> /  -->
-                P.O. DR No.: <?php echo e($purchase->dr_no); ?>  - <?php echo e($purchase->items->name_long); ?>
+            <label for="item_id">Item</label>
+            <select name="item_id" class="custom-select" id="purchase_id">
+              <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <option value="<?php echo e($item->id); ?>" <?php echo e(( $item->id == $sales[0]->item_id) ? 'selected' : ''); ?>>
+                <?php echo e($item->name_long); ?>
 
               </option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -75,36 +74,36 @@
 
           <div class="form-group">
             <label for="dr_no">Sales DR No.</label>
-            <input type="text" class="form-control" name="dr_no" id="dr_no" value="<?php echo e($sales->dr_no); ?>" autocomplete="off">
+            <input type="text" class="form-control" name="dr_no" id="dr_no" value="<?php echo e($sales[0]->dr_no); ?>" autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="cost">Cost</label>
-            <input type="text" class="form-control" name="cost" id="cost" value="<?php echo e($sales->cost); ?>" autocomplete="off">
+            <input type="text" class="form-control" name="cost" id="cost" value="<?php echo e($sales[0]->cost); ?>" autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input type="text" class="form-control" name="qty" id="quantity" value="<?php echo e($sales->qty); ?>"
+            <input type="text" class="form-control" name="qty" id="quantity" value="<?php echo e($sales[0]->qty); ?>"
               autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="discount">Discount</label>
-            <input type="text" class="form-control" name="discount" id="discount" value="<?php echo e($sales->discount); ?>"
+            <input type="text" class="form-control" name="discount" id="discount" value="<?php echo e($sales[0]->discount); ?>"
               autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="addl_fee">Additional Fee</label>
-            <input type="text" class="form-control" name="addl_fee" id="addl_fee" value="<?php echo e($sales->addl_fee); ?>"
+            <input type="text" class="form-control" name="addl_fee" id="addl_fee" value="<?php echo e($sales[0]->addl_fee); ?>"
               autocomplete="off">
           </div>
 
           <label for="paid_on">Paid Date</label>
           <div class="input-group date" id="receive_date" data-target-input="nearest">
             <input type="text" class="form-control datetimepicker-input"
-              value="<?php if(isset($sales->paid_on)): ?><?php echo e(date('m/d/Y h:i:s A', strtotime($sales->paid_on))); ?><?php endif; ?>"
+              value="<?php if(isset($sales[0]->paid_on)): ?><?php echo e(date('m/d/Y h:i:s A', strtotime($sales[0]->paid_on))); ?><?php endif; ?>"
               autocomplete="off" value="" name="paid_on" data-target="#receive_date" data-placement="top" rel="tooltip"
               title="Click the icon on the right side to display the calendar"
               data-original-title="Click the icon on the right side to display the calendar">
@@ -116,9 +115,7 @@
                   class="fa fa-calendar"></i></div>
             </div>
           </div>
-
         </div>
-        <!-- /.card-body -->
 
         <div class="card-footer">
           <button type="submit" class="btn btn-danger">Submit</button>
@@ -126,12 +123,8 @@
       </form>
 
     </div>
-    <!-- /.card-body -->
   </div>
-  <!-- /.card -->
-
 </section>
-<!-- /.content -->
 
 <script>
 $(document).ready(function() {

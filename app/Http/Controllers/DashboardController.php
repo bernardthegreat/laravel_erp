@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         $stock_counts = DB::select(DB::raw(
-            "select * from stock_qty_slow_view"
+            "select * from stock_qty_view"
         ));
 
         $gross_income_today = DB::select(DB::raw(

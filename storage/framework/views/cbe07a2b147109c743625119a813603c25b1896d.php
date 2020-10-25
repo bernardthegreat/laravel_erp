@@ -19,96 +19,6 @@
   </div>
 </div>
 
-<!--
-<div class="modal fade" id="modal-default">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Sell</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form method="post" action="<?php echo e(route('insert_sale')); ?>">
-          <?php echo csrf_field(); ?>
-          <div class="input-group mb-3">
-            <select name="client_id" class="custom-select" id="client_id" data-placement="right" rel="tooltip"
-              title="Clients">
-              <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <option value="<?php echo e($client->id); ?>"><?php echo e($client->name_long); ?></option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
-          </div>
-          <div class="input-group mb-3">
-            <select name="item_id" class="custom-select" id="item_id" data-placement="right" rel="tooltip"
-              title="Items">
-              <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <option value="<?php echo e($item->item_id); ?>"><?php echo e($item->item_name); ?> -- <?php echo e($item->qty); ?> <?php echo e($item->unit); ?>/s in stock </em>
-              </option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="order_qty" class="form-control" placeholder="Quantity" autocomplete="off" required>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="discount" class="form-control" placeholder="Discount" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="additional_fee" class="form-control" placeholder="Additional Fee"
-              autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="dr_no" class="form-control" placeholder="DR #" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="invoice_no" class="form-control" placeholder="Invoice #" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <?php
-          $user = auth()->user();
-          ?>
-          <input type="hidden" name="user_id" id="user_id" value="<?php echo e($user->id); ?>" class="form-control"
-            autocomplete="off">
-          <div class="input-group mb-3">
-            <textarea class="form-control" rows="3" name="remarks" id="remarks" placeholder="Remarks"></textarea>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-danger">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
--->
-
 <section class="content">
   <div class="card">
     <div class="card-header">
@@ -147,27 +57,25 @@
         <tbody>
           <?php $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <tr>
-            <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($sale->created_at))); ?> </td>
+            <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($sale->added_on))); ?> </td>
             <td> <?php echo e($sale->client_name); ?> </td>
             <td> <?php echo e($sale->item_name); ?> </td>
-            <td> <?php echo e($sale->dr_no); ?> </td>
+            <td> <?php echo e($sale->delivery_no); ?> </td>
             <td> <?php echo e($sale->cost); ?> </td>
-            <td> <?php echo e($sale->qty); ?> </td>
+            <td> <?php echo e($sale->quantity); ?> </td>
             <td>
 
               <div class="btn-group">
-                <a class="btn btn-danger btn-sm" href="<?php echo e(route('sales.edit', $sale->id)); ?>" data-placement="top"
+                <a class="btn btn-danger btn-sm" href="<?php echo e(route('sales.edit', $sale->sale_no)); ?>" data-placement="top"
                   rel="tooltip" title="Edit <?php echo e($sale->client_name); ?>" data-original-title="Edit">
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <form class="delete" action="<?php echo e(route('sales.destroy', $sale->id)); ?>" method="post">
-                  <?php echo csrf_field(); ?>
-                  <?php echo method_field('DELETE'); ?>
-                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete sale for <?php echo e($sale->client_name); ?>"
-                  data-original-title="soft" type="submit"><i class="fas fa-trash">
-                    </i></button>
-                </form>
+                <a class="btn btn-danger btn-sm delete" href="<?php echo e(route('sales.delete', $sale->sale_no)); ?>" data-placement="top"
+                  rel="tooltip" title="Delete sale for <?php echo e($sale->client_name); ?>">
+                  <i class="fa fa-trash">
+                  </i>
+                </a>
               </div>
             </td>
           </tr>

@@ -19,96 +19,6 @@
   </div>
 </div>
 
-<!--
-<div class="modal fade" id="modal-default">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Sell</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form method="post" action="{{ route('insert_sale') }}">
-          @csrf
-          <div class="input-group mb-3">
-            <select name="client_id" class="custom-select" id="client_id" data-placement="right" rel="tooltip"
-              title="Clients">
-              @foreach($clients as $client)
-              <option value="{{$client->id}}">{{$client->name_long}}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="input-group mb-3">
-            <select name="item_id" class="custom-select" id="item_id" data-placement="right" rel="tooltip"
-              title="Items">
-              @foreach($items as $item)
-              <option value="{{$item->item_id}}">{{$item->item_name}} -- {{$item->qty}} {{$item->unit}}/s in stock </em>
-              </option>
-              @endforeach
-            </select>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="order_qty" class="form-control" placeholder="Quantity" autocomplete="off" required>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="discount" class="form-control" placeholder="Discount" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="additional_fee" class="form-control" placeholder="Additional Fee"
-              autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="dr_no" class="form-control" placeholder="DR #" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="text" name="invoice_no" class="form-control" placeholder="Invoice #" autocomplete="off">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-money-bill-alt"></span>
-              </div>
-            </div>
-          </div>
-          @php
-          $user = auth()->user();
-          @endphp
-          <input type="hidden" name="user_id" id="user_id" value="{{$user->id}}" class="form-control"
-            autocomplete="off">
-          <div class="input-group mb-3">
-            <textarea class="form-control" rows="3" name="remarks" id="remarks" placeholder="Remarks"></textarea>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-danger">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
--->
-
 <section class="content">
   <div class="card">
     <div class="card-header">
@@ -147,27 +57,25 @@
         <tbody>
           @foreach($sales as $sale)
           <tr>
-            <td> {{ date('m/d/Y h:i:s A', strtotime($sale->created_at)) }} </td>
+            <td> {{ date('m/d/Y h:i:s A', strtotime($sale->added_on)) }} </td>
             <td> {{$sale->client_name}} </td>
             <td> {{$sale->item_name}} </td>
-            <td> {{$sale->dr_no}} </td>
+            <td> {{$sale->delivery_no}} </td>
             <td> {{$sale->cost}} </td>
-            <td> {{$sale->qty}} </td>
+            <td> {{$sale->quantity}} </td>
             <td>
 
               <div class="btn-group">
-                <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->id)}}" data-placement="top"
+                <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->sale_no)}}" data-placement="top"
                   rel="tooltip" title="Edit {{$sale->client_name}}" data-original-title="Edit">
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <form class="delete" action="{{ route('sales.destroy', $sale->id)}}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete sale for {{$sale->client_name}}"
-                  data-original-title="soft" type="submit"><i class="fas fa-trash">
-                    </i></button>
-                </form>
+                <a class="btn btn-danger btn-sm delete" href="{{ route('sales.delete', $sale->sale_no)}}" data-placement="top"
+                  rel="tooltip" title="Delete sale for {{$sale->client_name}}">
+                  <i class="fa fa-trash">
+                  </i>
+                </a>
               </div>
             </td>
           </tr>

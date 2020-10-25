@@ -10,7 +10,7 @@ class Sale extends Model
 
     protected $fillable = [
         'client_id',
-        'purchase_id',
+        'item_id',
         'invoice_no',
         'cost',
         'qty',
@@ -26,8 +26,8 @@ class Sale extends Model
         return $this->belongsTo('App\Client', 'client_id');
     }
 
-    public function purchases()
+    public function items()
     {
-        return $this->belongsTo('App\Purchase', 'purchase_id');
+        return $this->belongsTo('App\Item', 'item_id');
     }
 }
