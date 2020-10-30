@@ -286,9 +286,7 @@ class SalesController extends Controller
 
     public function edit($id)
     {
-      $sales = DB::select(DB::raw(
-        "select * from sales where code = '$id'"
-      ));
+      $sales = Sale::findOrFail($id);
       $items = Item::all();
       $clients = Client::all();
       return view('sales/edit', compact('items', 'clients', 'sales'));

@@ -82,7 +82,7 @@
     <div class="card-header">
       <h3 class="card-title">
         <button type="button" class="btn btn-block btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
-          data-placement="top" rel="tooltip" title="Create Item">
+          data-placement="top" rel="tooltip" title="Purchase Order">
           <i class="fa fa-plus"> </i>
         </button>
       </h3>
@@ -109,40 +109,37 @@
         <tbody>
           <?php $__currentLoopData = $purchases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $purchase): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <tr>
-            <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($purchase->created_at))); ?> </td>
-            <td> <?php echo e($purchase->code); ?> </td>
-            <td> <?php echo e($purchase->items->name_long); ?> </td>
-            <td> <?php echo e($purchase->dr_no); ?> </td>
+            <td> <?php echo e(date('m/d/Y h:i:s A', strtotime($purchase->added_on))); ?> </td>
+            <td> <?php echo e($purchase->purchase_no); ?> </td>
+            <td> <?php echo e($purchase->item_name); ?> </td>
+            <td> <?php echo e($purchase->delivery_no); ?> </td>
             <td>
-              <?php if(isset($purchase->received_at)): ?>
-              <?php echo e(date('m/d/Y h:i:s A', strtotime($purchase->received_at))); ?>
+              <?php if(isset($purchase->received_on)): ?>
+                <?php echo e(date('m/d/Y h:i:s A', strtotime($purchase->received_on))); ?>
 
               <?php endif; ?>
             </td>
-            <td data-placement="bottom" rel="tooltip" title="Cost: <?php echo e($purchase->cost); ?>"> <?php echo e($purchase->qty); ?></td>
+            <td data-placement="bottom" rel="tooltip" title="Cost: <?php echo e($purchase->cost); ?>"> <?php echo e($purchase->quantity); ?></td>
             <td>
               <div class="btn-group">
-                <?php if(is_null($purchase->received_at)): ?>
+                <?php if(is_null($purchase->received_on)): ?>
                 <a class="btn btn-danger btn-sm receive_purchase_btn" href="#" data-toggle="modal"
-                  data-purchase-id="<?php echo e($purchase->id ?? ''); ?>" data-url="<?php echo e(route('receive_purchase', $purchase->id)); ?> "
+                  data-purchase-id="<?php echo e($purchase->id ?? ''); ?>" data-url="<?php echo e(route('receive_purchase', $purchase->purchase_id)); ?> "
                   data-target="#modal-receive-purchase" data-placement="top" rel="tooltip"
-                  title="Receive Order of <?php echo e($purchase->items->name_long); ?>" data-original-title="Edit">
+                  title="Receive Order of <?php echo e($purchase->item_name); ?>" data-original-title="Edit">
                   <i class="fa fa-cart-arrow-down">
                   </i>
                 </a>
                 <?php endif; ?>
-                <a class="btn btn-danger btn-sm" href="<?php echo e(route('purchases.edit', $purchase->id)); ?>" data-placement="top"
-                  rel="tooltip" title="Edit  <?php echo e($purchase->items->name_long); ?>" data-original-title="Edit">
-                  <i class="fa fa-edit">
+                <a class="btn btn-danger btn-sm" href="<?php echo e(route('purchases.edit', $purchase->purchase_id)); ?>" data-placement="top"
+                  rel="tooltip" title="Edit  <?php echo e($purchase->item_name); ?>" data-original-title="Edit">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-danger btn-sm delete" href="<?php echo e(route('purchases.delete', $purchase->purchase_id)); ?>" data-placement="top"
+                  rel="tooltip" title="Delete order of <?php echo e($purchase->item_name); ?>">
+                  <i class="fa fa-trash">
                   </i>
                 </a>
-                <form class="delete" action="<?php echo e(route('purchases.destroy', $purchase->id)); ?>" method="post">
-                  <?php echo csrf_field(); ?>
-                  <?php echo method_field('DELETE'); ?>
-                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete order of <?php echo e($purchase->items->name_long); ?>"
-                  data-original-title="soft" type="submit"><i class="fas fa-trash">
-                    </i></button>
-                </form>
               </div>
             </td>
           </tr>

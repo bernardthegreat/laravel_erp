@@ -52,10 +52,15 @@
           </select>
           <div class="input-group-append">
             <div class="btn-group">
-              <button type="submit" class="btn btn-sm btn-danger w-100"><i class="fas fa-search-dollar"> </i></button>
+              <button type="submit" class="btn btn-sm btn-danger w-100 submit_btn"><i class="fas fa-search-dollar"> </i></button>
               @if($results ?? '')
                 @if(count($results) > 0)
-                  <a href="{{$analytics_selected}}_print" target="_blank" class="btn btn-sm btn-danger pt-2"><i class="fas fa-print"> </i></a>
+
+                  <a id="print_link" target="_blank" class="btn btn-sm btn-danger pt-2"><i class="fas fa-print"> </i></a>
+                  <input type="hidden" value="print" name="print">
+                  <input type="hidden" value="{{$analytics_selected}}_print" name="analytics_id_print">
+                  <input type="hidden" name="fromDate" class="fromDateHidden">
+                  <input type="hidden" name="toDate" class="toDateHidden">
                 @endif
               @endif
             </div>
@@ -94,8 +99,8 @@
 
         @if($results ?? '')
           @if($analytics_selected == 'monthly_sales_report')
-            <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
-              <table id="analytics1" class="table table-bordered table-striped text-center" width="100%">
+            <div style="overflow-x:auto;">
+              <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
                   <tr>
                     <!-- <th>Sale #</th> -->
@@ -155,50 +160,41 @@
                 </tfoot>
               </table>
             </div>
-          @elseif($analytics_selected == 'sales_vs_purchases')
-            <div class="input-group mb-3" style="width:990px; overflow-x:auto;">
+          @elseif($analytics_selected == 'purchases_vs_sales')
+          <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
                   <tr>
-                    <th>Sale Date</th>
+                    <th>Purchase Date</th>
                     <th>Delivery #</th>
-                    <th>Client</th>
                     <th>Item</th>
-                    <th>Selling Cost</th>
+                    <th>Purchase Quantity</th>
                     <th>Sold Quantity</th>
-                    <th>Purchase Cost</th>
-                    <th>Interest Rate</th>
-                    <th>Net Income</th>
+                    <th>Unsold Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($results as $value)
                   <tr>
                     <td>
-                      {{$value->sale_date ? date('m/d/Y', strtotime($value->sale_date)) : '' }}
+                      {{$value->purchase_date ? date('m/d/Y', strtotime($value->purchase_date)) : '' }}
                     </td>
-                    <td>{{$value->delivery_no}}</td>
-                    <td>{{$value->client_name}}</td>
+                    <td>{{$value->dr_no}}</td>
                     <td>{{$value->item_name}}</td>
-                    <td>{{$value->selling_cost}}</td>
+                    <td>{{$value->purchase_qty}}</td>
                     <td>{{$value->sold_qty}}</td>
-                    <td>{{$value->purchase_cost}}</td>
-                    <td>{{$value->interest_rate}}</td>
-                    <td>{{$value->net_income}}</td>
+                    <td>{{$value->unsold_qty}}</td>
                   </tr>
                   @endforeach
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>Sale Date</th>
+                    <th>Purchase Date</th>
                     <th>Delivery #</th>
-                    <th>Client</th>
                     <th>Item</th>
-                    <th>Selling Cost</th>
+                    <th>Purchase Quantity</th>
                     <th>Sold Quantity</th>
-                    <th>Purchase Cost</th>
-                    <th>Interest Rate</th>
-                    <th>Net Income</th>
+                    <th>Unsold Quantity</th>
                   </tr>
                 </tfoot>
               </table>
@@ -233,6 +229,36 @@
                 </tfoot>
               </table>
             </div>
+            @elseif($analytics_selected == 'monthly_utilities')
+            <div style="overflow-x:auto;">
+              <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
+                <thead>
+                  <tr>
+                    <th>Utility</th>
+                    <th>Cost</th>
+                    <th>Coverage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($results as $value)
+                  <tr>
+                    <td>{{$value->utility}}</td>
+                    <td>{{$value->cost}}</td>
+                    <td>
+                      {{$value->coverage ? date('M Y', strtotime($value->coverage)) : '' }}
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                    <th>Cost Datetime</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           @endif
 
         @endif
@@ -249,6 +275,49 @@
       $('.analytics_date').show()
     }
   });
+
+  $(".submit_btn").click(function(){
+    const dates = $("#analytics_from_and_to_date").val();
+    const splittedDates = dates.split('-');
+    localStorage.setItem("fromDate", splittedDates[0]);
+    localStorage.setItem("toDate", splittedDates[1]);
+  });
+
+  if(localStorage.getItem("fromDate") != '' || localStorage.getItem("toDate") != '') {
+    const fromDate = localStorage.getItem("fromDate");
+    const toDate = localStorage.getItem("toDate");
+    const arrDate = [fromDate, toDate];
+    const joinDate = arrDate.join('-');
+    $('#analytics_from_and_to_date').val(joinDate);
+    $('.fromDateHidden').val(fromDate);
+    $('.toDateHidden').val(toDate);
+
+    const fromD = new Date(localStorage.getItem("fromDate"))
+    const fromYe = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(fromD)
+    const fromMo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(fromD)
+    const fromDa = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(fromD)
+    const finalFromDate = `${fromYe}-${fromMo}-${fromDa}`
+
+    const toD = new Date(localStorage.getItem("toDate"))
+    const toYe = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(toD)
+    const toMo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(toD)
+    const toDa = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(toD)
+    const finalToDate = `${toYe}-${toMo}-${toDa}`
+    
+    const finalArrDate = [finalFromDate, finalToDate].join('&');
+    const finalDate = finalArrDate.replace(' ', '').replace(' ', '');
+    
+    <?php if(isset($analytics_selected)) { ?>
+      <?php if($analytics_selected == 'item_costs_history') { ?>
+        var url = '<?php echo $analytics_selected; ?>'+'_print';
+        $("#print_link").attr("href", url);
+      <?php } else { ?>
+        var url = '<?php echo $analytics_selected; ?>'+'_print'+'/'+finalDate;
+        $("#print_link").attr("href", url);
+      <?php } ?>
+    <?php } ?>
+  }
+  
 </script>
 
 @endsection

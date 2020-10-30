@@ -85,6 +85,11 @@ Route::post('/employees/time_in_and_out', 'EmployeesController@time_in_and_out')
 Route::post('/employees/process_payroll', 'EmployeesController@process_payroll')->name('process_payroll');
 Route::get('/employees/payslip/{id}', 'EmployeesController@generate_latest_payslip')->name('generate_latest_payslip');
 Route::get('/employees/get_payslip/{id}', 'EmployeesController@get_payslip')->name('get_payslip');
+Route::post('/employees/add_salary_rates/{id}', 'EmployeesController@add_salary_rates')->name('employees.add_salary_rates');
+Route::get('/employees/edit_salary_rates/{id}', 'EmployeesController@edit_salary_rates')->name('employees.edit_salary_rates');
+Route::post('/employees/update_salary_rate/{id}', 'EmployeesController@update_salary_rate')->name('employees.update_salary_rate');
+
+
 /* Employees */
 
 /* Utilities */
@@ -100,14 +105,15 @@ Route::get('/utility_types/soft_delete/{id}', 'UtilityTypesController@soft_delet
 
 Route::get('/accounting/dashboard', 'AccountingController@index')->name('accounting_dashboard');
 
-Route::resource('analytics', 'AnalyticsController');
-Route::post('/get_analytics', 'AnalyticsController@get_analytics_listing')->name('get_analytics_listing');
-Route::get('/monthly_sales_report_print', 'AnalyticsController@monthly_sales_report_print')->name('monthly_sales_report_print');
-Route::get('/sales_vs_purchases_print', 'AnalyticsController@sales_vs_purchases_print')->name('sales_vs_purchases_print');
-Route::get('/item_costs_history_print', 'AnalyticsController@item_costs_history_print')->name('item_costs_history_print');
+Route::get('/analytics', 'AnalyticsController@index')->name('analytics.index');
+Route::post('/analytics/get_analytics', 'AnalyticsController@get_analytics_listing')->name('get_analytics_listing');
+Route::get('/analytics/monthly_sales_report_print/{id}', 'AnalyticsController@monthly_sales_report_print')->name('monthly_sales_report_print');
+Route::get('/analytics/purchases_vs_sales_print/{id}', 'AnalyticsController@purchases_vs_sales_print')->name('purchases_vs_sales_print');
+Route::get('/analytics/monthly_utilities_print/{id}', 'AnalyticsController@monthly_utilities_print')->name('monthly_utilities_print');
+Route::get('/analytics/item_costs_history_print', 'AnalyticsController@item_costs_history_print')->name('item_costs_history_print');
 
 /* Report PDF */
-Route::get('/sales/reports/print/monthly_sales_income', [ 'as' => 'sales_report.monthly_sales_income_print', 'uses' => 'SalesController@monthly_sales_income_print']);
+Route::get('/sales/reports/print/monthly_sales_income/{id}', [ 'as' => 'sales_report.monthly_sales_income_print', 'uses' => 'SalesController@monthly_sales_report_print']);
 Route::get('/inventory/reports/print/stock_count', [ 'as' => 'pdf_stock_count', 'uses' => 'InventoryController@stock_count_print_pdf']);
 
 /* End of Report PDF */

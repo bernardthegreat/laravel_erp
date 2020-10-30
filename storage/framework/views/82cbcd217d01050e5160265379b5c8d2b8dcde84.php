@@ -1,5 +1,5 @@
 <head>
-  <title>Items Costs History</title>
+  <title>Monthly Utilities Report</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
@@ -24,7 +24,7 @@
   text-align: center;
 }
 
-@page {
+@page  {
   margin-top: 2%;
   margin-bottom: 5%;
 }
@@ -53,7 +53,7 @@
         <tr>
           <td colspan="3" style="border:none;">
             <table style="width: 100%;border-collapse: collapse; text-align: center;">
-              @include('partials.pdf.header')
+              <?php echo $__env->make('partials.pdf.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </table>
           </td>
         </tr>
@@ -61,7 +61,7 @@
         <tr>
           <th colspan="3"
             style="text-align:center; background: white; border:none; text-transform:uppercase;font-size: 20px">
-            Item Costs History
+            Monthly Utilities Report
           </th>
         </tr>
 
@@ -69,25 +69,37 @@
           <th colspan="3" style="text-align:center;background: white; border:none;"> &nbsp; </th>
         </tr>
         <tr>
-          <th>Item</th>
+          <th>Utility</th>
           <th>Cost</th>
-          <th>Created Datetime</th>
+          <th>Coverage</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($result_print as $item_costs)
+        <?php 
+          $total_cost = 0;
+        ?>
+        <?php $__currentLoopData = $result_print; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $utilities): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
-          <td>{{$item_costs->item_name}}</td>
-          <td>{{$item_costs->cost}}</td>
+          <td><?php echo e($utilities->utility); ?></td>
           <td>
-            {{$item_costs->cost_datetime ? date('m/d/Y h:i:s A', strtotime($item_costs->cost_datetime)) : '' }}
+            <?php echo e($utilities->coverage ? date('M Y', strtotime($utilities->coverage)) : ''); ?>
+
           </td>
+          <td><?php echo e($utilities->cost); ?></td>
         </tr>
-        @endforeach
+        <?php 
+          $total_cost += $utilities->cost;
+        ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <tr>
+          <td></td>
+          <td style="font-weight: bold;">Total</td>
+          <td><?php echo number_format($total_cost, 2); ?></td>
+        </tr>
       </tbody>
     </table>
   </div>
 
 
 
-</body>
+</body><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/analytics/utilities_pdf/monthly_utilities.blade.php ENDPATH**/ ?>

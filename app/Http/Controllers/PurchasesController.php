@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Purchase;
 use App\Item;
+use DB;
 use Illuminate\Http\Request;
 
 class PurchasesController extends Controller
@@ -22,9 +23,10 @@ class PurchasesController extends Controller
     public function index()
     {
         //
-        $purchases = Purchase::with('items')->get();
-        
         $items = Item::all();
+        $purchases = DB::select(DB::raw(
+          "select * from purchases_view"
+        ));
 
         return view('purchases/index', compact('purchases','items'));
     }
@@ -126,7 +128,6 @@ class PurchasesController extends Controller
           $receive_date = NULL;
         }
 
-
         $validatedData = $request->validate([
             'cost' => 'required|max:20',
             'dr_no' => 'required|max:20',
@@ -156,5 +157,24 @@ class PurchasesController extends Controller
         $purchases->delete();
 
         return redirect('/purchases')->with('success', 'Order successfully deleted');
+    }
+    public function delete($id)
+    {
+      DB::transaction(function() use ($id) {
+        $delete_sale = DB::select('call update_sale_void(?, @err)', array(
+          $sale_id,
+        ));
+        $select_error_code = DB::select('select @err as error_code');
+        if ($select_error_code) {
+          $error_code = $select_error_code[0]->error_code;
+          if ($error_code > 0) {
+            throw new \Exception('Error saving order. Error code is ' . $error_code); // Throwing exception rolls back the transaction
+          }
+        } else {
+          throw new \Exception('Error saving order.'); // Throwing exception rolls back the transaction
+        }
+      });
+
+      return redirect('/sales')->with('success', 'Sale successfully deleted');
     }
 }

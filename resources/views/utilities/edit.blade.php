@@ -69,7 +69,7 @@
                       <label for="cost">Coverage</label>
                       <div class="input-group mb-3 date" id="utilities_coverage" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" data-target="#utilities_coverage"
-                          name="remarks"
+                          name="coverage"
                           autocomplete="off"
                           data-placement="top" rel="tooltip" 
                           value="{{$utilities->remarks}}"

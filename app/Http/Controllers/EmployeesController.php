@@ -182,7 +182,6 @@ class EmployeesController extends Controller
         $splitted_date = explode(' - ', $coverage_payroll_date);
 
         
-
         $employee_id = $request->employee_id;
         $additional_pay = $request->additional_pay;
         $deduction = $request->deduction;
@@ -304,7 +303,7 @@ class EmployeesController extends Controller
 
         $payrolls = Payroll::all()->where('employee_id', $id);
 
-        $salary_rates = SalaryRate::all()->where('employee_id', $id);
+        $salary_rates = SalaryRate::all()->where('employee_id', $id)->sortByDesc('created_at');
 
         return view('employees/edit', compact('employees', 'payrolls', 'salary_rates'));
     }
@@ -343,13 +342,54 @@ class EmployeesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    
     public function soft_delete(Request $request, $id)
     {
-
         Employee::where('id', $id)->update(array(
             'remarks' => 'inactive'
         ));
 
         return redirect()->back()->with('error', 'Employee successfully deleted');
+    }
+
+    public function add_salary_rates(Request $request)
+    {
+      $validatedData = $request->validate([
+        'employee_id'=>'max:15',
+        'hourly_fee'=>'required|max:15',
+        'remarks' => 'max:50',
+      ]);
+    
+      $user = auth()->user();
+
+      $show = SalaryRate::create($validatedData + [
+          'created_by' => $user->id,
+          'updated_by' => $user->id,
+      ]);
+
+      return redirect()->back()->with('success', 'Salary rate for this employee successfully saved');
+    }
+
+    public function edit_salary_rates($id)
+    {
+      $salary_rates = SalaryRate::findOrFail($id);
+      // $salary_rates = SalaryRate::all()->where('id', $id);
+      return view('employees/edit_salary_rates', compact('salary_rates'));
+    }
+
+    public function update_salary_rate(Request $request, $id)
+    {
+      $validatedData = $request->validate([
+        'hourly_fee' => 'required|max:20',
+      ]);
+
+      $user = auth()->user();
+
+      SalaryRate::whereId($id)->update($validatedData +[
+          'updated_by' => $user->id,
+      ]);
+      
+      return redirect('/employees')->with('success', 'Employee Salary Rate successfully updated');
     }
 }

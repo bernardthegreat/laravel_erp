@@ -66,12 +66,12 @@
             <td>
 
               <div class="btn-group">
-                <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->sale_no)}}" data-placement="top"
+                <a class="btn btn-danger btn-sm" href="{{ route('sales.edit', $sale->sale_id)}}" data-placement="top"
                   rel="tooltip" title="Edit {{$sale->client_name}}" data-original-title="Edit">
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <a class="btn btn-danger btn-sm delete" href="{{ route('sales.delete', $sale->sale_no)}}" data-placement="top"
+                <a class="btn btn-danger btn-sm delete" href="{{ route('sales.delete', $sale->sale_id)}}" data-placement="top"
                   rel="tooltip" title="Delete sale for {{$sale->client_name}}">
                   <i class="fa fa-trash">
                   </i>

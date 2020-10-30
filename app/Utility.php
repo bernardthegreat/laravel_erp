@@ -12,6 +12,7 @@ class Utility extends Model
         'cost',
         'created_by',
         'updated_by',
+        'coverage',
         'remarks'
     ];
 

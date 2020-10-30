@@ -23,11 +23,8 @@
                             </div>
                             <div class="modal-body">
 
-
                                 <form method="post" action="{{ route('employees.store') }}">
                                     @csrf
-
-
                                     <div class="input-group mb-3">
                                         <input type="text" name="first_name" class="form-control"
                                             placeholder="First Name" autocomplete="off" required>
@@ -281,15 +278,13 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" id="data-payslip-url" class="btn btn-danger" onClick="">Process Payroll</button>
                                 </div>
-
-
                             </div>
                             <!-- /.modal-content -->
                         </div>
                         <!-- /.modal-dialog -->
                     </form>
                 </div>
-
+                
             </div>
             <div class="col-sm-9">
                 <ol class="breadcrumb float-sm-right">

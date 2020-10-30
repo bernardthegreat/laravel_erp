@@ -81,7 +81,7 @@
     <div class="card-header">
       <h3 class="card-title">
         <button type="button" class="btn btn-block btn-danger btn-flat" data-toggle="modal" data-target="#modal-default"
-          data-placement="top" rel="tooltip" title="Create Item">
+          data-placement="top" rel="tooltip" title="Purchase Order">
           <i class="fa fa-plus"> </i>
         </button>
       </h3>
@@ -108,39 +108,36 @@
         <tbody>
           @foreach($purchases as $purchase)
           <tr>
-            <td> {{ date('m/d/Y h:i:s A', strtotime($purchase->created_at)) }} </td>
-            <td> {{$purchase->code}} </td>
-            <td> {{$purchase->items->name_long}} </td>
-            <td> {{$purchase->dr_no}} </td>
+            <td> {{ date('m/d/Y h:i:s A', strtotime($purchase->added_on)) }} </td>
+            <td> {{$purchase->purchase_no}} </td>
+            <td> {{$purchase->item_name}} </td>
+            <td> {{$purchase->delivery_no}} </td>
             <td>
-              @if(isset($purchase->received_at))
-              {{ date('m/d/Y h:i:s A', strtotime($purchase->received_at)) }}
+              @if(isset($purchase->received_on))
+                {{ date('m/d/Y h:i:s A', strtotime($purchase->received_on)) }}
               @endif
             </td>
-            <td data-placement="bottom" rel="tooltip" title="Cost: {{$purchase->cost}}"> {{$purchase->qty}}</td>
+            <td data-placement="bottom" rel="tooltip" title="Cost: {{$purchase->cost}}"> {{$purchase->quantity}}</td>
             <td>
               <div class="btn-group">
-                @if(is_null($purchase->received_at))
+                @if(is_null($purchase->received_on))
                 <a class="btn btn-danger btn-sm receive_purchase_btn" href="#" data-toggle="modal"
-                  data-purchase-id="{{$purchase->id ?? ''}}" data-url="{{ route('receive_purchase', $purchase->id)}} "
+                  data-purchase-id="{{$purchase->id ?? ''}}" data-url="{{ route('receive_purchase', $purchase->purchase_id)}} "
                   data-target="#modal-receive-purchase" data-placement="top" rel="tooltip"
-                  title="Receive Order of {{$purchase->items->name_long}}" data-original-title="Edit">
+                  title="Receive Order of {{$purchase->item_name}}" data-original-title="Edit">
                   <i class="fa fa-cart-arrow-down">
                   </i>
                 </a>
                 @endif
-                <a class="btn btn-danger btn-sm" href="{{ route('purchases.edit', $purchase->id)}}" data-placement="top"
-                  rel="tooltip" title="Edit  {{$purchase->items->name_long}}" data-original-title="Edit">
-                  <i class="fa fa-edit">
+                <a class="btn btn-danger btn-sm" href="{{ route('purchases.edit', $purchase->purchase_id)}}" data-placement="top"
+                  rel="tooltip" title="Edit  {{$purchase->item_name}}" data-original-title="Edit">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-danger btn-sm delete" href="{{ route('purchases.delete', $purchase->purchase_id)}}" data-placement="top"
+                  rel="tooltip" title="Delete order of {{$purchase->item_name}}">
+                  <i class="fa fa-trash">
                   </i>
                 </a>
-                <form class="delete" action="{{ route('purchases.destroy', $purchase->id)}}" method="post">
-                  @csrf
-                  @method('DELETE')
-                  <button class="btn btn-danger btn-sm" data-placement="top" rel="tooltip" title="Delete order of {{$purchase->items->name_long}}"
-                  data-original-title="soft" type="submit"><i class="fas fa-trash">
-                    </i></button>
-                </form>
               </div>
             </td>
           </tr>

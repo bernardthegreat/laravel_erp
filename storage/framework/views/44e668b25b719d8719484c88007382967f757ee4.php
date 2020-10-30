@@ -39,6 +39,16 @@
         <div class="card card-danger">
             <div class="card-header">
               <h3 class="card-title">Salary Rates</h3>
+              <div class="card-tools">
+                <a class="btn btn-danger btn-sm" href="#" 
+                  data-toggle="modal"
+                  data-target="#modal-salary-rates"
+                  data-placement="top" rel="tooltip" title="Edit Salary Rate of <?php echo e($employees->fullname); ?>"
+                >
+                  <i class="fa fa-plus">
+                  </i>
+                </a>
+              </div>
             </div>
             <div class="card-body mb-4" style="height:600px; overflow-y:auto;">
               <table class="table table-bordered table-striped text-center">
@@ -50,6 +60,14 @@
                   <td>
                     Created: <?php echo e(date('m/d/Y h:i:s A', strtotime($salary_rate->created_at))); ?>
 
+                  </td>
+                  <td>
+                    <a class="btn btn-danger btn-sm" href="<?php echo e(route('employees.edit_salary_rates', $salary_rate->id)); ?>"
+                        data-placement="top" rel="tooltip" title="Edit Salary Rate"
+                        data-original-title="Edit">
+                        <i class="fa fa-edit">
+                        </i>
+                    </a>
                   </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -168,6 +186,38 @@
               </tfoot>
             </table>
           </div>
+        </div>
+
+        <div class="modal fade modal-process-payment" id="modal-salary-rates">
+          <form method="post" action="<?php echo e(route('employees.add_salary_rates', $employees->id )); ?>">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Salary Rate </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php echo csrf_field(); ?>
+                    <input type="hidden" id="data-employee-id" name="employee_id" value="<?php echo e($employees->id); ?>">
+                    <div class="input-group mb-3">
+                      <input type="number" name="hourly_fee" id="hourly_fee" class="form-control"
+                          placeholder="Hourly Fee" autocomplete="off" required>
+                      <div class="input-group-append">
+                          <div class="input-group-text">
+                              <span class="fas fa-money-bill"></span>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="data-salaryrate-url" class="btn btn-danger" onClick="">Save Salary Rate</button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

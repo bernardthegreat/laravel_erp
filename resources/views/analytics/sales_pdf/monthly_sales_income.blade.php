@@ -71,28 +71,32 @@
           <th>DR #</th>
           <th>Client</th>
           <th>Item</th>
-          <th>Cost</th>
           <th>Discount</th>
           <th>Additional Fee</th>
+          <th>Cost</th>
           <th>Quantity</th>
-          <th>Total Cost</th>
           <th>Paid Date</th>
           <th>Sold Date</th>
           <th>Sold By</th>
           <th>Payment Method</th>
+          <th>Total Cost</th>
         </tr>
       </thead>
       <tbody>
+        
+        @php 
+          $total = 0; 
+          $increment = 0;
+        @endphp;
         @foreach($result_print as $sale)
         <tr>
           <td>{{$sale->delivery_no}}</td>
           <td>{{$sale->client_name}}</td>
           <td>{{$sale->item_name}}</td>
-          <td>{{$sale->cost}}</td>
           <td>{{$sale->discount}}</td>
           <td>{{$sale->additional_fee}}</td>
+          <td>{{$sale->cost}}</td>
           <td>{{$sale->quantity}}</td>
-          <td>{{$sale->total_cost}}</td>
           <td>
             {{$sale->paid_on ? date('m/d/Y', strtotime($sale->paid_on)) : '' }}
           </td>
@@ -101,9 +105,23 @@
           </td>
           <td>{{$sale->added_by}}</td>
           <td>{{$sale->description}}</td>
+          <td>
+            {{$sale->total_cost}} 
+            @php 
+              $total_cost =  str_replace(',', '', $sale->total_cost);
+              $final_cost = round($total_cost, 0);
+              $total += $final_cost;
+            @endphp
+          </td>
+          
         </tr>
-
         @endforeach
+        <tr>
+          <td colspan="10"></td>
+          <td>Total</td>
+          <td><?php echo number_format($total, 2); ?></td>
+        </tr>
+        
       </tbody>
     </table>
   </div>

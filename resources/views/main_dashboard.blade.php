@@ -40,7 +40,7 @@
         <div class="inner">
           <h3>
             @if(isset($gross_expense_today[0]->cost))
-              {{$gross_expense_today[0]->cost}}
+              {{number_format($gross_expense_today[0]->cost, 2)}}
             @else
               0
             @endif

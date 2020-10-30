@@ -41,7 +41,7 @@
         <div class="inner">
           <h3>
             <?php if(isset($gross_expense_today[0]->cost)): ?>
-              <?php echo e($gross_expense_today[0]->cost); ?>
+              <?php echo e(number_format($gross_expense_today[0]->cost, 2)); ?>
 
             <?php else: ?>
               0

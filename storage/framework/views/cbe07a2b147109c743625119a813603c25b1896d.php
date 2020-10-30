@@ -66,12 +66,12 @@
             <td>
 
               <div class="btn-group">
-                <a class="btn btn-danger btn-sm" href="<?php echo e(route('sales.edit', $sale->sale_no)); ?>" data-placement="top"
+                <a class="btn btn-danger btn-sm" href="<?php echo e(route('sales.edit', $sale->sale_id)); ?>" data-placement="top"
                   rel="tooltip" title="Edit <?php echo e($sale->client_name); ?>" data-original-title="Edit">
                   <i class="fa fa-edit">
                   </i>
                 </a>
-                <a class="btn btn-danger btn-sm delete" href="<?php echo e(route('sales.delete', $sale->sale_no)); ?>" data-placement="top"
+                <a class="btn btn-danger btn-sm delete" href="<?php echo e(route('sales.delete', $sale->sale_id)); ?>" data-placement="top"
                   rel="tooltip" title="Delete sale for <?php echo e($sale->client_name); ?>">
                   <i class="fa fa-trash">
                   </i>

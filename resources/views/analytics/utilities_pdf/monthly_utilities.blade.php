@@ -1,5 +1,5 @@
 <head>
-  <title>Monthly Sales Income Report</title>
+  <title>Monthly Utilities Report</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
@@ -51,7 +51,7 @@
     <table id="body" style="width: 100%;border-collapse: collapse; text-align: center;">
       <thead>
         <tr>
-          <td colspan="9" style="border:none;">
+          <td colspan="3" style="border:none;">
             <table style="width: 100%;border-collapse: collapse; text-align: center;">
               @include('partials.pdf.header')
             </table>
@@ -59,43 +59,42 @@
         </tr>
 
         <tr>
-          <th colspan="9"
+          <th colspan="3"
             style="text-align:center; background: white; border:none; text-transform:uppercase;font-size: 20px">
-            Sales VS. Purchases
+            Monthly Utilities Report
           </th>
         </tr>
 
         <tr>
-          <th colspan="9" style="text-align:center;background: white; border:none;"> &nbsp; </th>
+          <th colspan="3" style="text-align:center;background: white; border:none;"> &nbsp; </th>
         </tr>
         <tr>
-          <th>Sale Date</th>
-          <th>Delivery #</th>
-          <th>Client</th>
-          <th>Item</th>
-          <th>Selling Cost</th>
-          <th>Sold Quantity</th>
-          <th>Purchase Cost</th>
-          <th>Interest Rate</th>
-          <th>Net Income</th>
+          <th>Utility</th>
+          <th>Cost</th>
+          <th>Coverage</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($result_print as $sales_purchase)
+        @php 
+          $total_cost = 0;
+        @endphp
+        @foreach($result_print as $utilities)
         <tr>
+          <td>{{$utilities->utility}}</td>
           <td>
-            {{$sales_purchase->sale_date ? date('m/d/Y', strtotime($sales_purchase->sale_date)) : '' }}
+            {{$utilities->coverage ? date('M Y', strtotime($utilities->coverage)) : '' }}
           </td>
-          <td>{{$sales_purchase->delivery_no}}</td>
-          <td>{{$sales_purchase->client_name}}</td>
-          <td>{{$sales_purchase->item_name}}</td>
-          <td>{{$sales_purchase->selling_cost}}</td>
-          <td>{{$sales_purchase->sold_qty}}</td>
-          <td>{{$sales_purchase->purchase_cost}}</td>
-          <td>{{$sales_purchase->interest_rate}}</td>
-          <td>{{$sales_purchase->net_income}}</td>
+          <td>{{$utilities->cost}}</td>
         </tr>
+        @php 
+          $total_cost += $utilities->cost;
+        @endphp
         @endforeach
+        <tr>
+          <td></td>
+          <td style="font-weight: bold;">Total</td>
+          <td><?php echo number_format($total_cost, 2); ?></td>
+        </tr>
       </tbody>
     </table>
   </div>

@@ -37,14 +37,14 @@
     </div>
     <div class="card-body">
       
-      <form role="form" method="post" action="{{ route('sales.update', $sales[0]->id) }}">
+      <form role="form" method="post" action="{{ route('sales.update', $sales->id) }}">
 
         <div class="card-body">
           @csrf
           @method('PATCH')
           <div class="form-group">
             <label for="code">Sales #</label>
-            <input type="text" class="form-control" name="code" id="code" value="{{$sales[0]->code}}" autocomplete="off"
+            <input type="text" class="form-control" name="code" id="code" value="{{$sales->code}}" autocomplete="off"
               readonly>
           </div>
 
@@ -52,7 +52,7 @@
             <label for="client_id">Client</label>
             <select name="client_id" class="custom-select" id="client_id">
               @foreach($clients as $client)
-              <option value="{{$client->id}}" {{ ( $client->id == $sales[0]->client_id) ? 'selected' : '' }}>
+              <option value="{{$client->id}}" {{ ( $client->id == $sales->client_id) ? 'selected' : '' }}>
                 {{$client->name_long}}
               </option>
               @endforeach
@@ -63,7 +63,7 @@
             <label for="item_id">Item</label>
             <select name="item_id" class="custom-select" id="purchase_id">
               @foreach($items as $item)
-              <option value="{{$item->id}}" {{ ( $item->id == $sales[0]->item_id) ? 'selected' : '' }}>
+              <option value="{{$item->id}}" {{ ( $item->id == $sales->item_id) ? 'selected' : '' }}>
                 {{$item->name_long}}
               </option>
               @endforeach
@@ -72,36 +72,36 @@
 
           <div class="form-group">
             <label for="dr_no">Sales DR No.</label>
-            <input type="text" class="form-control" name="dr_no" id="dr_no" value="{{$sales[0]->dr_no}}" autocomplete="off">
+            <input type="text" class="form-control" name="dr_no" id="dr_no" value="{{$sales->dr_no}}" autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="cost">Cost</label>
-            <input type="text" class="form-control" name="cost" id="cost" value="{{$sales[0]->cost}}" autocomplete="off">
+            <input type="text" class="form-control" name="cost" id="cost" value="{{$sales->cost}}" autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input type="text" class="form-control" name="qty" id="quantity" value="{{$sales[0]->qty}}"
+            <input type="text" class="form-control" name="qty" id="quantity" value="{{$sales->qty}}"
               autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="discount">Discount</label>
-            <input type="text" class="form-control" name="discount" id="discount" value="{{$sales[0]->discount}}"
+            <input type="text" class="form-control" name="discount" id="discount" value="{{$sales->discount}}"
               autocomplete="off">
           </div>
 
           <div class="form-group">
             <label for="addl_fee">Additional Fee</label>
-            <input type="text" class="form-control" name="addl_fee" id="addl_fee" value="{{$sales[0]->addl_fee}}"
+            <input type="text" class="form-control" name="addl_fee" id="addl_fee" value="{{$sales->addl_fee}}"
               autocomplete="off">
           </div>
 
           <label for="paid_on">Paid Date</label>
           <div class="input-group date" id="receive_date" data-target-input="nearest">
             <input type="text" class="form-control datetimepicker-input"
-              value="@if(isset($sales[0]->paid_on)){{ date('m/d/Y h:i:s A', strtotime($sales[0]->paid_on)) }}@endif"
+              value="@if(isset($sales->paid_on)){{ date('m/d/Y h:i:s A', strtotime($sales->paid_on)) }}@endif"
               autocomplete="off" value="" name="paid_on" data-target="#receive_date" data-placement="top" rel="tooltip"
               title="Click the icon on the right side to display the calendar"
               data-original-title="Click the icon on the right side to display the calendar">

@@ -71,28 +71,32 @@
           <th>DR #</th>
           <th>Client</th>
           <th>Item</th>
-          <th>Cost</th>
           <th>Discount</th>
           <th>Additional Fee</th>
+          <th>Cost</th>
           <th>Quantity</th>
-          <th>Total Cost</th>
           <th>Paid Date</th>
           <th>Sold Date</th>
           <th>Sold By</th>
           <th>Payment Method</th>
+          <th>Total Cost</th>
         </tr>
       </thead>
       <tbody>
+        
+        <?php 
+          $total = 0; 
+          $increment = 0;
+        ?>;
         <?php $__currentLoopData = $result_print; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <tr>
           <td><?php echo e($sale->delivery_no); ?></td>
           <td><?php echo e($sale->client_name); ?></td>
           <td><?php echo e($sale->item_name); ?></td>
-          <td><?php echo e($sale->cost); ?></td>
           <td><?php echo e($sale->discount); ?></td>
           <td><?php echo e($sale->additional_fee); ?></td>
+          <td><?php echo e($sale->cost); ?></td>
           <td><?php echo e($sale->quantity); ?></td>
-          <td><?php echo e($sale->total_cost); ?></td>
           <td>
             <?php echo e($sale->paid_on ? date('m/d/Y', strtotime($sale->paid_on)) : ''); ?>
 
@@ -103,9 +107,23 @@
           </td>
           <td><?php echo e($sale->added_by); ?></td>
           <td><?php echo e($sale->description); ?></td>
+          <td>
+            <?php echo e($sale->total_cost); ?> 
+            <?php 
+              $total_cost =  str_replace(',', '', $sale->total_cost);
+              $final_cost = round($total_cost, 0);
+              $total += $final_cost;
+            ?>
+          </td>
+          
         </tr>
-
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <tr>
+          <td colspan="10"></td>
+          <td>Total</td>
+          <td><?php echo number_format($total, 2); ?></td>
+        </tr>
+        
       </tbody>
     </table>
   </div>
