@@ -245,7 +245,9 @@
                     <td>{{$value->utility}}</td>
                     <td>{{$value->cost}}</td>
                     <td>
-                      {{$value->coverage ? date('M Y', strtotime($value->coverage)) : '' }}
+                      @if(isset($value->from_date))
+                        {{$value->from_date ? date('M Y', strtotime($value->from_date)) : '' }} - {{$value->to_date ? date('M Y', strtotime($value->to_date)) : '' }}
+                      @endif
                     </td>
                   </tr>
                   @endforeach
@@ -254,7 +256,7 @@
                   <tr>
                     <th>Item</th>
                     <th>Cost</th>
-                    <th>Cost Datetime</th>
+                    <th>Coverage</th>
                   </tr>
                 </tfoot>
               </table>

@@ -47,9 +47,13 @@ class UtilitiesController extends Controller
         
         $user = auth()->user();
 
+        $from_date = date('Y-m-d H:i:s', strtotime($request->from_date));
+        $to_date = date('Y-m-d H:i:s', strtotime($request->to_date));
         $show = Utility::create($validatedData + [
             'created_by' => $user->id,
             'updated_by' => $user->id,
+            'from_date' => $from_date,
+            'to_date' => $to_date
         ]);
 
         return redirect('/utilities')->with('success', 'Utility successfully saved');
@@ -93,17 +97,21 @@ class UtilitiesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $validatedData = $request->validate([
             'cost' => 'required|max:15',
             'utility_type_id' => 'max:2',
-            'remarks' => 'max:50'
+            'remarks' => 'max:50',
         ]);
 
         $user = auth()->user();
 
+        $from_date = date('Y-m-d H:i:s', strtotime($request->from_date));
+        $to_date = date('Y-m-d H:i:s', strtotime($request->to_date));
+
         Utility::whereId($id)->update($validatedData +[
             'updated_by' => $user->id,
+            'from_date' => $from_date,
+            'to_date' => $to_date
         ]);
 
         return redirect('/utilities')->with('success', 'Utility successfully updated');

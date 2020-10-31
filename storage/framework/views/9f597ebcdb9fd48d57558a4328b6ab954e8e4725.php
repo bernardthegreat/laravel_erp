@@ -120,25 +120,85 @@
         </tr>
     </table>
 
-    <table style="width:100%;border-collapse: collapse;text-align:center;"
-        border="1">
-       
-        <tr>
-            <td width="50%">Earnings</td>
-            <td width="50%">Deductions</td>
-        </tr>
+    <table style="width:100%;border-collapse: collapse;text-align:center; border: 1px solid black;">
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+          <td width="50%">EARNINGS</td>
+          <td width="50%">DEDUCTIONS</td>
+      </tr>
+      <tr>
+          <td>
+            <table width="100%" style="border-collapse:collapse;">
+              <tr>
+                <td width="50%" style="text-align: center;">PAY</td>
+                <td width="50%" style="text-align: center;"><?php echo e($payslip[0]->cost); ?></td>
+              </tr>
+            </table>
+          </td>
+          <td> <?php echo e($payslip[0]->deduction); ?> </td>
+      </tr>
+      <tr>
+          <td>
+            <?php if(isset($payslip[0]->addl_pay)): ?>
+              <table width="100%" style="border-collapse:collapse;">
+                <tr>
+                  <td width="50%" style="text-align: center;">ADDITIONAL PAY</td>
+                  <td width="50%" style="text-align: center;"><?php echo e($payslip[0]->addl_pay); ?></td>
+                </tr>
+              </table>
+            <?php endif; ?>
+          </td>
+          <td></td>
+      </tr>
 
-        <tr>
-            <td> Hours Worked: <?php echo gmdate('H:i:s', floor($payslip[0]->hours_worked * 3600)); ?> </td>
-            <td> <?php echo e($payslip[0]->deduction); ?> </td>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <table width="100%" style="border-collapse:collapse;">
+            <tr>
+              <td width="50%" style="text-align: center;">  TOTAL EARNINGS:</td>
+              <td width="50%" style="text-align: center;">
+                <?php
+                  $total_earnings = $payslip[0]->cost + $payslip[0]->addl_pay;
+                  echo number_format($total_earnings, 2);
+                ?>
+              </td>
+            </tr>
+          </table>
         </td>
+        <td>
+          <?php echo e($payslip[0]->deduction); ?>
 
-        <tr>
-            <td> Pay: <?php echo e($payslip[0]->cost); ?> </td>
-            <td> <?php echo e($payslip[0]->deduction); ?> </td>
         </td>
-        
-        
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+    </table>
+    <table style="width:100%;border-collapse: collapse;text-align:center; border: 1px solid black;">
+      <tr>
+          <td width="50%"></td>
+          <td width="50%"></td>
+      </tr>
+      <tr>
+        <td style="font-weight:bold;"> NET PAY</td>
+        <td style="font-weight:bold;">
+          <?php
+            $net_pay = $total_earnings - $payslip[0]->deduction;
+            echo number_format($net_pay, 2);
+          ?>
+        </td>
+      </tr>
     </table>
     <!-- /.row -->
 

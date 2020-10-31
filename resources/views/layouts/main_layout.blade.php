@@ -155,6 +155,10 @@
     $('#utilities_coverage').datetimepicker({
         format: 'L'
     });
+
+    $('#utilities_to_date').datetimepicker({
+        format: 'L'
+    });
   });
 
   $(document).ready(function() {

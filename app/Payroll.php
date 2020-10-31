@@ -10,7 +10,10 @@ class Payroll extends Model
     protected $table = 'payroll';
     protected $fillable = [
         'employee_id',
-        'hours_worked',
+        'from_date',
+        'to_date',
+        'addl_pay',
+        'deduction',
         'cost',
         'created_by',
         'updated_by',

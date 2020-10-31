@@ -181,23 +181,24 @@ class EmployeesController extends Controller
         $coverage_payroll_date = $request->coverage_payroll_date;
         $splitted_date = explode(' - ', $coverage_payroll_date);
 
-        
         $employee_id = $request->employee_id;
         $additional_pay = $request->additional_pay;
         $deduction = $request->deduction;
+        $cost = $request->cost;
         $from_date = date('Y-m-d', strtotime($splitted_date[0]));
         $to_date = date('Y-m-d', strtotime($splitted_date[1]));
         $user_id = $user->id;
-        $remarks = '';
+        $remarks = $request->remarks;
         
         
-        $payroll = DB::select('call insert_payroll(?,?,?,?,?,?,?, @payroll)',
+        $payroll = DB::select('call insert_payroll(?,?,?,?,?,?,?,?, @payroll)',
             array(
                 $employee_id,
-                $additional_pay,
-                $deduction, 
                 $from_date,
                 $to_date,
+                $cost,
+                $additional_pay,
+                $deduction, 
                 $user_id,
                 $remarks
             )
@@ -232,8 +233,9 @@ class EmployeesController extends Controller
                 e.fullname,
                 e.address,
                 e.contact_no,
-                p.hours_worked,
                 p.cost,
+                p.addl_pay,
+                p.deduction,
                 p.from_date,
                 p.to_date,
                 p.created_at
@@ -245,7 +247,6 @@ class EmployeesController extends Controller
                 employee_id = $id
             ORDER BY id DESC
             LIMIT 1"));
-        
         $pdf = PDF::loadView('employees/payslip_print', compact('payslip') );  
         $pdf->setPaper('LETTER', 'landscape'); 
         return $pdf->stream('Payslip.pdf');
@@ -258,7 +259,6 @@ class EmployeesController extends Controller
             fullname,
             contact_no,
             address,
-            hours_worked,
             cost,
             addl_pay,
             deduction,
@@ -392,4 +392,44 @@ class EmployeesController extends Controller
       
       return redirect('/employees')->with('success', 'Employee Salary Rate successfully updated');
     }
+
+    public function payroll_delete(Request $request, $id)
+    {
+      $payroll = Payroll::findOrFail($id);
+      $payroll->delete();
+
+      return redirect()->back()->with('error', 'Employee payroll successfully deleted');
+    }
+
+    public function payroll_edit($id)
+    {
+      $payroll = Payroll::findOrFail($id);
+      // $salary_rates = SalaryRate::all()->where('id', $id);
+      return view('employees/edit_employee_payroll', compact('payroll'));
+    }
+
+    public function payroll_update(Request $request, $id)
+    {
+      $validatedData = $request->validate([
+        'cost' => 'required|max:20',
+        'addl_pay' => 'max:20',
+        'deduction' => 'max:20',
+        'cost' => 'max:20',
+        'remarks'=> 'max:50'
+      ]);
+
+      $user = auth()->user();
+
+      $from_date = date('Y-m-d H:i:s', strtotime($request->from_date));
+      $to_date = date('Y-m-d H:i:s', strtotime($request->to_date));
+
+      Payroll::whereId($id)->update($validatedData +[
+          'updated_by' => $user->id,
+          'from_date' => $from_date,
+          'to_date' => $to_date
+      ]);
+      
+      return redirect('/employees')->with('success', 'Employee payroll successfully updated');
+    }
+
 }

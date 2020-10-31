@@ -89,6 +89,9 @@ Route::post('/employees/add_salary_rates/{id}', 'EmployeesController@add_salary_
 Route::get('/employees/edit_salary_rates/{id}', 'EmployeesController@edit_salary_rates')->name('employees.edit_salary_rates');
 Route::post('/employees/update_salary_rate/{id}', 'EmployeesController@update_salary_rate')->name('employees.update_salary_rate');
 
+Route::get('/employees/payroll_delete/{id}', 'EmployeesController@payroll_delete')->name('employees.payroll_delete');
+Route::get('/employees/payroll_edit/{id}', 'EmployeesController@payroll_edit')->name('employees.payroll_edit');
+Route::post('/employees/payroll_update/{id}', 'EmployeesController@payroll_update')->name('employees.payroll_update');
 
 /* Employees */
 

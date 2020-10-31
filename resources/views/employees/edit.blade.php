@@ -41,7 +41,7 @@
                 <a class="btn btn-danger btn-sm" href="#" 
                   data-toggle="modal"
                   data-target="#modal-salary-rates"
-                  data-placement="top" rel="tooltip" title="Edit Salary Rate of {{$employees->fullname}}"
+                  data-placement="top" rel="tooltip" title="Add Salary Rate for {{$employees->fullname}}"
                 >
                   <i class="fa fa-plus">
                   </i>
@@ -145,8 +145,8 @@
             <table id="example1" class="table table-bordered table-striped text-center">
               <thead>
                 <tr>
-                  <th>Hours Worked</th>
                   <th>Cost</th>
+                  <th>Additional Pay</th>
                   <th>Coverage</th>
                   <th></th>
                 </tr>
@@ -154,8 +154,8 @@
               <tbody>
                 @foreach($payrolls as $payroll)
                 <tr>
-                  <td> {{$payroll->hours_worked}}</td>
                   <td> {{$payroll->cost}}</td>
+                  <td> {{$payroll->addl_pay}}</td>
                   <td> {{ date('m/d/Y', strtotime($payroll->from_date)) }} -
                     {{ date('m/d/Y', strtotime($payroll->to_date)) }} </td>
                   <td>
@@ -166,6 +166,18 @@
                         <i class="fa fa-print">
                         </i>
                       </a>
+                      <a class="btn btn-danger btn-sm" href="{{ route('employees.payroll_edit', $payroll->id)}}"
+                        data-placement="top" rel="tooltip" title="Edit {{$employees->fullname}}"
+                        data-original-title="Edit">
+                        <i class="fa fa-edit">
+                        </i>
+                      </a>
+                      <a class="btn btn-danger btn-sm delete"
+                        href="{{ route('employees.payroll_delete', $payroll->id)}} " data-placement="top"
+                        rel="tooltip" title="Delete {{$employees->fullname}}" data-original-title="soft ">
+                        <i class="fa fa-trash">
+                        </i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -173,8 +185,8 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th>Hours Worked</th>
                   <th>Cost</th>
+                  <th>Additional Pay</th>
                   <th>Coverage</th>
                   <th></th>
                 </tr>

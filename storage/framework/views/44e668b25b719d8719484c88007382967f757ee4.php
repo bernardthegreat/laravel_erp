@@ -43,7 +43,7 @@
                 <a class="btn btn-danger btn-sm" href="#" 
                   data-toggle="modal"
                   data-target="#modal-salary-rates"
-                  data-placement="top" rel="tooltip" title="Edit Salary Rate of <?php echo e($employees->fullname); ?>"
+                  data-placement="top" rel="tooltip" title="Add Salary Rate for <?php echo e($employees->fullname); ?>"
                 >
                   <i class="fa fa-plus">
                   </i>
@@ -150,8 +150,8 @@
             <table id="example1" class="table table-bordered table-striped text-center">
               <thead>
                 <tr>
-                  <th>Hours Worked</th>
                   <th>Cost</th>
+                  <th>Additional Pay</th>
                   <th>Coverage</th>
                   <th></th>
                 </tr>
@@ -159,8 +159,8 @@
               <tbody>
                 <?php $__currentLoopData = $payrolls; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $payroll): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                  <td> <?php echo e($payroll->hours_worked); ?></td>
                   <td> <?php echo e($payroll->cost); ?></td>
+                  <td> <?php echo e($payroll->addl_pay); ?></td>
                   <td> <?php echo e(date('m/d/Y', strtotime($payroll->from_date))); ?> -
                     <?php echo e(date('m/d/Y', strtotime($payroll->to_date))); ?> </td>
                   <td>
@@ -171,6 +171,18 @@
                         <i class="fa fa-print">
                         </i>
                       </a>
+                      <a class="btn btn-danger btn-sm" href="<?php echo e(route('employees.payroll_edit', $payroll->id)); ?>"
+                        data-placement="top" rel="tooltip" title="Edit <?php echo e($employees->fullname); ?>"
+                        data-original-title="Edit">
+                        <i class="fa fa-edit">
+                        </i>
+                      </a>
+                      <a class="btn btn-danger btn-sm delete"
+                        href="<?php echo e(route('employees.payroll_delete', $payroll->id)); ?> " data-placement="top"
+                        rel="tooltip" title="Delete <?php echo e($employees->fullname); ?>" data-original-title="soft ">
+                        <i class="fa fa-trash">
+                        </i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -178,8 +190,8 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <th>Hours Worked</th>
                   <th>Cost</th>
+                  <th>Additional Pay</th>
                   <th>Coverage</th>
                   <th></th>
                 </tr>

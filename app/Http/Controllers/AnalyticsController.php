@@ -111,7 +111,7 @@ class AnalyticsController extends Controller
         utilities u
             JOIN
         utility_types ut ON ut.id = u.utility_type_id 
-      where coverage >= '$from_date' and coverage <= '$to_date' "));
+      where from_date >= '$from_date' and to_date <= '$to_date' "));
 
     return $utilities;
   }

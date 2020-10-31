@@ -41,13 +41,25 @@
                   </div>
                   <div class="input-group mb-3 date" id="utilities_coverage" data-target-input="nearest">
                       <input type="text" class="form-control datetimepicker-input" data-target="#utilities_coverage"
-                        name="coverage"
+                        name="from_date"
                         autocomplete="off"
                         data-placement="top" rel="tooltip" 
                         title="Click the icon on the right side to display the calendar" 
                         data-original-title="Click the icon on the right side to display the calendar"
                       >
                       <div class="input-group-append" data-target="#utilities_coverage" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                  </div> 
+                  <div class="input-group mb-3 date" id="utilities_to_date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#utilities_to_date"
+                        name="to_date"
+                        autocomplete="off"
+                        data-placement="top" rel="tooltip" 
+                        title="Click the icon on the right side to display the calendar" 
+                        data-original-title="Click the icon on the right side to display the calendar"
+                      >
+                      <div class="input-group-append" data-target="#utilities_to_date" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
                   </div>                 
@@ -130,7 +142,7 @@
           <table id="example1" class="table table-bordered table-striped text-center">
             <thead>
               <tr>
-                <th colspan="4"> Utilities </th>
+                <th colspan="5"> Utilities </th>
               </tr>
               <tr>
                 <th>Utility Type</th>
@@ -145,7 +157,11 @@
               <tr>
                 <td> {{$utility->utility_types->name_long}} </td>
                 <td> {{$utility->cost}} </td>
-                <td> {{$utility->remarks}} </td>
+                <td> 
+                  @if(isset($utility->from_date))
+                    {{ date('M Y', strtotime($utility->from_date)) }} - {{ date('M Y', strtotime($utility->to_date)) }}
+                  @endif
+                </td>
                 <td> {{ date('m/d/Y h:i:s A', strtotime($utility->created_at)) }} </td>
                 <td>
                   <div class="btn-group">
@@ -181,7 +197,7 @@
           <table id="example2" class="table table-bordered table-striped text-center">
             <thead>
               <tr>
-                <th colspan="4"> Utilities Types </th>
+                <th colspan="4"> Utility Types </th>
               </tr>
               <tr>
                 <th>Name</th>

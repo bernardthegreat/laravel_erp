@@ -62,21 +62,40 @@
                     <div class="form-group">
                         <label for="cost">Cost</label>
                         <input type="text" class="form-control" name="cost" id="cost"
-                            value="{{$utilities->cost}}" autocomplete="off">
+                            value="{{$utilities->cost}}" autocomplete="off" required>
                     </div>
 
                     <div class="form-group">
-                      <label for="cost">Coverage</label>
+                      <label for="cost">From Date</label>
                       <div class="input-group mb-3 date" id="utilities_coverage" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input" data-target="#utilities_coverage"
-                          name="coverage"
+                          name="from_date"
                           autocomplete="off"
                           data-placement="top" rel="tooltip" 
-                          value="{{$utilities->remarks}}"
+                          value="{{$utilities->from_date}}"
                           title="Click the icon on the right side to display the calendar" 
                           data-original-title="Click the icon on the right side to display the calendar"
+                          required
                         >
                         <div class="input-group-append" data-target="#utilities_coverage" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                      </div> 
+                    </div>
+
+                    <div class="form-group">
+                      <label for="cost">To Date</label>
+                      <div class="input-group mb-3 date" id="utilities_to_date" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#utilities_to_date"
+                          name="to_date"
+                          autocomplete="off"
+                          data-placement="top" rel="tooltip" 
+                          value="{{$utilities->to_date}}"
+                          title="Click the icon on the right side to display the calendar" 
+                          data-original-title="Click the icon on the right side to display the calendar"
+                          required
+                        >
+                        <div class="input-group-append" data-target="#utilities_to_date" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                       </div> 

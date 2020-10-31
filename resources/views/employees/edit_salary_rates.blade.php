@@ -45,7 +45,7 @@
 
           <div class="form-group">
             <label for="dr_no">Hourly Fee</label>
-            <input type="text" class="form-control" name="hourly_fee" id="hourly_fee" value="{{$salary_rates->hourly_fee}}" autocomplete="off">
+            <input type="text" class="form-control" name="hourly_fee" id="hourly_fee" value="{{$salary_rates->hourly_fee}}" autocomplete="off" required>
           </div>
 
         </div>

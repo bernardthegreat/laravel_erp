@@ -208,9 +208,7 @@
                                 </div>
 
                                 <div class="modal-body">
-
                                     <?php echo csrf_field(); ?>
-
                                     <input type="hidden" id="data-employee-id" name="employee_id">
                                     <div class="form-group">
                                         <label>Payroll Coverage:</label>
@@ -225,6 +223,16 @@
                                                 class="form-control float-right" id="reservation">
                                         </div>
                                         <!-- /.input group -->
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="cost" id="deduction" class="form-control"
+                                            placeholder="Cost" autocomplete="off" required>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-money-bill"></span>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="input-group mb-3">
@@ -245,6 +253,10 @@
                                                 <span class="fas fa-money-bill"></span>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                      <textarea name="remarks"  class="form-control" placeholder="Remarks"></textarea>
                                     </div>
 
                                     <div class="card">
@@ -348,8 +360,7 @@
                         <td>
                             <div class="btn-group">
 
-
-                                <a class="btn btn-danger btn-sm btn-payroll" href="#" data-placement="top" rel="tooltip"
+                                <!-- <a class="btn btn-danger btn-sm btn-payroll" href="#" data-placement="top" rel="tooltip"
                                     title="Payroll for <?php echo e($employee->fullname); ?>" data-original-title="Payroll"
                                     data-toggle="modal" data-target="#modal-payroll"
                                     data-employee-id="<?php echo e($employee->id); ?>" 
@@ -359,6 +370,26 @@
                                     data-payroll-to="<?php echo e($employee->to_date ? date('m/d/Y', strtotime($employee->to_date)) : ''); ?>"
                                 >
                                     <i class="fa fa-money-check-alt">
+                                    </i>
+                                </a> -->
+
+
+                                <a class="btn btn-danger btn-sm btn-payroll" href="#" data-placement="top" rel="tooltip"
+                                    title="Payroll for <?php echo e($employee->fullname); ?>" data-original-title="Payroll"
+                                    data-toggle="modal" data-target="#modal-payroll"
+                                    data-employee-id="<?php echo e($employee->id); ?>" 
+                                    data-url="<?php echo e(route('process_payroll')); ?>"
+                                    data-payroll-from="<?php echo e($employee->from_date ? date('m/d/Y', strtotime($employee->from_date)) : ''); ?>"
+                                    data-payroll-to="<?php echo e($employee->to_date ? date('m/d/Y', strtotime($employee->to_date)) : ''); ?>"
+                                >
+                                    <i class="fa fa-money-check-alt">
+                                    </i>
+                                </a>
+
+                                <a class="btn btn-danger btn-sm" href="<?php echo e(route('generate_latest_payslip', $employee->id)); ?>" target="_blank"
+                                    data-placement="top" rel="tooltip" title="Print Latest Payslip of <?php echo e($employee->fullname); ?>"
+                                    data-original-title="Edit">
+                                    <i class="fa fa-print">
                                     </i>
                                 </a>
 
