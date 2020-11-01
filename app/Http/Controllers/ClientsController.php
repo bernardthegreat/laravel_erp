@@ -144,8 +144,7 @@ class ClientsController extends Controller
                     'sales.dr_no',
                     'items.name_long'
                 )
-                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
-                ->join('items', 'items.id', '=', 'purchases.item_id')
+                ->join('items', 'items.id', '=', 'sales.item_id')
                 ->groupByRaw('sales.invoice_no, sales.dr_no')
                 ->whereRaw('paid_on is not null')
                 ->where('client_id', $id)
@@ -160,8 +159,7 @@ class ClientsController extends Controller
                     'sales.qty',
                     'items.name_long'
                 )
-                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
-                ->join('items', 'items.id', '=', 'purchases.item_id')
+                ->join('items', 'items.id', '=', 'sales.item_id')
                 // ->groupByRaw('sales.invoice_no')
                 ->whereRaw('paid_on is null')
                 ->where('client_id', $id)
@@ -178,8 +176,7 @@ class ClientsController extends Controller
                     'items.name_long',
                     'clients.name_long as client_name'
                 )
-                ->join('purchases', 'purchases.id', '=', 'sales.purchase_id')
-                ->join('items', 'items.id', '=', 'purchases.item_id')
+                ->join('items', 'items.id', '=', 'sales.item_id')
                 ->join('clients', 'clients.id', '=', 'sales.client_id')
                 ->groupByRaw('sales.dr_no')
                 //->whereRaw()

@@ -113,7 +113,7 @@ class SalesController extends Controller
                 JOIN
             clients _c ON _c.id = _s.client_id
         WHERE
-            _s.dr_no = $id"));
+            _c.id = $id"));
         return view('sales/bill_client', compact('clients', 'break_downs'));
     }
 
@@ -240,7 +240,13 @@ class SalesController extends Controller
           }
         }
       });
-
+      trim($request->sold_date);
+      if(isset($request->sold_date) || !is_null($request->sold_date)) {
+        $last_inserted_id = DB::select(DB::raw("SELECT max(id) as id FROM sales"));
+        $sold_date = date('Y-m-d', strtotime($request->sold_date));
+        Sale::where('id', $last_inserted_id[0]->id)->update(array('created_at' => $sold_date));
+      }
+      
       return redirect()->back()->with('success', 'Items successfully sold');
     }
 
@@ -333,7 +339,7 @@ class SalesController extends Controller
           ));
           $select_error_code = DB::select('select @err as error_code');
           if ($select_error_code) {
-              $error_code = $select_error_code[0]->error_code;
+              $error_code = $select_error_code[0]->error_code;   
               if ($error_code > 0) {
                   throw new \Exception('Error saving order. Error code is ' . $error_code); // Throwing exception rolls back the transaction
               }

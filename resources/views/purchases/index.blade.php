@@ -56,6 +56,19 @@
                       </div>
                     </div>
                   </div>
+                  <div class="input-group date mb-3" id="order_date" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input"
+                        autocomplete="off" value="" 
+                        name="order_date" data-target="#order_date" 
+                        data-placement="top" rel="tooltip" 
+                        placeholder="Order Date"
+                        title="Click the icon on the right side to display the calendar" 
+                        data-original-title="Click the icon on the right side to display the calendar">
+
+                    <div class="input-group-append" data-target="#order_date" data-toggle="datetimepicker">
+                        <div class="input-group-text" data-placement="top" rel="tooltip" title="Click this icon to display the calendar" data-original-title="Click the icon on the right side to display the calendar"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-danger">Save</button>

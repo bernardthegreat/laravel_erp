@@ -159,7 +159,7 @@
                 <td> {{$utility->cost}} </td>
                 <td> 
                   @if(isset($utility->from_date))
-                    {{ date('M Y', strtotime($utility->from_date)) }} - {{ date('M Y', strtotime($utility->to_date)) }}
+                    {{ date('M d, Y', strtotime($utility->from_date)) }} - {{ date('M d, Y', strtotime($utility->to_date)) }}
                   @endif
                 </td>
                 <td> {{ date('m/d/Y h:i:s A', strtotime($utility->created_at)) }} </td>

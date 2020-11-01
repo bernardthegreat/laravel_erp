@@ -86,21 +86,22 @@
                                     $total = 0;
                                     @endphp
                                     @foreach($break_downs as $break_down)
-                                    <tr>
-                                        <td>{{$break_down->dr_no}}</td>
-                                        <td>{{$break_down->qty}}</td>
-                                        <td>{{$break_down->name_long}}</td>
-                                        <td>{{$break_down->addl_fee}}</td>
-                                        <td>{{$break_down->discount}}</td>
-                                        <td>{{ date('m/d/Y h:i:s A', strtotime($break_down->created_at)) }}</td>
-                                        <td>
-                                            {{$break_down->cost}}
-                                            @php 
-                                              $total += $break_down->cost * $break_down->qty; 
-                                            @endphp
-                                        </td>
-                                    </tr>
-
+                                        @if(is_null($break_down->paid_on))
+                                            <tr>
+                                                <td>{{$break_down->dr_no}}</td>
+                                                <td>{{$break_down->qty}}</td>
+                                                <td>{{$break_down->name_long}}</td>
+                                                <td>{{$break_down->addl_fee}}</td>
+                                                <td>{{$break_down->discount}}</td>
+                                                <td>{{ date('m/d/Y h:i:s A', strtotime($break_down->created_at)) }}</td>
+                                                <td>
+                                                    {{$break_down->cost}}
+                                                    @php 
+                                                    $total += $break_down->cost * $break_down->qty; 
+                                                    @endphp
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
 
 

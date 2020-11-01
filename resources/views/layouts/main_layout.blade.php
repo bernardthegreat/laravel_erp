@@ -150,6 +150,8 @@
     });
 
     $('#payment_date').datetimepicker();
+    $('#sold_date').datetimepicker();
+    $('#order_date').datetimepicker();
     $('#receive_date').datetimepicker();
     $('#analytics_from_and_to_date').daterangepicker()
     $('#utilities_coverage').datetimepicker({

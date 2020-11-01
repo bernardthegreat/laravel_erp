@@ -97,12 +97,26 @@
             <input type="text" class="form-control" name="addl_fee" id="addl_fee" value="{{$sales->addl_fee}}"
               autocomplete="off">
           </div>
+          <label for="sold_date">Sold Date</label>
+          <div class="input-group date" id="sold_date" data-target-input="nearest">
+            <input type="text" class="form-control datetimepicker-input"
+              value="@if(isset($sales->created_at)){{ date('m/d/Y h:i:s A', strtotime($sales->created_at)) }}@endif"
+              autocomplete="off" name="created_at" data-target="#sold_date" data-placement="top" rel="tooltip"
+              title="Click the icon on the right side to display the calendar"
+              data-original-title="Click the icon on the right side to display the calendar">
 
+            <div class="input-group-append" data-target="#sold_date" data-toggle="datetimepicker">
+              <div class="input-group-text" data-placement="top" rel="tooltip"
+                title="Click this icon to display the calendar"
+                data-original-title="Click the icon on the right side to display the calendar"><i
+                  class="fa fa-calendar"></i></div>
+            </div>
+          </div>
           <label for="paid_on">Paid Date</label>
           <div class="input-group date" id="receive_date" data-target-input="nearest">
             <input type="text" class="form-control datetimepicker-input"
               value="@if(isset($sales->paid_on)){{ date('m/d/Y h:i:s A', strtotime($sales->paid_on)) }}@endif"
-              autocomplete="off" value="" name="paid_on" data-target="#receive_date" data-placement="top" rel="tooltip"
+              autocomplete="off" name="paid_on" data-target="#receive_date" data-placement="top" rel="tooltip"
               title="Click the icon on the right side to display the calendar"
               data-original-title="Click the icon on the right side to display the calendar">
 

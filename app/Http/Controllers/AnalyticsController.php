@@ -67,7 +67,7 @@ class AnalyticsController extends Controller
     // $start_date = '2020-06-01';
     // $start_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-01'));
     // $end_date = date('Y-m-d', strtotime($current_year.'-'.$current_month.'-'.$lastday));
-    $sales = DB::select(DB::raw("SELECT * FROM sales_view where paid_on >= '$from_date' and paid_on <= '$to_date' "));  
+    $sales = DB::select(DB::raw("SELECT * FROM sales_view where added_on >= '$from_date' and added_on <= '$to_date' order by delivery_no asc"));  
     return $sales;
   }
 
@@ -104,9 +104,10 @@ class AnalyticsController extends Controller
   function monthly_utilities($from_date, $to_date)
   { 
     $utilities = DB::select(DB::raw("SELECT 
-        name_long AS utility, 
-        cost AS cost, 
-        coverage AS coverage
+        name_long as utility,
+        from_date,
+        to_date,
+        cost
       FROM
         utilities u
             JOIN

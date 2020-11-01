@@ -246,7 +246,7 @@
                     <td>{{$value->cost}}</td>
                     <td>
                       @if(isset($value->from_date))
-                        {{$value->from_date ? date('M Y', strtotime($value->from_date)) : '' }} - {{$value->to_date ? date('M Y', strtotime($value->to_date)) : '' }}
+                        {{$value->from_date ? date('M d, Y', strtotime($value->from_date)) : '' }} - {{$value->to_date ? date('M d, Y', strtotime($value->to_date)) : '' }}
                       @endif
                     </td>
                   </tr>

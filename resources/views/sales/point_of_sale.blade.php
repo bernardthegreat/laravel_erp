@@ -148,6 +148,22 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="input-group date" id="sold_date" data-target-input="nearest">
+                  <input type="text" class="form-control datetimepicker-input"
+                    autocomplete="off" name="sold_date" 
+                    data-target="#sold_date" data-placement="top" rel="tooltip"
+                    placeholder="Sold Date"
+                    title="Click the icon on the right side to display the calendar"
+                    data-original-title="Click the icon on the right side to display the calendar">
+
+                  <div class="input-group-append" data-target="#sold_date" data-toggle="datetimepicker">
+                    <div class="input-group-text" data-placement="top" rel="tooltip"
+                      title="Click this icon to display the calendar"
+                      data-original-title="Click the icon on the right side to display the calendar"><i
+                        class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
               </div> 
               @php
               $user = auth()->user();

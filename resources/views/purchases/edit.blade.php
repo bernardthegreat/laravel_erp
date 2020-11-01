@@ -81,7 +81,7 @@
                     <label for="received_at">Received At</label>
                     <div class="input-group date" id="receive_date" data-target-input="nearest">
                         <input type="text" class="form-control datetimepicker-input"
-                            value="{{$purchases->received_at}}"
+                            value="{{$purchases->received_at ? date('m/d/Y h:i:s A', strtotime($purchases->received_at)) : ''}}"
                             autocomplete="off" value="" 
                             name="received_at" data-target="#receive_date" 
                             data-placement="top" rel="tooltip" 
@@ -101,8 +101,20 @@
 
                     <div class="form-group">
                         <label for="order_datetime">Ordered On</label>
-                        <input type="text" class="form-control" id="order_datetime"
-                            value="{{ date('m/d/Y h:i:s A', strtotime($purchases->created_at)) }}" autocomplete="off" readonly>
+                        <div class="input-group date" id="order_date" data-target-input="nearest">
+                          <input type="text" class="form-control datetimepicker-input"
+                              value="{{ date('m/d/Y h:i:s A', strtotime($purchases->created_at)) }}"
+                              autocomplete="off" value="" 
+                              name="order_date" data-target="#order_date" 
+                              data-placement="top" rel="tooltip" 
+                              title="Click the icon on the right side to display the calendar" 
+                              data-original-title="Click the icon on the right side to display the calendar">
+
+                            <div class="input-group-append" data-target="#order_date" data-toggle="datetimepicker">
+                                <div class="input-group-text" data-placement="top" rel="tooltip" title="Click this icon to display the calendar" data-original-title="Click the icon on the right side to display the calendar"><i class="fa fa-calendar"></i></div>
+                            </div>
+                      </div>
+
                     </div>
 
 

@@ -72,7 +72,7 @@
                           name="from_date"
                           autocomplete="off"
                           data-placement="top" rel="tooltip" 
-                          value="{{$utilities->from_date}}"
+                          value="{{ date('m/d/Y', strtotime($utilities->from_date)) }}"
                           title="Click the icon on the right side to display the calendar" 
                           data-original-title="Click the icon on the right side to display the calendar"
                           required
@@ -90,7 +90,7 @@
                           name="to_date"
                           autocomplete="off"
                           data-placement="top" rel="tooltip" 
-                          value="{{$utilities->to_date}}"
+                          value="{{ date('m/d/Y', strtotime($utilities->to_date)) }}"
                           title="Click the icon on the right side to display the calendar" 
                           data-original-title="Click the icon on the right side to display the calendar"
                           required

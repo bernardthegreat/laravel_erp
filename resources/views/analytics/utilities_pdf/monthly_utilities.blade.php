@@ -70,8 +70,8 @@
         </tr>
         <tr>
           <th>Utility</th>
-          <th>Cost</th>
           <th>Coverage</th>
+          <th>Cost</th>
         </tr>
       </thead>
       <tbody>
@@ -83,7 +83,7 @@
           <td>{{$utilities->utility}}</td>
           <td>
             @if(isset($utilities->from_date))
-              {{$utilities->from_date ? date('M Y', strtotime($utilities->from_date)) : '' }} - {{$utilities->to_date ? date('M Y', strtotime($utilities->to_date)) : '' }}
+              {{$utilities->from_date ? date('M d, Y', strtotime($utilities->from_date)) : '' }} - {{$utilities->to_date ? date('M d, Y', strtotime($utilities->to_date)) : '' }}
             @endif
           </td>
           <td>{{$utilities->cost}}</td>
