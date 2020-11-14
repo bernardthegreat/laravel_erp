@@ -18,9 +18,10 @@ class AnalyticsController extends Controller
   {
     $report_analytics = array(
       'monthly_sales_report'=>'Monthly Sales Report',
+      'sales_vs_purchases'=>'Sales Vs. Purchases',
       'purchases_vs_sales'=>'Purchases Vs. Sales',
       'item_costs_history'=>'Item Costs History',
-      'monthly_utilities'=>'Monthly Utilities'
+      'monthly_utilities'=>'Monthly Utilities',
     );
     return $report_analytics;
   }
@@ -52,11 +53,11 @@ class AnalyticsController extends Controller
     return view('analytics/index', compact('analytics_listings', 'analytics_selected', 'results'));
   }
   
-  function setDates() {
-    $dateArray = array($this->fromDate, $this->toDate);
-    $inclusive_dates = implode("-", $dateArray);
-    return $inclusive_dates;
-  }
+  // function setDates() {
+  //   $dateArray = array($this->fromDate, $this->toDate);
+  //   $inclusive_dates = implode("-", $dateArray);
+  //   return $inclusive_dates;
+  // }
 
   function monthly_sales_report($from_date, $to_date)
   {
@@ -125,6 +126,63 @@ class AnalyticsController extends Controller
     
     $result_print = $this->monthly_utilities($from_date_final, $to_date_final);
     $pdf = PDF::loadView('analytics/utilities_pdf/monthly_utilities', compact('result_print'));
+    $pdf->setPaper('LETTER', 'landscape');
+    return $pdf->stream('Utilities.pdf');
+  }
+
+  function sales_vs_purchases ($from_date, $to_date)
+  {
+    $sales = DB::select(DB::raw(
+      "SELECT
+
+          i.name_long AS item_name,
+          FORMAT(IFNULL(p.qty, 0), 0) AS purchase_qty,
+          FORMAT(IFNULL(p.total_cost, 0), 2) AS purchase_total_cost,
+          FORMAT(IFNULL(s.qty, 0), 0) AS sold_qty,
+          FORMAT(IFNULL(s.total_cost, 0), 2) AS sale_total_cost,
+          FORMAT((IFNULL(p.qty, 0) - IFNULL(s.qty, 0)), 0) AS unsold_qty,
+          FORMAT((IFNULL(s.total_cost, 0) - IFNULL(p.total_cost, 0)), 2) AS interest_cost
+
+      FROM
+      
+          dealer_erp.items i
+          
+    LEFT JOIN
+
+          (SELECT 
+              _p.item_id AS item_id,
+        SUM(_p.qty) AS qty,
+        SUM((_p.qty * _p.cost)) AS total_cost
+          FROM
+              dealer_erp.purchases _p
+          WHERE
+        DATE(_p.received_at) BETWEEN '$from_date' AND '$to_date' AND _p.void = 0
+          GROUP BY _p.item_id) p ON i.id = p.item_id
+
+    LEFT JOIN
+
+      (SELECT 
+        _s.item_id AS item_id,
+        SUM(_s.qty) AS qty,
+        SUM((((_s.qty * _s.cost) + _s.addl_fee) - _s.discount)) AS total_cost
+      FROM
+        dealer_erp.sales _s
+      WHERE
+        (DATE(_s.created_at) BETWEEN '$from_date' AND '$to_date') AND _s.void = 0 
+      GROUP BY _s.item_id) s ON p.item_id = s.item_id"
+    ));
+
+    return $sales;
+  }
+
+  function sales_vs_purchases_print($date) 
+  {
+    $inclusive_dates = explode("&", $date);
+    $from_date_final =  date('Y-m-d', strtotime($inclusive_dates[0]));
+    $to_date_final =  date('Y-m-d', strtotime($inclusive_dates[1]));
+    
+    $result_print = $this->sales_vs_purchases($from_date_final, $to_date_final);
+    $pdf = PDF::loadView('analytics/sales_pdf/sales_vs_purchases', compact('result_print'));
     $pdf->setPaper('LETTER', 'landscape');
     return $pdf->stream('Utilities.pdf');
   }

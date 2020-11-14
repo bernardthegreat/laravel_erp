@@ -113,6 +113,7 @@ Route::post('/analytics/get_analytics', 'AnalyticsController@get_analytics_listi
 Route::get('/analytics/monthly_sales_report_print/{id}', 'AnalyticsController@monthly_sales_report_print')->name('monthly_sales_report_print');
 Route::get('/analytics/purchases_vs_sales_print/{id}', 'AnalyticsController@purchases_vs_sales_print')->name('purchases_vs_sales_print');
 Route::get('/analytics/monthly_utilities_print/{id}', 'AnalyticsController@monthly_utilities_print')->name('monthly_utilities_print');
+Route::get('/analytics/sales_vs_purchases_print/{id}', 'AnalyticsController@sales_vs_purchases_print')->name('sales_vs_purchases_print');
 Route::get('/analytics/item_costs_history_print', 'AnalyticsController@item_costs_history_print')->name('item_costs_history_print');
 
 /* Report PDF */

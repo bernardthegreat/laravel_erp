@@ -1,6 +1,6 @@
-@extends('layouts.main_layout')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <section class="content-header">
   <div class="container-fluid">
@@ -34,35 +34,35 @@
       </div>
     </div>
     <div class="card-body">
-      <form method="post" action="{{ route('get_analytics_listing') }}">
-        @csrf
+      <form method="post" action="<?php echo e(route('get_analytics_listing')); ?>">
+        <?php echo csrf_field(); ?>
         <div class="input-group mb-3">
           <select id="items" name="analytics_id" class="custom-select" style="width: 100px;">
-            @foreach($analytics_listings as $keys => $lists)
-                @php
+            <?php $__currentLoopData = $analytics_listings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $keys => $lists): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
                   if(isset($analytics_selected)) {
                     $selected = $analytics_selected;
                   } else {
                     $selected = '';
                   }
-                @endphp
-                <option id="{{$keys}}" value="{{$keys}}" {{ ( $selected == $keys) ? 'selected' : '' }}>{{$lists}}</option>
+                ?>
+                <option id="<?php echo e($keys); ?>" value="<?php echo e($keys); ?>" <?php echo e(( $selected == $keys) ? 'selected' : ''); ?>><?php echo e($lists); ?></option>
             
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </select>
           <div class="input-group-append">
             <div class="btn-group">
               <button type="submit" class="btn btn-sm btn-danger w-100 submit_btn"><i class="fas fa-search-dollar"> </i></button>
-              @if($results ?? '')
-                @if(count($results) > 0)
+              <?php if($results ?? ''): ?>
+                <?php if(count($results) > 0): ?>
 
                   <a id="print_link" target="_blank" class="btn btn-sm btn-danger pt-2"><i class="fas fa-print"> </i></a>
                   <input type="hidden" value="print" name="print">
-                  <input type="hidden" value="{{$analytics_selected}}_print" name="analytics_id_print">
+                  <input type="hidden" value="<?php echo e($analytics_selected); ?>_print" name="analytics_id_print">
                   <input type="hidden" name="fromDate" class="fromDateHidden">
                   <input type="hidden" name="toDate" class="toDateHidden">
-                @endif
-              @endif
+                <?php endif; ?>
+              <?php endif; ?>
             </div>
           </div>
         </div>
@@ -97,8 +97,8 @@
             </div>
         </div>
 
-        @if($results ?? '')
-          @if($analytics_selected == 'monthly_sales_report')
+        <?php if($results ?? ''): ?>
+          <?php if($analytics_selected == 'monthly_sales_report'): ?>
             <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
@@ -119,27 +119,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($results as $value)
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                   <tr>
-                    <!-- <td>{{$value->sale_no}}</td> -->
-                    <td>{{$value->delivery_no}}</td>
-                    <td>{{$value->client_name}}</td>
-                    <td>{{$value->item_name}}</td>
-                    <td>{{$value->cost}}</td>
-                    <td>{{$value->discount}}</td>
-                    <td>{{$value->additional_fee}}</td>
-                    <td>{{$value->quantity}}</td>
-                    <td>{{$value->total_cost}}</td>
+                    <!-- <td><?php echo e($value->sale_no); ?></td> -->
+                    <td><?php echo e($value->delivery_no); ?></td>
+                    <td><?php echo e($value->client_name); ?></td>
+                    <td><?php echo e($value->item_name); ?></td>
+                    <td><?php echo e($value->cost); ?></td>
+                    <td><?php echo e($value->discount); ?></td>
+                    <td><?php echo e($value->additional_fee); ?></td>
+                    <td><?php echo e($value->quantity); ?></td>
+                    <td><?php echo e($value->total_cost); ?></td>
                     <td>
-                      {{$value->paid_on ? date('m/d/Y', strtotime($value->paid_on)) : '' }}
+                      <?php echo e($value->paid_on ? date('m/d/Y', strtotime($value->paid_on)) : ''); ?>
+
                     </td>
                     <td>
-                      {{date('m/d/Y', strtotime($value->added_on)) }}  
+                      <?php echo e(date('m/d/Y', strtotime($value->added_on))); ?>  
                     </td>
-                    <td>{{$value->added_by}}</td>
-                    <td>{{$value->description}}</td>
+                    <td><?php echo e($value->added_by); ?></td>
+                    <td><?php echo e($value->description); ?></td>
                   </tr>
-                  @endforeach
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -160,7 +161,7 @@
                 </tfoot>
               </table>
             </div>
-          @elseif($analytics_selected == 'purchases_vs_sales')
+          <?php elseif($analytics_selected == 'purchases_vs_sales'): ?>
           <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
@@ -174,18 +175,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($results as $value)
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                   <tr>
                     <td>
-                      {{$value->purchase_date ? date('m/d/Y', strtotime($value->purchase_date)) : '' }}
+                      <?php echo e($value->purchase_date ? date('m/d/Y', strtotime($value->purchase_date)) : ''); ?>
+
                     </td>
-                    <td>{{$value->dr_no}}</td>
-                    <td>{{$value->item_name}}</td>
-                    <td>{{$value->purchase_qty}}</td>
-                    <td>{{$value->sold_qty}}</td>
-                    <td>{{$value->unsold_qty}}</td>
+                    <td><?php echo e($value->dr_no); ?></td>
+                    <td><?php echo e($value->item_name); ?></td>
+                    <td><?php echo e($value->purchase_qty); ?></td>
+                    <td><?php echo e($value->sold_qty); ?></td>
+                    <td><?php echo e($value->unsold_qty); ?></td>
                   </tr>
-                  @endforeach
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -199,7 +201,7 @@
                 </tfoot>
               </table>
             </div>
-            @elseif($analytics_selected == 'sales_vs_purchases')
+            <?php elseif($analytics_selected == 'sales_vs_purchases'): ?>
             <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
@@ -212,17 +214,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($results as $value)
-                  @if($value->purchase_qty > 0)
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <?php if($value->purchase_qty > 0): ?>
                     <tr>
-                      <td>{{$value->item_name}}</td>
-                      <td>{{$value->purchase_qty}}</td>
-                      <td>{{$value->purchase_total_cost}}</td>
-                      <td>{{$value->sold_qty}}</td>
-                      <td>{{$value->sale_total_cost}}</td>
+                      <td><?php echo e($value->item_name); ?></td>
+                      <td><?php echo e($value->purchase_qty); ?></td>
+                      <td><?php echo e($value->purchase_total_cost); ?></td>
+                      <td><?php echo e($value->sold_qty); ?></td>
+                      <td><?php echo e($value->sale_total_cost); ?></td>
                     </tr>
-                  @endif
-                  @endforeach
+                  <?php endif; ?>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -235,7 +237,7 @@
                 </tfoot>
               </table>
             </div>
-            @elseif($analytics_selected == 'item_costs_history')
+            <?php elseif($analytics_selected == 'item_costs_history'): ?>
             <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
@@ -246,15 +248,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($results as $value)
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                   <tr>
-                    <td>{{$value->item_name}}</td>
-                    <td>{{$value->cost}}</td>
+                    <td><?php echo e($value->item_name); ?></td>
+                    <td><?php echo e($value->cost); ?></td>
                     <td>
-                      {{$value->cost_datetime ? date('m/d/Y h:i:s A', strtotime($value->cost_datetime)) : '' }}
+                      <?php echo e($value->cost_datetime ? date('m/d/Y h:i:s A', strtotime($value->cost_datetime)) : ''); ?>
+
                     </td>
                   </tr>
-                  @endforeach
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -265,7 +268,7 @@
                 </tfoot>
               </table>
             </div>
-            @elseif($analytics_selected == 'monthly_utilities')
+            <?php elseif($analytics_selected == 'monthly_utilities'): ?>
             <div style="overflow-x:auto;">
               <table id="analytics2" class="table table-bordered table-striped text-center" width="100%">
                 <thead>
@@ -276,17 +279,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($results as $value)
+                  <?php $__currentLoopData = $results; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                   <tr>
-                    <td>{{$value->utility}}</td>
-                    <td>{{$value->cost}}</td>
+                    <td><?php echo e($value->utility); ?></td>
+                    <td><?php echo e($value->cost); ?></td>
                     <td>
-                      @if(isset($value->from_date))
-                        {{$value->from_date ? date('M d, Y', strtotime($value->from_date)) : '' }} - {{$value->to_date ? date('M d, Y', strtotime($value->to_date)) : '' }}
-                      @endif
+                      <?php if(isset($value->from_date)): ?>
+                        <?php echo e($value->from_date ? date('M d, Y', strtotime($value->from_date)) : ''); ?> - <?php echo e($value->to_date ? date('M d, Y', strtotime($value->to_date)) : ''); ?>
+
+                      <?php endif; ?>
                     </td>
                   </tr>
-                  @endforeach
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                   <tr>
@@ -297,9 +301,9 @@
                 </tfoot>
               </table>
             </div>
-          @endif
+          <?php endif; ?>
 
-        @endif
+        <?php endif; ?>
       </form>
     </div>
   </div>
@@ -358,4 +362,5 @@
   
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.main_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel\laravel_erp\resources\views/analytics/index.blade.php ENDPATH**/ ?>

@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `dealer_erp` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `dealer_erp`;
+CREATE DATABASE  IF NOT EXISTS `dealer_erp_fifo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `dealer_erp_fifo`;
 -- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
--- Host: localhost    Database: dealer_erp
+-- Host: localhost    Database: dealer_erp_fifo
 -- ------------------------------------------------------
 -- Server version	8.0.20
 
@@ -528,7 +528,7 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `purchases_AFTER_INSERT` AFTER INSERT ON `purchases` FOR EACH ROW BEGIN
     
     IF (NEW.`received_at` IS NOT NULL) THEN
-		UPDATE `dealer_erp`.`items` SET `stock_qty` = `stock_qty` + NEW.`qty` WHERE `id` = NEW.`item_id`;
+		UPDATE `dealer_erp_fifo`.`items` SET `stock_qty` = `stock_qty` + NEW.`qty` WHERE `id` = NEW.`item_id`;
     END IF;    
     
 END */;;
@@ -550,9 +550,9 @@ DELIMITER ;;
 	
     -- This "if statement" prevents "stock addition/subtraction" abuse thru updating `received_at` with NULL or valid datetime value consecutively.
     IF (NEW.`received_at` IS NOT NULL AND OLD.`received_at` IS NULL) THEN
-		UPDATE `dealer_erp`.`items` SET `stock_qty` = `stock_qty` + NEW.`qty` WHERE `id` = NEW.`item_id`;
+		UPDATE `dealer_erp_fifo`.`items` SET `stock_qty` = `stock_qty` + NEW.`qty` WHERE `id` = NEW.`item_id`;
     ELSEIF (NEW.`received_at` IS NULL AND OLD.`received_at` IS NOT NULL) THEN
-		UPDATE `dealer_erp`.`items` SET `stock_qty` = `stock_qty` - NEW.`qty` WHERE `id` = NEW.`item_id`;
+		UPDATE `dealer_erp_fifo`.`items` SET `stock_qty` = `stock_qty` - NEW.`qty` WHERE `id` = NEW.`item_id`;
     END IF;
     
 END */;;
@@ -1030,11 +1030,11 @@ INSERT INTO `utility_types` VALUES (1,NULL,'MERALCO',2,'2020-09-19 15:29:45',2,'
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'dealer_erp'
+-- Dumping events for database 'dealer_erp_fifo'
 --
 
 --
--- Dumping routines for database 'dealer_erp'
+-- Dumping routines for database 'dealer_erp_fifo'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `insert_employee` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1122,7 +1122,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_employee`(
 
 		START TRANSACTION READ WRITE;
 			
-            SELECT `e`.`id` INTO `var_latest_employee_id` FROM `dealer_erp`.`employees` `e` ORDER BY `e`.`id` DESC LIMIT 1;
+            SELECT `e`.`id` INTO `var_latest_employee_id` FROM `dealer_erp_fifo`.`employees` `e` ORDER BY `e`.`id` DESC LIMIT 1;
             
 	    		IF (`var_latest_employee_id` = '') OR (`var_latest_employee_id` IS NULL) THEN
 				SET `var_latest_employee_id` = 0;
@@ -1140,7 +1140,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_employee`(
 				SET `var_fullname` = CONCAT(`var_fullname`, ' ', `param_name_suffix`);
 			END IF;
             
-			INSERT INTO `dealer_erp`.`employees` (
+			INSERT INTO `dealer_erp_fifo`.`employees` (
 				`code`,
 				`first_name`,
                 `middle_name`,
@@ -1165,7 +1165,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_employee`(
                 `param_user_id`,
                 `param_remarks`);
                 
-			INSERT INTO `dealer_erp`.`salary_rates` (
+			INSERT INTO `dealer_erp_fifo`.`salary_rates` (
 				`employee_id`,
 				`created_by`,
 				`updated_by`)
@@ -1259,7 +1259,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_item`(
     
 		START TRANSACTION READ WRITE;
             
-            INSERT INTO `dealer_erp`.`items` (
+            INSERT INTO `dealer_erp_fifo`.`items` (
 				`supplier_id`,
 				`name_short`,
                 `name_long`,
@@ -1276,7 +1276,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_item`(
                 `param_user_id`,
                 `param_remarks`);
 			
-            INSERT INTO `dealer_erp`.`interests` (
+            INSERT INTO `dealer_erp_fifo`.`interests` (
 				`item_id`,
 				`created_by`,
 				`updated_by`)
@@ -1376,7 +1376,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_payroll`(
 			
 			SELECT SUM(((TIME_TO_SEC(IFNULL(`a`.`to_time`,'00:00')) - TIME_TO_SEC(IFNULL(`a`.`from_time`,'00:00'))) / 60) / 60)
 			INTO `var_hours_worked`
-			FROM `dealer_erp`.`attendance` `a`
+			FROM `dealer_erp_fifo`.`attendance` `a`
 			WHERE `a`.`employee_id` = `param_employee_id` AND DATE(`a`.`created_at`) BETWEEN `param_from_date` AND `param_to_date`
 			GROUP BY `a`.`employee_id`; 
             
@@ -1386,7 +1386,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_payroll`(
 			END IF;	
             
             SELECT `sr`.`hourly_fee` INTO `var_hourly_fee`
-            FROM `dealer_erp`.`salary_rates` `sr`
+            FROM `dealer_erp_fifo`.`salary_rates` `sr`
             WHERE `sr`.`employee_id` = `param_employee_id`
             ORDER BY `sr`.`id` DESC
             LIMIT 1;
@@ -1396,7 +1396,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_payroll`(
 				LEAVE `this_sp`;
 			END IF;
             
-            INSERT INTO `dealer_erp`.`payroll` (
+            INSERT INTO `dealer_erp_fifo`.`payroll` (
 				`employee_id`,
 				`hours_worked`,
                 `cost`,
@@ -1560,8 +1560,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_sale`(
                     `_p`.`cost`,
                     (`_p`.`qty` - SUM(IFNULL(`_s`.`qty`, 0))) AS `qty`
                 FROM
-                    (`dealer_erp`.`purchases` `_p`
-                    LEFT JOIN `dealer_erp`.`sales` `_s` ON ((`_s`.`purchase_id` = `_p`.`id`)))
+                    (`dealer_erp_fifo`.`purchases` `_p`
+                    LEFT JOIN `dealer_erp_fifo`.`sales` `_s` ON ((`_s`.`purchase_id` = `_p`.`id`)))
                 WHERE `_p`.`item_id` = `param_item_id` AND `_p`.`received_at` IS NOT NULL
                 GROUP BY `_p`.`id`) AS `p`
 
@@ -1610,7 +1610,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_sale`(
                 IF (`var_sell_cost` = '0.00') THEN
 					-- Get interest rate of current item and order qty
 					SELECT (`i`.`rate` / 100) INTO `var_interest_rate`
-					FROM `dealer_erp`.`interests` `i`
+					FROM `dealer_erp_fifo`.`interests` `i`
 					WHERE
 						`i`.`item_id` = `param_item_id` AND
 						`i`.`qty_from` <= `var_p_qty` AND `i`.`qty_to` >= `var_p_qty`;
@@ -1623,7 +1623,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_sale`(
 				END IF;
                 
                 
-				INSERT INTO `dealer_erp`.`sales` (
+				INSERT INTO `dealer_erp_fifo`.`sales` (
 					`client_id`,
 					`purchase_id`,
                     `code`,
@@ -1658,7 +1658,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_sale`(
 				
 			END LOOP `try_loop`;
 			
-			UPDATE `dealer_erp`.`items` SET `stock_qty` = `var_stock_qty` - `var_order_qty` WHERE `id` = `param_item_id`;
+			UPDATE `dealer_erp_fifo`.`items` SET `stock_qty` = `var_stock_qty` - `var_order_qty` WHERE `id` = `param_item_id`;
 		
 			SET `param_error_code` = 0;
             
@@ -1740,7 +1740,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_update_attendance`(
 		START TRANSACTION READ WRITE;
             
             SELECT `e`.`id` INTO `var_employee_id`
-            FROM `dealer_erp`.`employees` `e`
+            FROM `dealer_erp_fifo`.`employees` `e`
             WHERE `e`.`code` = `param_employee_code`;
             
             IF (`var_employee_id` IS NOT NULL) THEN
@@ -1753,7 +1753,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_update_attendance`(
 					`var_attendance_id`,
 					`var_time_in`,
 					`var_time_out`
-				FROM `dealer_erp`.`attendance` `a`
+				FROM `dealer_erp_fifo`.`attendance` `a`
 				WHERE
 					`a`.`employee_id` = `var_employee_id` AND
 					CAST(`a`.`created_at` AS DATE) = CURRENT_DATE()
@@ -1764,7 +1764,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_update_attendance`(
 				-- If employee has no time inS today...
 				IF (`var_attendance_id` IS NULL) OR ((`var_time_in` IS NOT NULL) AND (`var_time_out` IS NOT NULL)) THEN
 				
-					INSERT INTO `dealer_erp`.`attendance` (
+					INSERT INTO `dealer_erp_fifo`.`attendance` (
 						`employee_id`,
 						`from_time`,
 						`created_by`,
@@ -1780,7 +1780,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_update_attendance`(
 				-- If employee has timed in but has yet to time out
 				ELSEIF (`var_time_in` IS NOT NULL) AND (`var_time_out` IS NULL) THEN
 				
-					UPDATE `dealer_erp`.`attendance`
+					UPDATE `dealer_erp_fifo`.`attendance`
 					SET
 						`to_time` = CURRENT_TIME(),
 						`updated_by` = `param_user_id`,
@@ -1867,11 +1867,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_payroll`(
 			
 			SELECT SUM(((TIME_TO_SEC(IFNULL(`a`.`to_time`,'00:00')) - TIME_TO_SEC(IFNULL(`a`.`from_time`,'00:00'))) / 60) / 60)
 				INTO `var_hours_worked`
-			FROM `dealer_erp`.`attendance` `a`
+			FROM `dealer_erp_fifo`.`attendance` `a`
 			WHERE `a`.`employee_id` = `param_employee_id` AND DATE(`a`.`created_at`) BETWEEN `param_from_date` AND `param_to_date`
 			GROUP BY `a`.`employee_id`; 
             
-            UPDATE `dealer_erp`.`payroll` SET
+            UPDATE `dealer_erp_fifo`.`payroll` SET
 				`hours_worked` = `var_hours_worked`,
                 `from_date` = `param_from_date`,
                 `to_date` = `param_to_date`,
